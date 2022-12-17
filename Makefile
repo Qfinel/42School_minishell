@@ -6,11 +6,11 @@
 #    By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2022/12/17 16:25:54 by jtsizik          ###   ########.fr        #
+#    Updated: 2022/12/17 16:32:13 by jtsizik          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minshell
+NAME = minishell
 
 HDRS =	minishell.h
 
@@ -50,5 +50,7 @@ fclean: clean
 
 re: fclean all
 
-debug:
-	cc -Wall -Wextra -Werror $(RL_FLAGS) $(OBJS) -Wno-gnu-include-next -I../LeakSanitizer/include -L../LeakSanitizer -llsan -lc++ -o $(NAME)
+debug: obj $(OBJS)
+	cd libft && make
+	cd ..
+	cc -Wall -Wextra -Werror $(RL_FLAGS) $(OBJS) libft/libft.a -g -Wno-gnu-include-next -I../LeakSanitizer/include -L../LeakSanitizer -llsan -lc++ -o $(NAME)

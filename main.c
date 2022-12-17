@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/17 16:14:45 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/17 17:10:16 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	execute_cmd(t_vars *vars, char *input)
 	if (is_redirect(input))
 		return (handle_redirect(vars, input));
 	args = ft_split(input, ' ');
+	if (!args[0])
+		return(free(args));
 	if (is_builtin(vars, input, args))
 		return ;
 	if (args[0][0] == '/')
@@ -37,10 +39,9 @@ void	execute_cmd(t_vars *vars, char *input)
 		id = fork();
 		if (id == 0)
 			execve(cmd, args, vars->envp);
-		if (id != 0)
-			wait(NULL);
+		wait(NULL);
 	}
-	if (!cmd)
+	else
 		printf("minishell: command not found: '%s'\n", args[0]);
 	free_strings(args);
 	free(cmd);
@@ -106,7 +107,7 @@ void	minishell_loop(t_vars *vars)
 {
 	while (1)
 	{
-		vars->input = readline("\033[0;32mminishell> \033[0;37m");
+		vars->input = readline("\033[0;32mminishell$> \033[0;37m");
 		if (!vars->input)
 		{
 			printf("\n");

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:36:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/17 11:09:51 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/17 16:41:32 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ void	ft_cd(char **args)
 
 	abs_path = getcwd(NULL, 0);
 	if (!args[1])
-		chdir("/");
+	{
+		abs_path = ft_strjoin("/Users/", getenv("USER"));
+		chdir(abs_path);
+	}
 	else
 	{
 		if (args[1][0] != '/')

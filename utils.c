@@ -6,18 +6,18 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:38:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/16 14:46:54 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/17 15:19:55 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_builtin(t_vars *vars, char **args)
+int	is_builtin(t_vars *vars, char *input, char **args)
 {
 	if (!ft_strncmp(args[0], "cd", 3))
 		return (ft_cd(args), 1);
 	if (!ft_strncmp(args[0], "echo", 5))
-		return (ft_echo(vars->input, args), 1);
+		return (ft_echo(input, args), 1);
 	if (!ft_strncmp(args[0], "pwd", 4))
 		return (ft_pwd(args), 1);
 	if (!ft_strncmp(args[0], "export", 7))
@@ -26,6 +26,20 @@ int	is_builtin(t_vars *vars, char **args)
 		return (ft_unset(vars, args), 1);
 	if (!ft_strncmp(args[0], "env", 4))
 		return (ft_env(vars, args), 1);
+	return (0);
+}
+
+int	contains_spaces(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == ' ')
+			return (1);
+		i++;
+	}
 	return (0);
 }
 

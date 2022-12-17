@@ -6,22 +6,32 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/17 11:27:55 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/17 16:14:45 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_cmd(t_vars *vars)
+void	execute_cmd(t_vars *vars, char *input)
 {
 	char	*cmd;
 	char	**args;
 	int		id;
 
-	args = ft_split(vars->input, ' ');
-	if (is_builtin(vars, args))
+	if (is_redirect(input))
+		return (handle_redirect(vars, input));
+	args = ft_split(input, ' ');
+	if (is_builtin(vars, input, args))
 		return ;
-	cmd = get_cmd(vars->paths, args[0]);
+	if (args[0][0] == '/')
+	{
+		if (access(args[0], F_OK) == 0)
+			cmd = ft_strdup(args[0]);
+		else
+			cmd = NULL;
+	}
+	else
+		cmd = get_cmd(vars->paths, args[0]);
 	if (cmd)
 	{
 		id = fork();
@@ -75,14 +85,14 @@ void	handle_pipes(t_vars *vars)
 			if (cmds[i + 1])
 				dup2(end[1], 1);
 			close(end[0]);
-			execute_cmd(vars);
+			execute_cmd(vars, vars->input);
 			free_strings(cmds);
 			free_strings(vars->envp);
 			free_strings(vars->paths);
 			free(vars->input);
 			exit(0);
 		}
-		else
+		if (id != 0)
 			wait(NULL);
 		close(end[1]);
 		tmp = end[0];
@@ -94,8 +104,6 @@ void	handle_pipes(t_vars *vars)
 
 void	minishell_loop(t_vars *vars)
 {
-	int	id;
-
 	while (1)
 	{
 		vars->input = readline("\033[0;32mminishell> \033[0;37m");
@@ -110,7 +118,7 @@ void	minishell_loop(t_vars *vars)
 		if (vars->input[0] != 0)
 			add_history(vars->input);
 		if (!count_pipes(vars) && vars->input[0] != 0)
-			execute_cmd(vars);
+			execute_cmd(vars, vars->input);
 		else if (vars->input[0] != 0)
 			handle_pipes(vars);
 		free(vars->input);

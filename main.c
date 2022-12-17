@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/16 16:55:26 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/17 11:27:55 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,31 +39,17 @@ void	execute_cmd(t_vars *vars)
 int	count_pipes(t_vars *vars)
 {
 	int	i;
+	int	j;
 
 	i = 0;
+	j = 0;
 	while (vars->input[i])
 	{
 		if (!ft_strncmp(&vars->input[i], "|", 1))
-			vars->pipes++;
+			j++;
 		i++;
 	}
-	return(vars->pipes);
-}
-
-int	count_redirections(t_vars *vars)
-{
-	int	i;
-
-	i = 0;
-	while (vars->input[i])
-	{
-		if (!ft_strncmp(&vars->input[i], ">", 1))
-			vars->redirections++;
-		if (!ft_strncmp(&vars->input[i], "<", 1))
-			vars->redirections++;
-		i++;
-	}
-	return(vars->redirections);
+	return(j);
 }
 
 void	handle_pipes(t_vars *vars)
@@ -104,8 +90,6 @@ void	handle_pipes(t_vars *vars)
 	}
 	close(end[0]);
 	free_strings(cmds);
-	vars->pipes = 0;
-	vars->redirections = 0;
 }
 
 void	minishell_loop(t_vars *vars)
@@ -125,7 +109,7 @@ void	minishell_loop(t_vars *vars)
 			close_minishell(vars, ft_atoi(vars->input + 5));
 		if (vars->input[0] != 0)
 			add_history(vars->input);
-		if (!count_pipes(vars) && !count_redirections(vars) && vars->input[0] != 0)
+		if (!count_pipes(vars) && vars->input[0] != 0)
 			execute_cmd(vars);
 		else if (vars->input[0] != 0)
 			handle_pipes(vars);
@@ -148,8 +132,6 @@ int	main(int argc, char **argv, char **envp)
 		vars.envp[i] = ft_strdup(envp[i]);
 		i++;
 	}
-	vars.pipes = 0;
-	vars.redirections = 0;
 	signal(SIGINT, ctrl_c_handler);
 	signal(SIGQUIT, SIG_IGN);
 	minishell_loop(&vars);

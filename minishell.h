@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:26:22 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/16 15:24:37 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/17 11:28:00 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,13 @@ typedef struct s_vars
 	char	*input;
 	char	**paths;
 	char	**envp;
-	int		pipes;
-	int		redirections;
 }	t_vars;
+
+typedef	struct s_redirect
+{
+	char	*filename;
+	char	*type;
+}	t_redirect;
 
 void	ft_cd(char **args);
 void	ft_pwd(char **args);

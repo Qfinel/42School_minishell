@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:36:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/15 16:22:21 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/17 11:09:51 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,14 @@ void	ft_cd(char **args)
 	{
 		if (args[1][0] != '/')
 			abs_path = ft_strjoin(abs_path, "/");
-		new_abs_path = ft_strjoin(abs_path, args[1]);
+		if (!ft_strncmp(args[1], "~", 1))
+		{
+			free(abs_path);
+			abs_path = ft_strjoin("/Users/", getenv("USER"));
+			new_abs_path = ft_strjoin(abs_path, &args[1][1]);
+		}
+		else
+			new_abs_path = ft_strjoin(abs_path, args[1]);
 		if (chdir(new_abs_path) < 0)
 			if (chdir(args[1]) < 0)
 				printf("minishell: cd: no such file or directory: '%s'\n", args[1]);

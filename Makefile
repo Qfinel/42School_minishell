@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+         #
+#    By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2022/12/17 16:32:13 by jtsizik          ###   ########.fr        #
+#    Updated: 2022/12/17 21:18:20 by sdukic           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ OBJS =	obj/main.o \
 		obj/ft_env.o \
 		obj/ft_export.o \
 		obj/ft_pwd.o \
-		obj/ft_unset.o
+		obj/ft_unset.o \
+		obj/handle_envvars.o
 
 RL_FLAGS = -L$$HOME/.brew/opt/readline/lib -lreadline -I$$HOME/.brew/opt/readline/include -lreadline
 

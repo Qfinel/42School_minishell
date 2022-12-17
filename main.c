@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/17 17:10:16 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/17 21:20:24 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void	minishell_loop(t_vars *vars)
 			printf("\n");
 			close_minishell(vars, 0);
 		}
+		replace_envvar_with_value(vars);
 		if (ft_strncmp(vars->input, "exit", 4) == 0
 			&& (vars->input[4] == ' ' || !vars->input[4]))
 			close_minishell(vars, ft_atoi(vars->input + 5));

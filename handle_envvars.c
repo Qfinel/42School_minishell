@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 20:45:23 by sdukic            #+#    #+#             */
-/*   Updated: 2022/12/17 21:32:33 by sdukic           ###   ########.fr       */
+/*   Updated: 2022/12/19 14:50:32 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,23 +98,31 @@ static char **get_words_starting_with_dollar(char *str)
 	return (result);
 }
 
-void	replace_envvar_with_value(t_vars *vars)
+t_vars	replace_envvar_with_value(t_vars vars)
 {
 	int		i;
 	char	**envvars;
 	char	*env_value;
 
-	envvars = get_words_starting_with_dollar(vars->input);
+	if (vars.input == NULL || !ft_strchr(vars.input, '$'))
+		return (vars);
+	envvars = get_words_starting_with_dollar(vars.input);
+	if (!envvars)
+		return (vars);
 	i = 0;
 	while (envvars[i])
 	{
-		env_value = get_env_value(vars, envvars[i] + 1);
+		env_value = get_env_value(&vars, envvars[i] + 1);
 		if (env_value)
 		{
-			vars->input = ft_str_replace(vars->input, envvars[i], get_env_value(vars, envvars[i] + 1));
+			vars.input = ft_str_replace(vars.input, envvars[i], get_env_value(&vars, envvars[i] + 1));
+		}
+		else
+		{
+			vars.input = ft_str_replace(vars.input, envvars[i], "");
 		}
 		i++;
 	}
 	free_strings(envvars);
-	return ;
+	return (vars);
 }

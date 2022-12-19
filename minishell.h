@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/17 21:17:39 by sdukic           ###   ########.fr       */
+/*   Updated: 2022/12/19 13:45:31 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,6 @@ int		contains_spaces(char *str);
 void	execute_cmd(t_vars *vars, char *input);
 
 //Replaces variables starting with $ with their value in the input string.
-void	replace_envvar_with_value(t_vars *vars);
+t_vars	replace_envvar_with_value(t_vars vars);
 
 #endif

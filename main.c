@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/17 21:20:24 by sdukic           ###   ########.fr       */
+/*   Updated: 2022/12/19 14:48:33 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,20 +105,23 @@ void	handle_pipes(t_vars *vars)
 
 void	minishell_loop(t_vars *vars)
 {
+	t_vars	replaced_envvar_with_value;
+
 	while (1)
 	{
+
 		vars->input = readline("\033[0;32mminishell$> \033[0;37m");
 		if (!vars->input)
 		{
 			printf("\n");
 			close_minishell(vars, 0);
 		}
-		replace_envvar_with_value(vars);
 		if (ft_strncmp(vars->input, "exit", 4) == 0
 			&& (vars->input[4] == ' ' || !vars->input[4]))
 			close_minishell(vars, ft_atoi(vars->input + 5));
 		if (vars->input[0] != 0)
 			add_history(vars->input);
+		*vars = replace_envvar_with_value(*vars);
 		if (!count_pipes(vars) && vars->input[0] != 0)
 			execute_cmd(vars, vars->input);
 		else if (vars->input[0] != 0)

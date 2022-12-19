@@ -6,7 +6,7 @@
 #    By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2022/12/17 21:18:20 by sdukic           ###   ########.fr        #
+#    Updated: 2022/12/19 13:04:40 by sdukic           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,10 @@ OBJS =	obj/main.o \
 
 RL_FLAGS = -L$$HOME/.brew/opt/readline/lib -lreadline -I$$HOME/.brew/opt/readline/include -lreadline
 
+FLAGS =
+
 obj/%.o: %.c
-	cc -c -Wall -Wextra -Werror -I$$HOME/.brew/opt/readline/include $< -o $@
+	cc -c $(FLAGS) -I$$HOME/.brew/opt/readline/include $< -o $@
 
 obj/%.o: builtins/%.c
 	cc -c -Wall -Wextra -Werror $< -o $@
@@ -36,7 +38,7 @@ obj/%.o: builtins/%.c
 $(NAME): obj $(OBJS)
 	cd libft && make
 	cd ..
-	cc -Wall -Wextra -Werror $(RL_FLAGS) libft/libft.a $(OBJS) -o $(NAME)
+	cc $(FLAGS) $(RL_FLAGS) libft/libft.a $(OBJS) -o $(NAME)
 
 all: $(NAME)
 
@@ -55,3 +57,9 @@ debug: obj $(OBJS)
 	cd libft && make
 	cd ..
 	cc -Wall -Wextra -Werror $(RL_FLAGS) $(OBJS) libft/libft.a -g -Wno-gnu-include-next -I../LeakSanitizer/include -L../LeakSanitizer -llsan -lc++ -o $(NAME)
+
+debug_only: obj $(OBJS)
+	cd libft && make
+	cd ..
+	cc *.c builtins/*.c libft/*.c -g -L$$HOME/.brew/opt/readline/lib -lreadline -I$$HOME/.brew/opt/readline/include -lreadline -o $(NAME)
+	# cc -Wall -Wextra -Werror $(RL_FLAGS) libft/libft.a -g $(OBJS) -o $(NAME)

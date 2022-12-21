@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:38:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/21 14:22:52 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/21 17:01:14 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	is_builtin(t_vars *vars, t_cmd *cmd)
 	if (!ft_strncmp(cmd->args[0], "cd", 3))
 		return (ft_cd(cmd->args), 1);
 	if (!ft_strncmp(cmd->args[0], "echo", 5))
-		return (ft_echo(cmd->command, cmd->args), 1);
+		return (ft_echo(cmd), 1);
 	if (!ft_strncmp(cmd->args[0], "pwd", 4))
 		return (ft_pwd(cmd->args), 1);
 	if (!ft_strncmp(cmd->args[0], "export", 7))
@@ -60,4 +60,13 @@ int	ft_arr_len(char **arr)
 	while (arr[i])
 		i++;
 	return (i);
+}
+
+void	exit_process(t_vars *vars)
+{
+	if (vars->paths)
+		free_strings(vars->paths);
+	if (vars->envp)
+		free_strings(vars->envp);
+	exit(0);
 }

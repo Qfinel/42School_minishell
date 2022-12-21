@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/21 16:05:53 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/21 16:15:15 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	exec_pipes(t_vars *vars, char *input)
 				dup2(end[1], 1);
 			close(end[0]);
 			exec_cmd(vars, cmds[i]);
-			exit(0);
+			free_strings(cmds);
+			exit_process(vars);
 		}
 		if (!cmds[i + 1])
 			wait(NULL);

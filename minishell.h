@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/21 14:21:46 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/21 17:00:45 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_cmd
 
 void	ft_cd(char **args);
 void	ft_pwd(char **args);
-void	ft_echo(char *line, char **args);
+void	ft_echo(t_cmd *cmd);
 void	ft_env(t_vars *vars, char **args);
 void	ft_export(t_vars *vars, char **args);
 void	ft_unset(t_vars *vars, char **args);
@@ -61,4 +61,6 @@ void	free_cmd(t_cmd *cmd);
 t_cmd	*parse_cmd(t_vars *vars, char *input);
 t_redir	*parse_redirections(char *input);
 char	**ft_split_charset(char *str, char *charset);
+void	exit_process(t_vars *vars);
+
 #endif

@@ -6,30 +6,31 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/21 12:05:31 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/21 17:04:50 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_echo(char *line, char **args)
+void	ft_echo(t_cmd *cmd)
 {
 	int	i;
 
-	i = 5;
-	if (!args[1])
-		return ((void)printf("\n"), free_strings(args));
-	if (!ft_strncmp("-n", args[1], 3) && !args[2])
-		return (free_strings(args));
-	else if (!ft_strncmp("-n", args[1], 3))
-		i += 3;
-	while (line[i])
+	i = 1;
+	if (!cmd->args[1])
+		return ((void)printf("\n"), free_cmd(cmd));
+	if (!ft_strncmp("-n", cmd->args[1], 3) && !cmd->args[2])
+		return (free_cmd(cmd));
+	else if (!ft_strncmp("-n", cmd->args[1], 3))
+		i++;
+	while (cmd->args[i])
 	{
-		if (line[i] != '\\' && line[i] != '\'' && line[i] != '\"')
-			printf("%c", line[i]);
+		printf("%s", cmd->args[i]);
+		if (cmd->args[i + 1])
+			printf(" ");
 		i++;
 	}
-	if (ft_strncmp("-n", args[1], 3))
+	if (ft_strncmp("-n", cmd->args[1], 3))
 		printf("\n");
-	free_strings(args);
+	return (free_cmd(cmd));
 }

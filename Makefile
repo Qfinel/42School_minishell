@@ -6,7 +6,7 @@
 #    By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2022/12/19 13:04:40 by sdukic           ###   ########.fr        #
+#    Updated: 2022/12/19 16:09:51 by sdukic           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ OBJS =	obj/main.o \
 		obj/ft_export.o \
 		obj/ft_pwd.o \
 		obj/ft_unset.o \
-		obj/handle_envvars.o
+		obj/handle_envvars.o \
+		obj/handle_quotes.o
 
 RL_FLAGS = -L$$HOME/.brew/opt/readline/lib -lreadline -I$$HOME/.brew/opt/readline/include -lreadline
 
@@ -61,5 +62,5 @@ debug: obj $(OBJS)
 debug_only: obj $(OBJS)
 	cd libft && make
 	cd ..
-	cc *.c builtins/*.c libft/*.c -g -L$$HOME/.brew/opt/readline/lib -lreadline -I$$HOME/.brew/opt/readline/include -lreadline -o $(NAME)
-	# cc -Wall -Wextra -Werror $(RL_FLAGS) libft/libft.a -g $(OBJS) -o $(NAME)
+	cc -fsanitize=address *.c builtins/*.c libft/*.c -g -L$$HOME/.brew/opt/readline/lib -lreadline -I$$HOME/.brew/opt/readline/include -lreadline -o $(NAME)
+	# cc -Wall -Wextra -Werror -f $(RL_FLAGS) libft/libft.a -g $(OBJS) -o $(NAME)

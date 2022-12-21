@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 20:45:23 by sdukic            #+#    #+#             */
-/*   Updated: 2022/12/19 14:50:32 by sdukic           ###   ########.fr       */
+/*   Updated: 2022/12/21 14:43:55 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,31 +31,26 @@ static char	*get_env_value(t_vars *vars, char *key)
 	return (result);
 }
 
-static char *ft_str_replace(char *str, char *old, char *new)
+char	*ft_str_replace(char *str, char *old, char *new)
 {
 	char	*result;
-	char	*tmp;
 	int		i;
 
 	i = 0;
 	result = ft_strdup(str);
-	while (result[i])
+	while (str[i])
 	{
 		if (!ft_strncmp(&result[i], old, ft_strlen(old)))
 		{
-			tmp = result;
 			result = ft_strjoin(ft_substr(result, 0, i), new);
-			free(tmp);
-			tmp = result;
 			result = ft_strjoin(result, ft_substr(str, i + ft_strlen(old), ft_strlen(str)));
-			free(tmp);
 		}
 		i++;
 	}
 	return(result);
 }
 
-static int count_words_starting_with_dollar(char *str)
+int count_words_starting_with_dollar(char *str)
 {
 	int	i;
 	int	count;
@@ -71,6 +66,40 @@ static int count_words_starting_with_dollar(char *str)
 	return (count);
 }
 
+char	*get_end_of_envvar(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == ' ' || str[i] == '"')
+			break ;
+		i++;
+	}
+
+	return (str + i);
+}
+
+int	is_envvar_in_single_quotes(char *str, int index)
+{
+	int		i;
+	int		quotes_open;
+
+	i = 0;
+	quotes_open = 0;
+	while (str[i] && i < index)
+	{
+		if (str[i] == '\'')
+			quotes_open = !quotes_open;
+		i++;
+	}
+	if (quotes_open)
+		return (1);
+	else
+		return (0);
+}
+
 static char **get_words_starting_with_dollar(char *str)
 {
 	char	**result;
@@ -83,9 +112,10 @@ static char **get_words_starting_with_dollar(char *str)
 	result = malloc(sizeof(char *) * (count_words_starting_with_dollar(str) + 1));
 	while (str[i])
 	{
-		if (str[i] == '$')
+		if (str[i] == '$' && !is_envvar_in_single_quotes(str, i))
 		{
-			temp_str = ft_strchr(&str[i], ' ');
+			// temp_str = ft_strchr(&str[i], ' ');
+			temp_str = get_end_of_envvar(&str[i]);
 			if (temp_str)
 				result[j] = ft_substr(&str[i], 0, temp_str - &str[i]);
 			else
@@ -115,7 +145,7 @@ t_vars	replace_envvar_with_value(t_vars vars)
 		env_value = get_env_value(&vars, envvars[i] + 1);
 		if (env_value)
 		{
-			vars.input = ft_str_replace(vars.input, envvars[i], get_env_value(&vars, envvars[i] + 1));
+			vars.input = ft_str_replace(vars.input, envvars[i], env_value);
 		}
 		else
 		{

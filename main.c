@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/19 14:48:33 by sdukic           ###   ########.fr       */
+/*   Updated: 2022/12/21 15:32:56 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,14 @@ void	execute_cmd(t_vars *vars, char *input)
 	char	*cmd;
 	char	**args;
 	int		id;
+	// char	**pasrsed_input;
+
 
 	if (is_redirect(input))
 		return (handle_redirect(vars, input));
-	args = ft_split(input, ' ');
+	input = remove_unclosed_quotes(input);
+	args = split_with_quotes(input);
+	// args = ft_split(input, ' ');
 	if (!args[0])
 		return(free(args));
 	if (is_builtin(vars, input, args))
@@ -63,6 +67,26 @@ int	count_pipes(t_vars *vars)
 	return(j);
 }
 
+int count_pipes_outside_quotes(t_vars *vars)
+{
+	int	i;
+	int	j;
+	int	quotes;
+
+	i = 0;
+	j = 0;
+	quotes = 0;
+	while (vars->input[i])
+	{
+		if (vars->input[i] == '\"' || vars->input[i] == '\'')
+			quotes = !quotes;
+		if (!ft_strncmp(&vars->input[i], "|", 1) && !quotes)
+			j++;
+		i++;
+	}
+	return(j);
+}
+
 void	handle_pipes(t_vars *vars)
 {
 	char	**cmds;
@@ -73,7 +97,7 @@ void	handle_pipes(t_vars *vars)
 
 	i = 0;
 	tmp = 0;
-	cmds = ft_split(vars->input, '|');
+	cmds = split_with_quotes(vars->input);
 	while (cmds[i])
 	{
 		pipe(end);
@@ -109,7 +133,6 @@ void	minishell_loop(t_vars *vars)
 
 	while (1)
 	{
-
 		vars->input = readline("\033[0;32mminishell$> \033[0;37m");
 		if (!vars->input)
 		{
@@ -118,11 +141,11 @@ void	minishell_loop(t_vars *vars)
 		}
 		if (ft_strncmp(vars->input, "exit", 4) == 0
 			&& (vars->input[4] == ' ' || !vars->input[4]))
-			close_minishell(vars, ft_atoi(vars->input + 5));
+			close_minishell(vars, ft_atoi(vars->input) + 5);
 		if (vars->input[0] != 0)
 			add_history(vars->input);
 		*vars = replace_envvar_with_value(*vars);
-		if (!count_pipes(vars) && vars->input[0] != 0)
+		if (!count_pipes_outside_quotes(vars) && vars->input[0] != 0)
 			execute_cmd(vars, vars->input);
 		else if (vars->input[0] != 0)
 			handle_pipes(vars);

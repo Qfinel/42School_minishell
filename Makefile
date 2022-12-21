@@ -6,7 +6,7 @@
 #    By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2022/12/19 16:09:51 by sdukic           ###   ########.fr        #
+#    Updated: 2022/12/21 17:50:10 by sdukic           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = minishell
 HDRS =	minishell.h
 
 OBJS =	obj/main.o \
-		obj/redirections.o \
+		obj/parse_redirections.o \
 		obj/utils.o \
 		obj/ft_cd.o \
 		obj/ft_echo.o \
@@ -24,7 +24,10 @@ OBJS =	obj/main.o \
 		obj/ft_pwd.o \
 		obj/ft_unset.o \
 		obj/handle_envvars.o \
-		obj/handle_quotes.o
+		obj/handle_quotes.o \
+		obj/exec_cmd.o \
+		obj/exec_pipes.o \
+		obj/parse_cmd.o
 
 RL_FLAGS = -L$$HOME/.brew/opt/readline/lib -lreadline -I$$HOME/.brew/opt/readline/include -lreadline
 
@@ -35,6 +38,15 @@ obj/%.o: %.c
 
 obj/%.o: builtins/%.c
 	cc -c -Wall -Wextra -Werror $< -o $@
+
+obj/%.o: executor/%.c
+	cc -c -Wall -Wextra -Werror $< -o $@
+
+obj/%.o: parser/%.c
+	cc -c -Wall -Wextra -Werror $< -o $@
+
+obj/%.o: utils/%.c
+	cc -c $(FLAGS) -I$$HOME/.brew/opt/readline/include $< -o $@
 
 $(NAME): obj $(OBJS)
 	cd libft && make

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:38:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/17 15:19:55 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/21 17:45:25 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	is_builtin(t_vars *vars, char *input, char **args)
 {
@@ -74,24 +74,6 @@ void	close_minishell(t_vars *vars, int exit_sign)
 	if (vars->envp)
 		free_strings(vars->envp);
 	exit(exit_sign);
-}
-
-char	*get_cmd(char **paths, char *cmd)
-{
-	char	*tmp;
-	char	*cmd_path;
-
-	while (*paths)
-	{
-		tmp = ft_strjoin(*paths, "/");
-		cmd_path = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (access(cmd_path, F_OK) == 0)
-			return (cmd_path);
-		free(cmd_path);
-		paths++;
-	}
-	return (NULL);
 }
 
 int	ft_arr_len(char **arr)

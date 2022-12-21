@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/21 15:15:01 by sdukic           ###   ########.fr       */
+/*   Updated: 2022/12/21 17:37:50 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,21 @@ void	ctrl_c_handler();
 int		ft_arr_len(char **arr);
 void	close_minishell(t_vars *vars, int exit_sign);
 void	free_strings(char **strings);
-char	*get_cmd(char **paths, char *cmd);
 int		is_redirect(char *input);
 void	handle_redirect(t_vars *vars, char *input);
 int		is_builtin(t_vars *vars, char *input, char **args);
 int		contains_spaces(char *str);
+
+//parser
+
+char	*get_cmd(char **paths, char *cmd);
+
+//executor
+
 void	execute_cmd(t_vars *vars, char *input);
+int		count_pipes(t_vars *vars);
+int		count_pipes_outside_quotes(t_vars *vars);
+void	handle_pipes(t_vars *vars);
 
 int		count_words_starting_with_dollar(char *str);
 

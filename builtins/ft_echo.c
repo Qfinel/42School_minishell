@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/21 17:04:50 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/21 17:07:37 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ void	ft_echo(t_cmd *cmd)
 	}
 	if (ft_strncmp("-n", cmd->args[1], 3))
 		printf("\n");
-	return (free_cmd(cmd));
+	free_cmd(cmd);
+	exit(0);
 }

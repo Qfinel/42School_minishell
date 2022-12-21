@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 16:05:29 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/21 12:05:43 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/21 17:07:54 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,4 +19,5 @@ void	ft_pwd(char **args)
 	else
 		printf("%s\n", getcwd(NULL, 0));
 	free_strings(args);
+	exit(0);
 }

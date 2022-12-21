@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:36:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/21 12:05:09 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/21 17:07:16 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,5 @@ void	ft_cd(char **args)
 	}
 	free_strings(args);
 	free(abs_path);
+	exit(0);
 }

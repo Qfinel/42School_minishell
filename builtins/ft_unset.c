@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:41 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/16 15:03:04 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/21 12:05:51 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static int	count_env_vars(t_vars *vars, char **args)
 
 	i = 0;
 	j = 1;
+	counter = 0;
 	if (!args[1])
 		return (0);
 	while (args[j])

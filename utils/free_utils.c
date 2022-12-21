@@ -1,35 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/15 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/21 12:05:31 by jtsizik          ###   ########.fr       */
+/*   Created: 2022/12/21 12:12:04 by jtsizik           #+#    #+#             */
+/*   Updated: 2022/12/21 15:31:47 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_echo(char *line, char **args)
+void	free_strings(char **strings)
 {
 	int	i;
 
-	i = 5;
-	if (!args[1])
-		return ((void)printf("\n"), free_strings(args));
-	if (!ft_strncmp("-n", args[1], 3) && !args[2])
-		return (free_strings(args));
-	else if (!ft_strncmp("-n", args[1], 3))
-		i += 3;
-	while (line[i])
+	i = 0;
+	while (strings[i])
 	{
-		if (line[i] != '\\' && line[i] != '\'' && line[i] != '\"')
-			printf("%c", line[i]);
+		free(strings[i]);
 		i++;
 	}
-	if (ft_strncmp("-n", args[1], 3))
-		printf("\n");
-	free_strings(args);
+	free(strings);
+}
+
+void	free_redirs(t_redir *redir)
+{
+	while (redir->next)
+	{
+		free(redir->filename);
+		free(redir);
+		redir = redir->next;
+	}
+}
+
+void	free_cmd(t_cmd *cmd)
+{
+	if (cmd->command)
+		free(cmd->command);
+	if (cmd->args)
+		free_strings(cmd->args);
+	if (cmd->redirs)
+		free_redirs(cmd->redirs);
+	free(cmd);
 }

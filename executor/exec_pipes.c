@@ -1,35 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   exec_pipes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/15 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/21 12:05:31 by jtsizik          ###   ########.fr       */
+/*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
+/*   Updated: 2022/12/21 16:05:53 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_echo(char *line, char **args)
+void	exec_pipes(t_vars *vars, char *input)
 {
-	int	i;
+	char	**cmds;
+	int		end[2];
+	int		i;
+	int		id;
+	int		tmp_fd;
 
-	i = 5;
-	if (!args[1])
-		return ((void)printf("\n"), free_strings(args));
-	if (!ft_strncmp("-n", args[1], 3) && !args[2])
-		return (free_strings(args));
-	else if (!ft_strncmp("-n", args[1], 3))
-		i += 3;
-	while (line[i])
+	i = 0;
+	tmp_fd = 0;
+	cmds = ft_split(input, '|');
+	while (cmds[i])
 	{
-		if (line[i] != '\\' && line[i] != '\'' && line[i] != '\"')
-			printf("%c", line[i]);
+		pipe(end);
+		id = fork();
+		if (id == 0)
+		{
+			dup2(tmp_fd, 0);
+			if (cmds[i + 1])
+				dup2(end[1], 1);
+			close(end[0]);
+			exec_cmd(vars, cmds[i]);
+			exit(0);
+		}
+		if (!cmds[i + 1])
+			wait(NULL);
+		close(end[1]);
+		tmp_fd = end[0];
 		i++;
 	}
-	if (ft_strncmp("-n", args[1], 3))
-		printf("\n");
-	free_strings(args);
+	close(end[0]);
+	free_strings(cmds);
 }

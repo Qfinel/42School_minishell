@@ -6,7 +6,7 @@
 #    By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2022/12/21 17:50:10 by sdukic           ###   ########.fr        #
+#    Updated: 2022/12/22 16:17:33 by sdukic           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,27 +31,27 @@ OBJS =	obj/main.o \
 
 RL_FLAGS = -L$$HOME/.brew/opt/readline/lib -lreadline -I$$HOME/.brew/opt/readline/include -lreadline
 
-FLAGS =
+CFLAGS =
 
 obj/%.o: %.c
-	cc -c $(FLAGS) -I$$HOME/.brew/opt/readline/include $< -o $@
+	cc $(CFLAGS) -c $(FLAGS) -I$$HOME/.brew/opt/readline/include $< -o $@
 
 obj/%.o: builtins/%.c
-	cc -c -Wall -Wextra -Werror $< -o $@
+	cc $(CFLAGS) -c -Wall -Wextra -Werror $< -o $@
 
 obj/%.o: executor/%.c
-	cc -c -Wall -Wextra -Werror $< -o $@
+	cc $(CFLAGS) -c -Wall -Wextra -Werror $< -o $@
 
 obj/%.o: parser/%.c
-	cc -c -Wall -Wextra -Werror $< -o $@
+	cc $(CFLAGS) -c -Wall -Wextra -Werror $< -o $@
 
 obj/%.o: utils/%.c
-	cc -c $(FLAGS) -I$$HOME/.brew/opt/readline/include $< -o $@
+	cc $(CFLAGS) -c -I$$HOME/.brew/opt/readline/include $< -o $@
 
 $(NAME): obj $(OBJS)
 	cd libft && make
 	cd ..
-	cc $(FLAGS) $(RL_FLAGS) libft/libft.a $(OBJS) -o $(NAME)
+	cc $(CFLAGS) $(RL_FLAGS) libft/libft.a $(OBJS) -o $(NAME)
 
 all: $(NAME)
 
@@ -71,8 +71,5 @@ debug: obj $(OBJS)
 	cd ..
 	cc -Wall -Wextra -Werror $(RL_FLAGS) $(OBJS) libft/libft.a -g -Wno-gnu-include-next -I../LeakSanitizer/include -L../LeakSanitizer -llsan -lc++ -o $(NAME)
 
-debug_only: obj $(OBJS)
-	cd libft && make
-	cd ..
-	cc -fsanitize=address *.c builtins/*.c libft/*.c -g -L$$HOME/.brew/opt/readline/lib -lreadline -I$$HOME/.brew/opt/readline/include -lreadline -o $(NAME)
-	# cc -Wall -Wextra -Werror -f $(RL_FLAGS) libft/libft.a -g $(OBJS) -o $(NAME)
+debug_only: CFLAGS += -g
+debug_only: $(NAME)

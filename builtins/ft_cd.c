@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:36:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 15:27:10 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/22 16:27:58 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ void	change_pwd(t_vars *vars)
 		else if (!ft_strncmp(vars->envp[i], "OLDPWD", 6))
 			new_envp[i] = old_pwd;
 		else
-			new_envp[i] = vars->envp[i];
+			new_envp[i] = ft_strdup(vars->envp[i]);
 		i++;
 	}
+	free_strings(vars->envp);
 	vars->envp = new_envp;
 }
 

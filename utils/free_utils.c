@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:12:04 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/21 16:09:22 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/22 16:21:04 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	free_redirs(t_redir *redir)
 		free(redir);
 		redir = redir->next;
 	}
+	free(redir);
 }
 
 void	free_cmd(t_cmd *cmd)

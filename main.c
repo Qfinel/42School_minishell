@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 16:09:21 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/22 17:36:59 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	minishell_loop(t_vars *vars)
 			close_minishell(vars, ft_atoi(input + 5), input);
 		if (input[0] != 0)
 			add_history(input);
+		input = replace_envvar_with_value(*vars, input);
 		if (!count_pipes(input) && input[0] != 0)
 			exec_cmd(vars, input);
 		else if (input[0] != 0)

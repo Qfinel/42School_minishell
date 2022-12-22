@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 15:03:59 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/22 16:03:52 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,18 @@ void	do_redirections(t_vars *vars, t_cmd *cmd)
 {
 	int	id;
 
-	while (cmd->redirs->next)
+	id = fork();
+	if (id == 0)
 	{
-		id = fork();
-		if (id == 0)
+		while (cmd->redirs->next)
 		{
 			change_fd(cmd->redirs);
-			if (is_builtin(vars, cmd))
-				exit(0);
-			else
-				execve(cmd->command, cmd->args, vars->envp);
+			cmd->redirs = cmd->redirs->next;
 		}
-		cmd->redirs = cmd->redirs->next;
+		if (is_builtin(vars, cmd))
+			exit(0);
+		else
+			execve(cmd->command, cmd->args, vars->envp);
 	}
 }
 

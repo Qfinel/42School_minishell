@@ -6,11 +6,23 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/21 17:08:29 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/21 17:38:28 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	exec_heredoc(t_redir *redir)
+{
+	char	*input;
+
+	while (1)
+	{
+		input = readline("heredoc> ");
+		if (!ft_strncmp(input, redir->filename, ft_strlen(redir->filename) + 1))
+			break ;
+	}
+}
 
 void	change_fd(t_redir *redir)
 {
@@ -38,7 +50,7 @@ void	change_fd(t_redir *redir)
 		dup2(fd, 0);
 	}
 	if (!ft_strncmp(redir->type, "HEREDOC", 8))
-		return ; // NOT DONE
+		exec_heredoc(redir);
 }
 
 void	do_redirections(t_vars *vars, t_cmd *cmd)

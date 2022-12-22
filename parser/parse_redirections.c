@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:21:17 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/21 13:19:36 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/22 12:53:23 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ t_redir	*parse_redirections(char *input)
 	int		i;
 
 	i = 0;
-	head = malloc (sizeof(t_redir *));
-	redir = malloc(sizeof(t_redir));
+	head = malloc(sizeof(t_redir *));
+	redir = ft_calloc(1, sizeof(t_redir));
 	*head = redir;
 	while (input[i + 1])
 	{
@@ -59,8 +59,10 @@ t_redir	*parse_redirections(char *input)
 			redir->filename = get_redir_filename(&input[i]);
 			if (!redir->filename)
 				return (NULL);
-			redir->next = malloc(sizeof(t_redir));
+			redir->next = ft_calloc(1, sizeof(t_redir));
 			redir = redir->next;
+			if (input[i + 1] == '>' || input[i + 1] == '<')
+				i++;
 		}
 		i++;
 	}

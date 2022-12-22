@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 15:52:16 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/22 17:39:16 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,7 @@ t_redir	*parse_redirections(char *input);
 char	**ft_split_charset(char *str, char *charset);
 void	exit_process(t_vars *vars);
 void	do_redirections(t_vars *vars, t_cmd *cmd);
+char	**split_with_quotes(char *str);
+char	*replace_envvar_with_value(t_vars vars, char *input);
 
 #endif

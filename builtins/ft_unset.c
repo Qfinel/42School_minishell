@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:41 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/21 17:08:00 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/22 15:07:44 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,4 @@ void	ft_unset(t_vars *vars, char **args)
 		free_strings(vars->envp);
 		vars->envp = new_envp;
 	}
-	free_strings(args);
-	exit(0);
 }

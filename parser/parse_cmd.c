@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:00:54 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 16:44:20 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/22 17:07:27 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ t_cmd	*parse_cmd(t_vars *vars, char *input)
 		else
 			cmd->command = NULL;
 	}
+	else if (!ft_strncmp(cmd->args[0], "export", 7) || !ft_strncmp(cmd->args[0], "unset", 6))
+		cmd->command = ft_strdup(cmd->args[0]);
 	else
 		cmd->command = get_cmd(vars->paths, cmd->args[0]);
 	return (cmd);

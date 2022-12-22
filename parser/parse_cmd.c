@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:00:54 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 16:22:55 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/22 17:15:06 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_cmd	*parse_cmd(t_vars *vars, char *input)
 	if (!cmd->redirs && redirections_exist(input))
 		return (NULL);
 	if (!cmd->redirs)
-		cmd->args = ft_split(input, ' ');
+		cmd->args = split_with_quotes(input);
 	else
 		cmd->args = get_clean_args(input, cmd->redirs);
 	if (!cmd->args)

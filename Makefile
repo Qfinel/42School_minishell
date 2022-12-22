@@ -6,7 +6,7 @@
 #    By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2022/12/22 16:45:46 by sdukic           ###   ########.fr        #
+#    Updated: 2022/12/22 17:16:34 by sdukic           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ OBJS =	obj/main.o \
 		obj/exec_cmd.o \
 		obj/exec_pipes.o \
 		obj/parse_cmd.o \
-		obj/parse_redirections.o
+		obj/parse_redirections.o \
+		obj/handle_quotes.o
 
 RL_FLAGS = -L$$HOME/.brew/opt/readline/lib -lreadline -I$$HOME/.brew/opt/readline/include -lreadline
 
@@ -43,6 +44,9 @@ obj/%.o: executor/%.c
 	cc -c $(CFLAGS)  $< -o $@
 
 obj/%.o: parser/%.c
+	cc -c $(CFLAGS)  $< -o $@
+
+obj/%.o: lexer/%.c
 	cc -c $(CFLAGS)  $< -o $@
 
 obj/%.o: utils/%.c

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 12:49:41 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/22 15:51:27 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	exec_pipes(t_vars *vars, char *input)
 	i = 0;
 	tmp_fd = 0;
 	cmds = ft_split(input, '|');
+	signal(SIGINT, ctrl_c_pipe_handler);
 	while (cmds[i])
 	{
 		pipe(end);

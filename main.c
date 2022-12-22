@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 14:38:34 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/22 15:51:40 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	minishell_loop(t_vars *vars)
 
 	while (1)
 	{
+		signal(SIGINT, ctrl_c_handler);
 		input = readline("\033[0;32mminishell$> \033[0;37m");
 		if (!input)
 		{
@@ -61,6 +62,7 @@ void	minishell_loop(t_vars *vars)
 			exec_cmd(vars, input);
 		else if (input[0] != 0)
 			exec_pipes(vars, input);
+		wait(NULL);
 		free(input);
 	}
 }
@@ -82,7 +84,6 @@ int	main(int argc, char **argv, char **envp)
 		vars.envp[i] = ft_strdup(envp[i]);
 		i++;
 	}
-	signal(SIGINT, ctrl_c_handler);
 	signal(SIGQUIT, SIG_IGN);
 	minishell_loop(&vars);
 	return (0);

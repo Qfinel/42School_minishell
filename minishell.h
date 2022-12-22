@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 14:58:42 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/22 15:52:16 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	ft_env(t_vars *vars, char **args);
 void	ft_export(t_vars *vars, char **args);
 void	ft_unset(t_vars *vars, char **args);
 void	ctrl_c_handler(int sig);
+void	ctrl_c_pipe_handler(int sig);
 int		ft_arr_len(char **arr);
 void	close_minishell(t_vars *vars, int exit_sign, char *input);
 void	free_strings(char **strings);

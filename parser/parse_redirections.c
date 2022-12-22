@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:21:17 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 12:53:23 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/22 14:19:20 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,12 @@ char	*get_redir_filename(char *str)
 	while (str[i] == '>' || str[i] == '<')
 		i++;
 	tmp = ft_split(&str[i], ' ');
-	filename = ft_strdup(tmp[0]);
-	free_strings(tmp);
+	if (tmp[0])
+		filename = ft_strdup(tmp[0]);
+	else
+		return (NULL);
+	if (tmp[0])
+		free_strings(tmp);
 	return (filename);
 }
 
@@ -51,7 +55,7 @@ t_redir	*parse_redirections(char *input)
 	head = malloc(sizeof(t_redir *));
 	redir = ft_calloc(1, sizeof(t_redir));
 	*head = redir;
-	while (input[i + 1])
+	while (input[i])
 	{
 		if (input[i] == '>' || input[i] == '<')
 		{

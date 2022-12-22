@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:00:54 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 12:53:47 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/22 14:16:44 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ char	**get_clean_args(char *input, t_redir *redir)
 	head = malloc(sizeof(t_redir *));
 	*head = redir;
 	tmp = ft_split_charset(input, " ><");
+	if (!tmp[1])
+		return (NULL);
 	args = ft_calloc(ft_arr_len(tmp), sizeof(char *));
 	while (tmp[i])
 	{
@@ -92,6 +94,8 @@ t_cmd	*parse_cmd(t_vars *vars, char *input)
 		cmd->args = ft_split(input, ' ');
 	else
 		cmd->args = get_clean_args(input, cmd->redirs);
+	if (!cmd->args)
+		return (NULL);
 	if (cmd->args[0][0] == '/')
 	{
 		if (access(cmd->args[0], F_OK) == 0)

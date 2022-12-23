@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 17:36:59 by sdukic           ###   ########.fr       */
+/*   Updated: 2022/12/23 12:43:32 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	count_pipes(char *input)
 	j = 0;
 	while (input[i])
 	{
-		if (!ft_strncmp(&input[i], "|", 1))
+		if (input[i] == '|' && input[i + 1] != '\'' && input[i + 1] != '\"')
 			j++;
 		i++;
 	}

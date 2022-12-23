@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+         #
+#    By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2022/12/22 17:27:11 by sdukic           ###   ########.fr        #
+#    Updated: 2022/12/23 12:41:27 by jtsizik          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,7 @@ obj/%.o: utils/%.c
 $(NAME): obj $(OBJS)
 	cd libft && make
 	cd ..
-	cc $(CFLAGS)  $(RL_FLAGS) libft/libft.a $(OBJS) -o $(NAME)
+	cc $(CFLAGS) $(RL_FLAGS) libft/libft.a $(OBJS) -o $(NAME)
 
 all: $(NAME)
 

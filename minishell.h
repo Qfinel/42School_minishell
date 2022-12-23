@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 17:39:16 by sdukic           ###   ########.fr       */
+/*   Updated: 2022/12/23 15:25:53 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
+
+int	exit_status;
 
 typedef struct s_vars
 {
@@ -51,7 +53,7 @@ void	ft_unset(t_vars *vars, char **args);
 void	ctrl_c_handler(int sig);
 void	ctrl_c_pipe_handler(int sig);
 int		ft_arr_len(char **arr);
-void	close_minishell(t_vars *vars, int exit_sign, char *input);
+void	close_minishell(t_vars *vars, char *input);
 void	free_strings(char **strings);
 char	*get_cmd(char **paths, char *cmd);
 int		is_builtin(t_vars *vars, t_cmd *cmd);

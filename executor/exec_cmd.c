@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/23 13:09:32 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/23 15:24:31 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,12 @@ void	exec_cmd(t_vars *vars, char *input)
 	int		id;
 
 	cmd = parse_cmd(vars, input);
+	signal(SIGINT, ctrl_c_pipe_handler);
 	if (!cmd)
+	{
+		exit_status = 1;
 		return ((void)printf("minishell: parsing error\n"));
+	}
 	if (cmd->command)
 	{
 		if (!cmd->redirs)
@@ -89,14 +93,18 @@ void	exec_cmd(t_vars *vars, char *input)
 				id = fork();
 				if (id == 0)
 						execve(cmd->command, cmd->args, vars->envp);
-				wait(NULL);
+				wait(&exit_status);
 			}
 		}
 		else
 			do_redirections(vars, cmd);
-		wait(NULL);
+		wait(&exit_status);
+		exit_status /= 256;
 	}
 	else
+	{
 		printf("minishell: command not found: '%s'\n", cmd->args[0]);
+		exit_status = 127;
+	}
 	free_cmd(cmd);
 }

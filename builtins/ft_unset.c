@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:41 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 15:07:44 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/23 15:06:11 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	ft_unset(t_vars *vars, char **args)
 	j = 1;
 	new_len = ft_arr_len(vars->envp) - count_env_vars(vars, args) + 1;
 	new_envp = ft_calloc(new_len, sizeof(char **));
+	exit_status = 1;
 	if (!args[1])
 		printf("minishell: unset: not enough arguments\n");
 	else
@@ -85,4 +86,5 @@ void	ft_unset(t_vars *vars, char **args)
 		free_strings(vars->envp);
 		vars->envp = new_envp;
 	}
+	exit_status = 0;
 }

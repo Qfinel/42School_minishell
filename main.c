@@ -6,13 +6,13 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/23 13:08:55 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/23 15:25:41 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	close_minishell(t_vars *vars, int exit_sign, char *input)
+void	close_minishell(t_vars *vars, char *input)
 {
 	printf("exit\n");
 	if (vars->paths)
@@ -21,7 +21,7 @@ void	close_minishell(t_vars *vars, int exit_sign, char *input)
 		free(input);
 	if (vars->envp)
 		free_strings(vars->envp);
-	exit(exit_sign);
+	exit(exit_status);
 }
 
 int	count_pipes(char *input)
@@ -51,11 +51,11 @@ void	minishell_loop(t_vars *vars)
 		if (!input)
 		{
 			printf("\n");
-			close_minishell(vars, 0, NULL);
+			close_minishell(vars, NULL);
 		}
 		if (ft_strncmp(input, "exit", 4) == 0
 			&& (input[4] == ' ' || !input[4]))
-			close_minishell(vars, ft_atoi(input + 5), input);
+			close_minishell(vars, input);
 		if (input[0] != 0)
 			add_history(input);
 		input = replace_envvar_with_value(*vars, input);
@@ -85,6 +85,7 @@ int	main(int argc, char **argv, char **envp)
 		vars.envp[i] = ft_strdup(envp[i]);
 		i++;
 	}
+	exit_status = 0;
 	signal(SIGQUIT, SIG_IGN);
 	minishell_loop(&vars);
 	return (0);

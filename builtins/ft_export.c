@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 15:18:26 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/23 15:06:06 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	ft_export(t_vars *vars, char **args)
 	j = 1;
 	new_arr_len = ft_arr_len(vars->envp) + ft_arr_len(args);
 	new_envp = ft_calloc(new_arr_len, sizeof(char *));
+	exit_status = 0;
 	if (!args[1])
 	{
 		while (vars->envp[i])

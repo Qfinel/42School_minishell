@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:56:13 by sdukic            #+#    #+#             */
-/*   Updated: 2022/12/21 18:15:51 by sdukic           ###   ########.fr       */
+/*   Updated: 2022/12/23 13:10:44 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ char	**split_with_quotes(char *str)
 			j++;
 			i += ft_strlen(result[j - 1]) + 1;
 		}
-		else if (str[i] == '$')
+		else if (str[i] == '$' && str[i + 1] != ' ' && str[i + 1])
 		{
 			i++;
 			tmp = ft_substr(str, i, ft_strlen(str));

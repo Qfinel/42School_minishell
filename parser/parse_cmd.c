@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:00:54 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 17:15:06 by sdukic           ###   ########.fr       */
+/*   Updated: 2022/12/24 11:18:50 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	**get_clean_args(char *input, t_redir *redir)
 	j = 0;
 	head = malloc(sizeof(t_redir *));
 	*head = redir;
-	tmp = ft_split_charset(input, " ><");
+	tmp = ft_split_charset(input, " ><\'\"");
 	if (!tmp[1])
 		return (NULL);
 	args = ft_calloc(ft_arr_len(tmp), sizeof(char *));
@@ -92,7 +92,7 @@ t_cmd	*parse_cmd(t_vars *vars, char *input)
 	if (!cmd->redirs && redirections_exist(input))
 		return (NULL);
 	if (!cmd->redirs)
-		cmd->args = split_with_quotes(input);
+		cmd->args = ft_split_charset(input, " \'\"");
 	else
 		cmd->args = get_clean_args(input, cmd->redirs);
 	if (!cmd->args)

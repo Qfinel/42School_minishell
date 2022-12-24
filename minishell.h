@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/24 11:07:23 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/24 11:52:37 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ void	do_redirections(t_vars *vars, t_cmd *cmd);
 char	**split_with_quotes(char *str);
 char	*replace_envvar_with_value(t_vars vars, char *input);
 char	**split_true_pipes(char *input);
+char	*get_env_value(t_vars *vars, char *key);
 
 #endif

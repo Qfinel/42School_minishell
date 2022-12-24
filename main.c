@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/23 15:25:41 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/24 12:01:12 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,10 @@ int	main(int argc, char **argv, char **envp)
 	vars.envp = ft_calloc(ft_arr_len(envp) + 1, sizeof(char **));
 	while (envp[i])
 	{
-		vars.envp[i] = ft_strdup(envp[i]);
+		if (!ft_strncmp(envp[i], "SHLVL", 5))
+			vars.envp[i] = ft_strdup("SHLVL=2");
+		else
+			vars.envp[i] = ft_strdup(envp[i]);
 		i++;
 	}
 	exit_status = 0;

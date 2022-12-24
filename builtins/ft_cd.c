@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:36:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/23 15:05:58 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/24 11:52:26 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	ft_cd(t_vars *vars, t_cmd *cmd)
 	}
 	else if (!ft_strncmp(cmd->args[1], "/", 2))
 		chdir("/");
+	else if (!ft_strncmp(cmd->args[1], "-", 2))
+		chdir(get_env_value(vars, "OLDPWD"));
 	else
 	{
 		if (cmd->args[1][0] != '/')

@@ -6,13 +6,13 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 20:45:23 by sdukic            #+#    #+#             */
-/*   Updated: 2022/12/23 13:21:49 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/24 11:52:11 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	*get_env_value(t_vars *vars, char *key)
+char	*get_env_value(t_vars *vars, char *key)
 {
 	int		i;
 	char	*result;

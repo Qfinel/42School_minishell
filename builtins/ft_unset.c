@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:41 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/23 15:06:11 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/24 11:59:22 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,22 @@ static int	count_env_vars(t_vars *vars, char **args)
 	return (i);
 }
 
+int	is_important_var(char **args)
+{
+	int	i;
+
+	i = 1;
+	while (args[i])
+	{
+		if (!ft_strncmp(args[i], "OLDPWD", 7)
+			|| !ft_strncmp(args[i], "PWD", 4)
+			|| !ft_strncmp(args[i], "PATH", 5))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	ft_unset(t_vars *vars, char **args)
 {
 	int		i;
@@ -55,13 +71,15 @@ void	ft_unset(t_vars *vars, char **args)
 	i = 0;
 	x = 0;
 	j = 1;
-	new_len = ft_arr_len(vars->envp) - count_env_vars(vars, args) + 1;
-	new_envp = ft_calloc(new_len, sizeof(char **));
 	exit_status = 1;
 	if (!args[1])
 		printf("minishell: unset: not enough arguments\n");
+	else if	(is_important_var(args))
+		printf("minishell: unset: cannot unset PWD, OLDPWD, PATH\n");
 	else
 	{
+		new_len = ft_arr_len(vars->envp) - count_env_vars(vars, args) + 1;
+		new_envp = ft_calloc(new_len, sizeof(char **));
 		while (args[j])
 		{
 			if (ft_strchr(args[j], '='))
@@ -85,6 +103,6 @@ void	ft_unset(t_vars *vars, char **args)
 		}
 		free_strings(vars->envp);
 		vars->envp = new_envp;
+		exit_status = 0;
 	}
-	exit_status = 0;
 }

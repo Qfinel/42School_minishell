@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:00:54 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/24 11:18:50 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/27 15:41:28 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,49 @@ char	*get_cmd(char **paths, char *cmd)
 	return (NULL);
 }
 
+int	is_real_redir(char *input, int i)
+{
+	int	j;
+	int	quotes1;
+	int	quotes2;
+
+	j = 0;
+	quotes1 = 0;
+	quotes2 = 0;
+	while (j < i)
+	{
+		if (input[j] == '\'' || input[j] == '\"')
+			quotes1++;
+		j++;
+	}
+	while (input[i])
+	{
+		if (input[i] == '\'' || input[i] == '\"')
+			quotes2++;
+		i++;
+	}
+	if (quotes1 % 2 > 0 && quotes2 > 0)
+		return (0);
+	else
+		return (1);
+}
+
 int	redirections_exist(char *input)
 {
 	int	i;
+	int	j;
+	int	counter;
 
 	i = 0;
+	j = 0;
+	counter = 0;
 	while (input[i])
 	{
-		if (input[i] == '>' || input[i] == '<')
-			return (1);
+		if ((input[i] == '>' || input[i] == '<') && is_real_redir(input, i))
+			counter++;
 		i++;
 	}
-	return (0);
+	return (counter);
 }
 
 char	**get_clean_args(char *input, t_redir *redir)
@@ -92,7 +123,7 @@ t_cmd	*parse_cmd(t_vars *vars, char *input)
 	if (!cmd->redirs && redirections_exist(input))
 		return (NULL);
 	if (!cmd->redirs)
-		cmd->args = ft_split_charset(input, " \'\"");
+		cmd->args = split_with_quotes(input);
 	else
 		cmd->args = get_clean_args(input, cmd->redirs);
 	if (!cmd->args)

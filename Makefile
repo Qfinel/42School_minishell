@@ -6,7 +6,7 @@
 #    By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2022/12/24 11:13:39 by jtsizik          ###   ########.fr        #
+#    Updated: 2022/12/27 15:50:26 by jtsizik          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,7 @@ re: fclean all
 debug: obj $(OBJS)
 	cd libft && make
 	cd ..
-	cc $(CFLAGS)  $(RL_FLAGS) $(OBJS) libft/libft.a -g -Wno-gnu-include-next -I../LeakSanitizer/include -L../LeakSanitizer -llsan -lc++ -o $(NAME)
+	cc $(CFLAGS) $(RL_FLAGS) $(OBJS) libft/libft.a -g -Wno-gnu-include-next -I../LeakSanitizer/include -L../LeakSanitizer -llsan -lc++ -o $(NAME)
 
 debug_only: CFLAGS += -g
 debug_only: re

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/24 12:01:12 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/27 13:10:34 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,49 @@ void	close_minishell(t_vars *vars, char *input)
 	exit(exit_status);
 }
 
+int	is_real_pipe(char *input, int i)
+{
+	int	j;
+	int	quotes1;
+	int	quotes2;
+
+	j = 0;
+	quotes1 = 0;
+	quotes2 = 0;
+	while (j < i)
+	{
+		if (input[j] == '\'' || input[j] == '\"')
+			quotes1++;
+		j++;
+	}
+	while (input[i])
+	{
+		if (input[i] == '\'' || input[i] == '\"')
+			quotes2++;
+		i++;
+	}
+	if (quotes1 % 2 > 0 && quotes2 > 0)
+		return (0);
+	else
+		return (1);
+}
+
 int	count_pipes(char *input)
 {
 	int	i;
 	int	j;
+	int	counter;
 
 	i = 0;
 	j = 0;
+	counter = 0;
 	while (input[i])
 	{
-		if (input[i] == '|' && input[i + 1] != '\'' && input[i + 1] != '\"')
-			j++;
+		if (input[i] == '|' && is_real_pipe(input, i))
+			counter++;
 		i++;
 	}
-	return (j);
+	return (counter);
 }
 
 void	minishell_loop(t_vars *vars)

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:36:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/24 11:52:26 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/27 12:22:40 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,20 @@ void	change_pwd(t_vars *vars)
 	vars->envp = new_envp;
 }
 
+int	is_all_slashes(char *input)
+{
+	int	i;
+
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] != '/')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	ft_cd(t_vars *vars, t_cmd *cmd)
 {
 	char	*abs_path;
@@ -51,7 +65,7 @@ void	ft_cd(t_vars *vars, t_cmd *cmd)
 		abs_path = ft_strjoin("/Users/", getenv("USER"));
 		chdir(abs_path);
 	}
-	else if (!ft_strncmp(cmd->args[1], "/", 2))
+	else if (is_all_slashes(cmd->args[1]))
 		chdir("/");
 	else if (!ft_strncmp(cmd->args[1], "-", 2))
 		chdir(get_env_value(vars, "OLDPWD"));

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:21:17 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 16:23:51 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/24 12:04:37 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_redir	*parse_redirections(char *input)
 		{
 			redir->type = get_redir_type(&input[i]);
 			redir->filename = get_redir_filename(&input[i]);
-			if (!redir->filename)
+			if (!redir->filename || i == 0)
 				return (NULL);
 			redir->next = ft_calloc(1, sizeof(t_redir));
 			redir = redir->next;

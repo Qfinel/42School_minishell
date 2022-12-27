@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 20:45:23 by sdukic            #+#    #+#             */
-/*   Updated: 2022/12/24 11:52:11 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/24 12:13:14 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*get_end_of_envvar(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == ' ' || str[i] == '"')
+		if (str[i] == ' ' || str[i] == '|' || str[i] == '"')
 			break ;
 		i++;
 	}
@@ -114,8 +114,7 @@ static char **get_words_starting_with_dollar(char *str)
 	result = malloc(sizeof(char *) * (count_words_starting_with_dollar(str) + 1));
 	while (str[i])
 	{
-		if (str[i] == '$' && !is_envvar_in_single_quotes(str, i)
-			&& str[i + 1] != ' ' && str[i + 1])
+		if (str[i] == '$' && !is_envvar_in_single_quotes(str, i))
 		{
 			// temp_str = ft_strchr(&str[i], ' ');
 			temp_str = get_end_of_envvar(&str[i]);

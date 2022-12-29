@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:00:54 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/29 15:28:19 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/29 16:11:28 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,10 @@ char	**get_clean_args(char *input, t_redir *redir)
 t_cmd	*parse_cmd(t_vars *vars, char *input)
 {
 	t_cmd	*cmd;
+	char	*trimmed;
 
 	cmd = malloc(sizeof(t_cmd));
+	trimmed = ft_strtrim(input, " ");
 	if (redirections_exist(input))
 		cmd->redirs = parse_redirections(input);
 	else
@@ -123,9 +125,10 @@ t_cmd	*parse_cmd(t_vars *vars, char *input)
 	if (!cmd->redirs && redirections_exist(input))
 		return (NULL);
 	if (!cmd->redirs)
-		cmd->args = split_with_quotes(ft_strtrim(input, " "));
+		cmd->args = split_with_quotes(trimmed);
 	else
 		cmd->args = get_clean_args(input, cmd->redirs);
+	free(trimmed);
 	if (!cmd->args)
 		return (NULL);
 	if (cmd->args[0][0] == '/')

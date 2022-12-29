@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:00:54 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/27 15:41:28 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/29 15:28:19 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ t_cmd	*parse_cmd(t_vars *vars, char *input)
 	if (!cmd->redirs && redirections_exist(input))
 		return (NULL);
 	if (!cmd->redirs)
-		cmd->args = split_with_quotes(input);
+		cmd->args = split_with_quotes(ft_strtrim(input, " "));
 	else
 		cmd->args = get_clean_args(input, cmd->redirs);
 	if (!cmd->args)

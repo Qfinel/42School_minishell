@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/27 13:10:34 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/29 16:44:52 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,24 +51,6 @@ int	is_real_pipe(char *input, int i)
 		return (1);
 }
 
-int	count_pipes(char *input)
-{
-	int	i;
-	int	j;
-	int	counter;
-
-	i = 0;
-	j = 0;
-	counter = 0;
-	while (input[i])
-	{
-		if (input[i] == '|' && is_real_pipe(input, i))
-			counter++;
-		i++;
-	}
-	return (counter);
-}
-
 void	minishell_loop(t_vars *vars)
 {
 	char	*input;
@@ -88,9 +70,7 @@ void	minishell_loop(t_vars *vars)
 		if (input[0] != 0)
 			add_history(input);
 		input = replace_envvar_with_value(*vars, input);
-		if (!count_pipes(input) && input[0] != 0)
-			exec_cmd(vars, input);
-		else if (input[0] != 0)
+		if (input[0] != 0)
 			exec_pipes(vars, input);
 		wait(NULL);
 		free(input);

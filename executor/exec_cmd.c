@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/29 15:59:52 by jtsizik          ###   ########.fr       */
+/*   Updated: 2022/12/29 16:41:28 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	do_redirections(t_vars *vars, t_cmd *cmd)
 		else
 			execve(cmd->command, cmd->args, vars->envp);
 	}
+	wait(&exit_status);
 }
 
 void	exec_cmd(t_vars *vars, char *input)
@@ -98,8 +99,8 @@ void	exec_cmd(t_vars *vars, char *input)
 		}
 		else
 			do_redirections(vars, cmd);
-		wait(&exit_status);
-		exit_status /= 256;
+		if (exit_status >= 255)
+			exit_status /= 256;
 	}
 	else
 	{

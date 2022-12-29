@@ -12,6 +12,45 @@
 
 #include "../minishell.h"
 
+// int count_words_with_quotes(char *str)
+// {
+// 	int	i;
+// 	int	count;
+
+// 	i = 0;
+// 	count = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] == '"')
+// 		{
+// 			i++;
+// 			while (str[i] != '"' && str[i])
+// 				i++;
+// 		}
+// 		else if (str[i] == '\'')
+// 		{
+// 			i++;
+// 			while (str[i] != '\'' && str[i])
+// 				i++;
+// 		}
+// 		else if (str[i] == '$')
+// 		{
+// 			i++;
+// 			while (str[i] != ' ' && str[i])
+// 				i++;
+// 		}
+// 		else if (str[i] != ' ')
+// 		{
+// 			while (str[i] != ' ' && str[i])
+// 				i++;
+// 		}
+// 		if (str[i] == ' ')
+// 			i++;
+// 		count++;
+// 	}
+// 	return (count);
+// }
+
 int count_words_with_quotes(char *str)
 {
 	int	i;
@@ -46,7 +85,8 @@ int count_words_with_quotes(char *str)
 		}
 		if (str[i] == ' ')
 			i++;
-		count++;
+		if (str[i])
+			count++;
 	}
 	return (count);
 }
@@ -84,11 +124,9 @@ char	**split_with_quotes(char *str)
 	char	*tmp;
 	int		i;
 	int		j;
-	int test;
 
 
 	// str = remove_unclosed_quotes(str);
-	test = count_words_with_quotes(str);
 
 	i = 0;
 	j = 0;
@@ -125,14 +163,14 @@ char	**split_with_quotes(char *str)
 		}
 		else
 		{
+			if (str[i] == ' ')
+				i++;
 			tmp = ft_substr(str, i, ft_strlen(str));
 			result[j] = ft_substr(tmp, 0, ft_strchr(tmp, ' ') - tmp);
 			free(tmp);
 			j++;
 			i += ft_strlen(result[j - 1]);
 		}
-		if (str[i] == ' ')
-			i++;
 	}
 	result[j] = NULL;
 	return (result);

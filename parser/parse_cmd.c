@@ -60,11 +60,9 @@ int	is_real_redir(char *input, int i)
 int	redirections_exist(char *input)
 {
 	int	i;
-	int	j;
 	int	counter;
 
 	i = 0;
-	j = 0;
 	counter = 0;
 	while (input[i])
 	{
@@ -123,7 +121,7 @@ t_cmd	*parse_cmd(t_vars *vars, char *input)
 	if (!cmd->redirs && redirections_exist(input))
 		return (NULL);
 	if (!cmd->redirs)
-		cmd->args = split_with_quotes(input);
+		cmd->args = ft_split(input, ' ');
 	else
 		cmd->args = get_clean_args(input, cmd->redirs);
 	if (!cmd->args)

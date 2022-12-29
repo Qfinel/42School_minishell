@@ -54,11 +54,9 @@ int	is_real_pipe(char *input, int i)
 int	count_pipes(char *input)
 {
 	int	i;
-	int	j;
 	int	counter;
 
 	i = 0;
-	j = 0;
 	counter = 0;
 	while (input[i])
 	{

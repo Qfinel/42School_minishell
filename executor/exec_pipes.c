@@ -27,7 +27,7 @@ void	exec_pipes(t_vars *vars, char *input)
 	while (cmds[i])
 	{
 		pipe(end);
-		id = fork();
+		id = fork();  //Now I want to enter the child (in the second while iteration). How can I do this?
 		if (id == 0)
 		{
 			dup2(tmp_fd, 0);

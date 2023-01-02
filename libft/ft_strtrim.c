@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 19:07:53 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/29 16:05:38 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/02 15:19:17 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ char	*ft_strtrim(char const *s1, char const *set)
 	start = ft_start_end(0, 0, s1, set);
 	end = ft_start_end(ft_strlen(s1) - 1, 1, s1, set);
 	if (start <= end)
-		str = ft_calloc((end - start + 2) * sizeof(char));
+		str = ft_calloc((end - start + 2), sizeof(char));
 	else
-		str = malloc(1 * sizeof(char));
+		str = malloc(sizeof(char));
 	if (!str)
 		return (NULL);
 	while (start < end + 1)

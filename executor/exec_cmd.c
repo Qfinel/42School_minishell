@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/02 15:06:30 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/02 15:31:20 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,6 @@ void	exec_cmd(t_vars *vars, char *input)
 		}
 		else
 			do_redirections(vars, cmd);
-		if (exit_status >= 255)
-			exit_status /= 256;
 	}
 	else
 	{

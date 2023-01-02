@@ -6,7 +6,7 @@
 #    By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2023/01/02 15:08:10 by jtsizik          ###   ########.fr        #
+#    Updated: 2023/01/02 15:18:22 by jtsizik          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,9 +65,13 @@ obj:
 
 clean:
 	rm -rf obj
+	cd libft && make clean
+	cd ..
 
 fclean: clean
 	rm -f $(NAME)
+	cd libft && make fclean
+	cd ..
 
 re: fclean all
 

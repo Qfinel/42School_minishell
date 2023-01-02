@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:56:13 by sdukic            #+#    #+#             */
-/*   Updated: 2022/12/29 15:28:01 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/02 15:08:02 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ char	**split_with_quotes(char *str)
 			j++;
 			i += ft_strlen(result[j - 1]);
 		}
-		if (str[i] == ' ')
+		while (str[i] == ' ')
 			i++;
 	}
 	result[j] = NULL;

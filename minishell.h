@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/29 15:39:22 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/02 15:07:39 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	exec_cmd(t_vars *vars, char *input);
 void	free_cmd(t_cmd *cmd);
 t_cmd	*parse_cmd(t_vars *vars, char *input);
 t_redir	*parse_redirections(char *input);
-char	**ft_split_charset(char *str, char *charset);
 void	exit_process(t_vars *vars);
 void	do_redirections(t_vars *vars, t_cmd *cmd);
 char	**split_with_quotes(char *str);

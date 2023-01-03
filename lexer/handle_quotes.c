@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-int count_words_with_quotes(char *str)
+int	count_words_with_quotes(char *str)
 {
 	int	i;
 	int	count;
@@ -22,23 +22,11 @@ int count_words_with_quotes(char *str)
 	while (str[i])
 	{
 		if (str[i] == '"')
-		{
-			i++;
-			while (str[i] != '"' && str[i])
-				i++;
-		}
+			i += skip_to_next('"', str);
 		else if (str[i] == '\'')
-		{
-			i++;
-			while (str[i] != '\'' && str[i])
-				i++;
-		}
+			i += skip_to_next('\'', str);
 		else if (str[i] == '$')
-		{
-			i++;
-			while (str[i] != ' ' && str[i])
-				i++;
-		}
+			i += skip_to_next(' ', str);
 		else if (str[i] != ' ')
 		{
 			while (str[i] != ' ' && str[i])
@@ -78,62 +66,53 @@ char	*remove_unclosed_quotes(char *str)
 	return (str);
 }
 
+void	split_segment(char *str, char **result, t_vector *iter, char c)
+{
+	char	*tmp;
+
+	(iter->i)++;
+	tmp = ft_substr(str, iter->i, ft_strlen(str));
+	result[iter->j] = ft_substr(tmp, 0, ft_strchr(tmp, c) - tmp);
+	if (tmp)
+		free(tmp);
+	(iter->j)++;
+	iter->i += ft_strlen(result[iter->j - 1]) + 1;
+}
+
+void	split_last_segment(char *str, char **result, t_vector *iter)
+{
+	char	*tmp;
+
+	tmp = ft_substr(str, iter->i, ft_strlen(str));
+	result[iter->j] = ft_substr(tmp, 0, ft_strchr(tmp, ' ') - tmp);
+	if (tmp)
+		free(tmp);
+	(iter->j)++;
+	iter->i += ft_strlen(result[iter->j - 1]);
+}
+
 char	**split_with_quotes(char *str)
 {
-	char	**result;
-	char	*tmp;
-	int		i;
-	int		j;
-	int test;
+	char		**result;
+	t_vector	iter;
 
-
-	// str = remove_unclosed_quotes(str);
-	test = count_words_with_quotes(str);
-
-	i = 0;
-	j = 0;
+	iter.i = 0;
+	iter.j = 0;
 	result = malloc(sizeof(char *) * (count_words_with_quotes(str) + 1));
-	while (str[i])
+	while (str[iter.i])
 	{
-		if (str[i] == '"')
-		{
-			i++;
-			tmp = ft_substr(str, i, ft_strlen(str));
-			result[j] = ft_substr(tmp, 0, ft_strchr(tmp, '"') - tmp);
-			if (tmp)
-			free(tmp);
-			j++;
-			i += ft_strlen(result[j - 1]) + 1;
-		}
-		else if (str[i] == '\'')
-		{
-			i++;
-			tmp = ft_substr(str, i, ft_strlen(str));
-			result[j] = ft_substr(tmp, 0, ft_strchr(tmp, '\'') - tmp);
-			free(tmp);
-			j++;
-			i += ft_strlen(result[j - 1]) + 1;
-		}
-		else if (str[i] == '$' && str[i + 1] != ' ' && str[i + 1])
-		{
-			i++;
-			tmp = ft_substr(str, i, ft_strlen(str));
-			result[j] = ft_substr(tmp, 0, ft_strchr(tmp, ' ') - tmp);
-			free(tmp);
-			j++;
-			i += ft_strlen(result[j - 1]);
-		}
+		if (str[iter.i] == '"')
+			split_segment(str, result, &iter, '"');
+		else if (str[iter.i] == '\'')
+			split_segment(str, result, &iter, '\'');
+		else if (str[iter.i] == '$' && str[iter.i + 1] != ' '
+			&& str[iter.i + 1])
+			split_segment(str, result, &iter, ' ');
 		else
-		{
-			tmp = ft_substr(str, i, ft_strlen(str));
-			result[j] = ft_substr(tmp, 0, ft_strchr(tmp, ' ') - tmp);
-			free(tmp);
-			j++;
-			i += ft_strlen(result[j - 1]);
-		}
-		while (str[i] == ' ')
-			i++;
+			split_last_segment(str, result, &iter);
+		while (str[iter.i] == ' ')
+			iter.i++;
 	}
-	result[j] = NULL;
+	result[iter.j] = NULL;
 	return (result);
 }

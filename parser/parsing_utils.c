@@ -78,11 +78,9 @@ int	is_real_redir(char *input, int i)
 int	redirections_exist(char *input)
 {
 	int	i;
-	int	j;
 	int	counter;
 
 	i = 0;
-	j = 0;
 	counter = 0;
 	while (input[i])
 	{

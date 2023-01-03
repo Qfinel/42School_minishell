@@ -32,14 +32,23 @@ OBJS =	obj/main.o \
 		obj/parse_redirections.o \
 		obj/parsing_utils.o \
 		obj/handle_quotes.o \
-		obj/handle_envvars.o
+		obj/handle_envvars.o \
+		obj/envvars_utils.o \
+		obj/quotes_utils.o
 
 RL_FLAGS = -L$$HOME/.brew/opt/readline/lib -lreadline -I$$HOME/.brew/opt/readline/include -lreadline
+
+# BREW = /opt/homebrew/Cellar/readline/8.2.1
+
+RL_FLAGS = -L $(BREW)/lib -lreadline -I $(BREW)/include -lreadline
 
 CFLAGS = -Wall -Wextra -Werror
 
 obj/%.o: %.c
 	cc -c $(CFLAGS) -I$$HOME/.brew/opt/readline/include $< -o $@
+
+# obj/%.o: %.c
+# 	cc -c $(CFLAGS) -I $(BREW)/include $< -o $@
 
 obj/%.o: builtins/%.c
 	cc -c $(CFLAGS)  $< -o $@
@@ -55,6 +64,9 @@ obj/%.o: lexer/%.c
 
 obj/%.o: utils/%.c
 	cc -c $(CFLAGS)  -I$$HOME/.brew/opt/readline/include $< -o $@
+
+# obj/%.o: utils/%.c
+# 	cc -c $(CFLAGS)  -I $(BREW)/include $< -o $@
 
 $(NAME): obj $(OBJS)
 	cd libft && make

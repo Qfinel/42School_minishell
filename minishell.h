@@ -44,6 +44,12 @@ typedef struct s_cmd
 
 }	t_cmd;
 
+typedef struct s_vector
+{
+	int	i;
+	int	j;
+}	t_vector;
+
 void	ft_cd(t_vars *vars, t_cmd *cmd);
 void	ft_pwd(char **args);
 void	ft_echo(t_cmd *cmd);
@@ -77,5 +83,9 @@ int		is_important_var(char **args);
 int		count_env_vars(t_vars *vars, char **args);
 void	get_command(t_cmd *cmd, t_vars *vars);
 int		paths_exist(char **envp);
+char	*ft_str_replace(char *str, char *old, char *new);
+int		count_words_starting_with_dollar(char *str);
+char	*get_end_of_envvar(char *str);
+int		skip_to_next(char c, char *str);
 
 #endif

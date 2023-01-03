@@ -6,74 +6,11 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:00:54 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/02 15:01:16 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/03 16:01:56 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-char	*get_cmd(char **paths, char *cmd)
-{
-	char	*tmp;
-	char	*cmd_path;
-
-	while (*paths)
-	{
-		tmp = ft_strjoin(*paths, "/");
-		cmd_path = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (access(cmd_path, F_OK) == 0)
-			return (cmd_path);
-		free(cmd_path);
-		paths++;
-	}
-	return (NULL);
-}
-
-int	is_real_redir(char *input, int i)
-{
-	int	j;
-	int	quotes1;
-	int	quotes2;
-
-	j = 0;
-	quotes1 = 0;
-	quotes2 = 0;
-	while (j < i)
-	{
-		if (input[j] == '\'' || input[j] == '\"')
-			quotes1++;
-		j++;
-	}
-	while (input[i])
-	{
-		if (input[i] == '\'' || input[i] == '\"')
-			quotes2++;
-		i++;
-	}
-	if (quotes1 % 2 > 0 && quotes2 > 0)
-		return (0);
-	else
-		return (1);
-}
-
-int	redirections_exist(char *input)
-{
-	int	i;
-	int	j;
-	int	counter;
-
-	i = 0;
-	j = 0;
-	counter = 0;
-	while (input[i])
-	{
-		if ((input[i] == '>' || input[i] == '<') && is_real_redir(input, i))
-			counter++;
-		i++;
-	}
-	return (counter);
-}
 
 char	*remove_input_redirs(char *str)
 {
@@ -93,24 +30,14 @@ char	*remove_input_redirs(char *str)
 	return (newstr);
 }
 
-char	**get_clean_args(char *input, t_redir *redir)
+static void	clean_args_loop(t_redir	**head, t_redir *redir,
+	char **tmp, char **args)
 {
-	char	**args;
-	char	**tmp;
-	char	*str;
-	t_redir	**head;
-	int		i;
-	int		j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
-	head = malloc(sizeof(t_redir *));
-	*head = redir;
-	str = remove_input_redirs(input);
-	tmp = split_with_quotes(str);
-	if (!tmp[1])
-		return (NULL);
-	args = ft_calloc(ft_arr_len(tmp), sizeof(char *));
 	while (tmp[i])
 	{
 		while (redir->next)
@@ -126,6 +53,23 @@ char	**get_clean_args(char *input, t_redir *redir)
 		if (tmp[i])
 			i++;
 	}
+}
+
+char	**get_clean_args(char *input, t_redir *redir)
+{
+	char	**args;
+	char	**tmp;
+	char	*str;
+	t_redir	**head;
+
+	head = malloc(sizeof(t_redir *));
+	*head = redir;
+	str = remove_input_redirs(input);
+	tmp = split_with_quotes(str);
+	if (!tmp[1])
+		return (NULL);
+	args = ft_calloc(ft_arr_len(tmp), sizeof(char *));
+	clean_args_loop(head, redir, tmp, args);
 	free(head);
 	free_strings(tmp);
 	free(str);
@@ -152,16 +96,6 @@ t_cmd	*parse_cmd(t_vars *vars, char *input)
 	free(trimmed);
 	if (!cmd->args)
 		return (NULL);
-	if (cmd->args[0][0] == '/')
-	{
-		if (access(cmd->args[0], F_OK) == 0)
-			cmd->command = ft_strdup(cmd->args[0]);
-		else
-			cmd->command = NULL;
-	}
-	else if (!ft_strncmp(cmd->args[0], "export", 7) || !ft_strncmp(cmd->args[0], "unset", 6))
-		cmd->command = ft_strdup(cmd->args[0]);
-	else
-		cmd->command = get_cmd(vars->paths, cmd->args[0]);
+	get_command(cmd, vars);
 	return (cmd);
 }

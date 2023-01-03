@@ -6,13 +6,13 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/02 16:26:17 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/03 15:45:36 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	exec_heredoc(t_redir *redir)
+static void	exec_heredoc(t_redir *redir)
 {
 	char	*input;
 
@@ -24,7 +24,7 @@ void	exec_heredoc(t_redir *redir)
 	}
 }
 
-void	change_fd(t_redir *redir)
+static void	change_fd(t_redir *redir)
 {
 	int	fd;
 
@@ -53,7 +53,7 @@ void	change_fd(t_redir *redir)
 		exec_heredoc(redir);
 }
 
-void	do_redirections(t_vars *vars, t_cmd *cmd)
+static void	do_redirections(t_vars *vars, t_cmd *cmd)
 {
 	int	id;
 
@@ -73,10 +73,27 @@ void	do_redirections(t_vars *vars, t_cmd *cmd)
 	wait(&g_exit);
 }
 
+static void	run_command(t_cmd *cmd, t_vars *vars)
+{
+	int	id;
+
+	if (!cmd->redirs)
+	{
+		if (!is_builtin(vars, cmd))
+		{
+			id = fork();
+			if (id == 0)
+				execve(cmd->command, cmd->args, vars->envp);
+			wait(&g_exit);
+		}
+	}
+	else
+		do_redirections(vars, cmd);
+}
+
 void	exec_cmd(t_vars *vars, char *input)
 {
 	t_cmd	*cmd;
-	int		id;
 
 	cmd = parse_cmd(vars, input);
 	signal(SIGINT, ctrl_c_pipe_handler);
@@ -86,20 +103,7 @@ void	exec_cmd(t_vars *vars, char *input)
 		return ((void)printf("minishell: parsing error\n"));
 	}
 	if (cmd->command)
-	{
-		if (!cmd->redirs)
-		{
-			if (!is_builtin(vars, cmd))
-			{
-				id = fork();
-				if (id == 0)
-						execve(cmd->command, cmd->args, vars->envp);
-				wait(&g_exit);
-			}
-		}
-		else
-			do_redirections(vars, cmd);
-	}
+		run_command(cmd, vars);
 	else
 	{
 		printf("minishell: command not found: '%s'\n", cmd->args[0]);

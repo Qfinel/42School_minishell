@@ -6,13 +6,13 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:36:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/29 16:46:25 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/02 17:12:23 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	change_pwd(t_vars *vars)
+static void	change_pwd(t_vars *vars)
 {
 	int		i;
 	char	*old_pwd;
@@ -40,7 +40,7 @@ void	change_pwd(t_vars *vars)
 	vars->envp = new_envp;
 }
 
-int	is_all_slashes(char *input)
+static int	is_all_slashes(char *input)
 {
 	int	i;
 
@@ -54,11 +54,37 @@ int	is_all_slashes(char *input)
 	return (1);
 }
 
+static void	go_to_dir(t_cmd *cmd, char *abs_path)
+{
+	char	*new_abs_path;
+
+	if (cmd->args[1][0] != '/')
+		abs_path = ft_strjoin(abs_path, "/");
+	if (!ft_strncmp(cmd->args[1], "~", 1))
+	{
+		free(abs_path);
+		abs_path = ft_strjoin("/Users/", getenv("USER"));
+		new_abs_path = ft_strjoin(abs_path, &cmd->args[1][1]);
+	}
+	else
+		new_abs_path = ft_strjoin(abs_path, cmd->args[1]);
+	if (chdir(new_abs_path) < 0)
+	{
+		if (chdir(cmd->args[1]) < 0)
+		{
+			printf("minishell: cd: no such file or directory: '%s'\n",
+				cmd->args[1]);
+			g_exit = 1;
+		}
+	}
+	free(new_abs_path);
+}
+
 void	ft_cd(t_vars *vars, t_cmd *cmd)
 {
 	char	*abs_path;
-	char	*new_abs_path;
 
+	g_exit = 0;
 	abs_path = getcwd(NULL, 0);
 	if (!cmd->args[1])
 	{
@@ -70,29 +96,7 @@ void	ft_cd(t_vars *vars, t_cmd *cmd)
 	else if (!ft_strncmp(cmd->args[1], "-", 2))
 		chdir(get_env_value(vars, "OLDPWD"));
 	else
-	{
-		if (cmd->args[1][0] != '/')
-			abs_path = ft_strjoin(abs_path, "/");
-		if (!ft_strncmp(cmd->args[1], "~", 1))
-		{
-			free(abs_path);
-			abs_path = ft_strjoin("/Users/", getenv("USER"));
-			new_abs_path = ft_strjoin(abs_path, &cmd->args[1][1]);
-		}
-		else
-			new_abs_path = ft_strjoin(abs_path, cmd->args[1]);
-		if (chdir(new_abs_path) < 0)
-			if (chdir(cmd->args[1]) < 0)
-			{
-				printf("minishell: cd: no such file or directory: '%s'\n", cmd->args[1]);
-				exit_status = 1;
-			}
-			else
-				exit_status = 0;
-		else
-			exit_status = 0;
-		free(new_abs_path);
-	}
+		go_to_dir(cmd, abs_path);
 	change_pwd(vars);
 	free(abs_path);
 }

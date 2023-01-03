@@ -6,25 +6,48 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/23 15:06:06 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/02 16:43:40 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+static void	add_var(t_vars *vars, char **new_envp, char **args, int i)
+{
+	char	**tmp;
+	int		j;
+
+	j = 1;
+	while (vars->envp[i])
+	{
+		new_envp[i] = vars->envp[i];
+		i++;
+	}
+	free(vars->envp);
+	while (args[j])
+	{
+		tmp = ft_split(args[j], '=');
+		if (!tmp[1])
+			new_envp[i] = ft_strjoin(args[j], "=\'\'");
+		else
+			new_envp[i] = ft_strdup(args[j]);
+		free_strings(tmp);
+		i++;
+		j++;
+	}
+	vars->envp = new_envp;
+}
+
 void	ft_export(t_vars *vars, char **args)
 {
-	int		i;
-	int		j;
-	char	**tmp;
 	char	**new_envp;
 	int		new_arr_len;
+	int		i;
 
 	i = 0;
-	j = 1;
 	new_arr_len = ft_arr_len(vars->envp) + ft_arr_len(args);
 	new_envp = ft_calloc(new_arr_len, sizeof(char *));
-	exit_status = 0;
+	g_exit = 0;
 	if (!args[1])
 	{
 		while (vars->envp[i])
@@ -35,24 +58,5 @@ void	ft_export(t_vars *vars, char **args)
 		free(new_envp);
 	}
 	else
-	{
-		while (vars->envp[i])
-		{
-			new_envp[i] = vars->envp[i];
-			i++;
-		}
-		free(vars->envp);
-		while (args[j])
-		{
-			tmp = ft_split(args[j], '=');
-			if (!tmp[1])
-				new_envp[i] = ft_strjoin(args[j], "=\'\'");
-			else
-				new_envp[i] = ft_strdup(args[j]);
-			free_strings(tmp);
-			i++;
-			j++;
-		}
-		vars->envp = new_envp;
-	}
+		add_var(vars, new_envp, args, i);
 }

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/29 16:48:18 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/03 14:47:56 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	close_minishell(t_vars *vars, char *input)
 		free(input);
 	if (vars->envp)
 		free_strings(vars->envp);
-	exit(exit_status);
+	exit(g_exit);
 }
 
 int	is_real_pipe(char *input, int i)
@@ -51,6 +51,20 @@ int	is_real_pipe(char *input, int i)
 		return (1);
 }
 
+int	is_piped(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '|' && is_real_pipe(str, i))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	minishell_loop(t_vars *vars)
 {
 	char	*input;
@@ -70,8 +84,10 @@ void	minishell_loop(t_vars *vars)
 		if (input[0] != 0)
 			add_history(input);
 		input = replace_envvar_with_value(*vars, input);
-		if (input[0] != 0)
+		if (input[0] != 0 && is_piped(input))
 			exec_pipes(vars, input);
+		else if (input[0] != 0)
+			exec_cmd(vars, input);
 		wait(NULL);
 		free(input);
 	}
@@ -97,7 +113,7 @@ int	main(int argc, char **argv, char **envp)
 			vars.envp[i] = ft_strdup(envp[i]);
 		i++;
 	}
-	exit_status = 0;
+	g_exit = 0;
 	signal(SIGQUIT, SIG_IGN);
 	minishell_loop(&vars);
 	return (0);

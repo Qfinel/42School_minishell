@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:38:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/02 15:26:12 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/02 16:49:20 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,25 +43,6 @@ int	contains_spaces(char *str)
 	return (0);
 }
 
-void	ctrl_c_handler(int sig)
-{
-	(void)sig;
-	exit_status = 1;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
-void	ctrl_c_pipe_handler(int sig)
-{
-	(void)sig;
-	exit_status = 130;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-}
-
 int	ft_arr_len(char **arr)
 {
 	int	i;
@@ -78,5 +59,5 @@ void	exit_process(t_vars *vars)
 		free_strings(vars->paths);
 	if (vars->envp)
 		free_strings(vars->envp);
-	exit(exit_status);
+	exit(g_exit);
 }

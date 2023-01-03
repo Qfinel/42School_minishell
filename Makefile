@@ -6,7 +6,7 @@
 #    By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2023/01/02 15:18:22 by jtsizik          ###   ########.fr        #
+#    Updated: 2023/01/03 15:22:46 by jtsizik          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,12 +18,14 @@ OBJS =	obj/main.o \
 		obj/utils.o \
 		obj/free_utils.o \
 		obj/ft_split_pipes.o \
+		obj/signals.o \
 		obj/ft_cd.o \
 		obj/ft_echo.o \
 		obj/ft_env.o \
 		obj/ft_export.o \
 		obj/ft_pwd.o \
 		obj/ft_unset.o \
+		obj/ft_unset_utils.o \
 		obj/exec_cmd.o \
 		obj/exec_pipes.o \
 		obj/parse_cmd.o \

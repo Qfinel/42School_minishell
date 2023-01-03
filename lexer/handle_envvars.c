@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 20:45:23 by sdukic            #+#    #+#             */
-/*   Updated: 2022/12/29 15:49:18 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/02 16:26:34 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*get_env_value(t_vars *vars, char *key)
 		i++;
 	}
 	if (key[0] == '?' && !key[1])
-		result = ft_itoa(exit_status);
+		result = ft_itoa(g_exit);
 	return (result);
 }
 
@@ -156,5 +156,6 @@ char	*replace_envvar_with_value(t_vars vars, char *input)
 		i++;
 	}
 	free_strings(envvars);
+	free(env_value);
 	return (input);
 }

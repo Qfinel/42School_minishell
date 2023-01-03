@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/02 15:31:20 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/02 16:26:17 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	do_redirections(t_vars *vars, t_cmd *cmd)
 		else
 			execve(cmd->command, cmd->args, vars->envp);
 	}
-	wait(&exit_status);
+	wait(&g_exit);
 }
 
 void	exec_cmd(t_vars *vars, char *input)
@@ -82,7 +82,7 @@ void	exec_cmd(t_vars *vars, char *input)
 	signal(SIGINT, ctrl_c_pipe_handler);
 	if (!cmd)
 	{
-		exit_status = 1;
+		g_exit = 1;
 		return ((void)printf("minishell: parsing error\n"));
 	}
 	if (cmd->command)
@@ -94,7 +94,7 @@ void	exec_cmd(t_vars *vars, char *input)
 				id = fork();
 				if (id == 0)
 						execve(cmd->command, cmd->args, vars->envp);
-				wait(&exit_status);
+				wait(&g_exit);
 			}
 		}
 		else
@@ -103,7 +103,7 @@ void	exec_cmd(t_vars *vars, char *input)
 	else
 	{
 		printf("minishell: command not found: '%s'\n", cmd->args[0]);
-		exit_status = 127;
+		g_exit = 127;
 	}
 	free_cmd(cmd);
 }

@@ -6,103 +6,95 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:41 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/24 11:59:22 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/03 15:26:49 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	count_env_vars(t_vars *vars, char **args)
+static void	get_env_indexes(char **args, int *indexes, char **envp, int x)
 {
 	int		i;
 	int		j;
-	int		counter;
 	char	**tmp;
 
 	i = 0;
 	j = 1;
-	counter = 0;
-	if (!args[1])
-		return (0);
-	while (args[j])
+	while (envp[i])
 	{
 		while (args[j])
 		{
-			while (vars->envp[i])
+			tmp = ft_split(envp[i], '=');
+			if (!ft_strncmp(args[j], tmp[0], ft_strlen(tmp[0]) + 1))
 			{
-				tmp = ft_split(vars->envp[i], '=');
-				if (!ft_strncmp(args[j], tmp[0], ft_strlen(args[j]) + 1))
-					counter++;
-				i++;
-				free_strings(tmp);
+				indexes[x] = i;
+				if (i == 0)
+					indexes[x] = -1;
+				x++;
 			}
-			i = 0;
+			free_strings(tmp);
 			j++;
 		}
-	}
-	return (i);
-}
-
-int	is_important_var(char **args)
-{
-	int	i;
-
-	i = 1;
-	while (args[i])
-	{
-		if (!ft_strncmp(args[i], "OLDPWD", 7)
-			|| !ft_strncmp(args[i], "PWD", 4)
-			|| !ft_strncmp(args[i], "PATH", 5))
-			return (1);
+		j = 0;
 		i++;
 	}
-	return (0);
+}
+
+static void	create_new_envp(char **new_envp, t_vars *vars, int *indexes)
+{
+	int	i;
+	int	x;
+
+	i = 0;
+	x = 0;
+	while (vars->envp[i])
+	{
+		if (!contains_index(indexes, i))
+		{
+			new_envp[x] = ft_strdup(vars->envp[i]);
+			x++;
+		}
+		i++;
+	}
+	free(indexes);
+}
+
+static void	find_and_delete(char **args, char **new_envp,
+	t_vars *vars, int arr_len)
+{
+	int	*indexes;
+	int	j;
+
+	indexes = ft_calloc(arr_len + 1, sizeof(int));
+	get_env_indexes(args, indexes, vars->envp, 0);
+	j = 1;
+	while (args[j])
+	{
+		if (ft_strchr(args[j], '='))
+			printf("minishell: unset: %s: invalid parameter name\n",
+				args[j]);
+		j++;
+	}
+	create_new_envp(new_envp, vars, indexes);
 }
 
 void	ft_unset(t_vars *vars, char **args)
 {
-	int		i;
-	int		j;
-	int		x;
 	int		new_len;
-	char	**tmp;
 	char	**new_envp;
+	int		indexes_arr_len;
 
-	i = 0;
-	x = 0;
-	j = 1;
-	exit_status = 1;
-	if (!args[1])
-		printf("minishell: unset: not enough arguments\n");
-	else if	(is_important_var(args))
+	g_exit = 1;
+	if (is_important_var(args))
 		printf("minishell: unset: cannot unset PWD, OLDPWD, PATH\n");
 	else
 	{
-		new_len = ft_arr_len(vars->envp) - count_env_vars(vars, args) + 1;
-		new_envp = ft_calloc(new_len, sizeof(char **));
-		while (args[j])
-		{
-			if (ft_strchr(args[j], '='))
-				printf("minishell: unset: %s: invalid parameter name\n", args[j]);
-			else
-			{
-				while (vars->envp[i])
-				{
-					tmp = ft_split(vars->envp[i], '=');
-					if (ft_strncmp(args[j], tmp[0], ft_strlen(args[j]) + 1))
-					{
-						new_envp[x] = ft_strdup(vars->envp[i]);
-						x++;
-					}
-					free_strings(tmp);
-					i++;
-				}
-			}
-			i = 0;
-			j++;
-		}
+		indexes_arr_len = count_env_vars(vars, args);
+		new_len = ft_arr_len(vars->envp) - indexes_arr_len + 1;
+		new_envp = ft_calloc(new_len, sizeof(char *));
+		find_and_delete(args, new_envp, vars, indexes_arr_len);
 		free_strings(vars->envp);
 		vars->envp = new_envp;
-		exit_status = 0;
+		g_exit = 0;
 	}
 }

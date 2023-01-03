@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/16 12:35:57 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/03 14:49:18 by jtsizik          ###   ########.fr       */
+/*   Created: 2023/01/02 16:21:31 by jtsizik           #+#    #+#             */
+/*   Updated: 2023/01/02 16:26:48 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_env(t_vars *vars, char **args)
+void	ctrl_c_handler(int sig)
 {
-	int	i;
+	(void)sig;
+	g_exit = 1;
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 
-	i = 0;
-	if (!args[1])
-	{
-		while (vars->envp[i])
-		{
-			printf("%s\n", vars->envp[i]);
-			i++;
-		}
-		g_exit = 0;
-	}
-	else
-	{
-		printf("minishell: env: too many arguments\n");
-		g_exit = 1;
-	}
+void	ctrl_c_pipe_handler(int sig)
+{
+	(void)sig;
+	g_exit = 130;
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
 }

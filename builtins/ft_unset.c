@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:41 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/03 15:26:49 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/03 16:29:58 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,20 @@ static void	find_and_delete(char **args, char **new_envp,
 	create_new_envp(new_envp, vars, indexes);
 }
 
+int	paths_exist(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (!ft_strncmp(envp[i], "PATH=", 5))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	ft_unset(t_vars *vars, char **args)
 {
 	int		new_len;
@@ -86,7 +100,7 @@ void	ft_unset(t_vars *vars, char **args)
 
 	g_exit = 1;
 	if (is_important_var(args))
-		printf("minishell: unset: cannot unset PWD, OLDPWD, PATH\n");
+		printf("minishell: unset: cannot unset PWD, OLDPWD\n");
 	else
 	{
 		indexes_arr_len = count_env_vars(vars, args);
@@ -96,5 +110,10 @@ void	ft_unset(t_vars *vars, char **args)
 		free_strings(vars->envp);
 		vars->envp = new_envp;
 		g_exit = 0;
+	}
+	if (!paths_exist(vars->envp))
+	{
+		free_strings(vars->paths);
+		vars->paths = NULL;
 	}
 }

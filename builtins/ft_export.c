@@ -6,11 +6,60 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/02 16:43:40 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/03 16:50:15 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static int	already_exist(char **envp, char *arg)
+{
+	int		i;
+	char	**tmp;
+
+	i = 0;
+	while (envp[i])
+	{
+		tmp = ft_split(envp[i], '=');
+		if (!ft_strncmp(arg, tmp[0], ft_strlen(arg) + 1))
+		{
+			free_strings(tmp);
+			return (1);
+		}
+		i++;
+		free_strings(tmp);
+	}
+	return (0);
+}
+
+static void	replace_existed_vars(char **new_envp, char **args)
+{
+	int		i;
+	int		j;
+	char	**tmp;
+	char	**tmp1;
+
+	i = 0;
+	j = 1;
+	while (new_envp[i])
+	{
+		tmp = ft_split(new_envp[i], '=');
+		while (args[j])
+		{
+			tmp1 = ft_split(args[j], '=');
+			if (!ft_strncmp(tmp[0], tmp1[0], ft_strlen(tmp[0]) + 1))
+			{
+				free(new_envp[i]);
+				new_envp[i] = ft_strdup(args[j]);
+			}
+			j++;
+			free_strings(tmp1);
+		}
+		j = 1;
+		i++;
+		free_strings(tmp);
+	}
+}
 
 static void	add_var(t_vars *vars, char **new_envp, char **args, int i)
 {
@@ -20,22 +69,40 @@ static void	add_var(t_vars *vars, char **new_envp, char **args, int i)
 	j = 1;
 	while (vars->envp[i])
 	{
-		new_envp[i] = vars->envp[i];
+		new_envp[i] = ft_strdup(vars->envp[i]);
 		i++;
 	}
-	free(vars->envp);
+	replace_existed_vars(new_envp, args);
+	free_strings(vars->envp);
 	while (args[j])
 	{
 		tmp = ft_split(args[j], '=');
-		if (!tmp[1])
+		if (!tmp[1] && !already_exist(new_envp, tmp[0]))
 			new_envp[i] = ft_strjoin(args[j], "=\'\'");
-		else
+		else if (!already_exist(new_envp, tmp[0]))
 			new_envp[i] = ft_strdup(args[j]);
 		free_strings(tmp);
 		i++;
 		j++;
 	}
 	vars->envp = new_envp;
+}
+
+static void	get_paths(t_vars *vars)
+{
+	int	i;
+
+	i = 0;
+	while (vars->envp[i])
+	{
+		if (!ft_strncmp(vars->envp[i], "PATH=", 5))
+		{
+			free_strings(vars->paths);
+			vars->paths = ft_split(&vars->envp[i][5], ':');
+			return ;
+		}
+		i++;
+	}
 }
 
 void	ft_export(t_vars *vars, char **args)
@@ -59,4 +126,6 @@ void	ft_export(t_vars *vars, char **args)
 	}
 	else
 		add_var(vars, new_envp, args, i);
+	if (paths_exist(vars->envp))
+		get_paths(vars);
 }

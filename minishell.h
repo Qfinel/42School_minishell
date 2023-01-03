@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/03 15:58:02 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/03 16:21:57 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,6 @@ int		contains_index(int *indexes, int i);
 int		is_important_var(char **args);
 int		count_env_vars(t_vars *vars, char **args);
 void	get_command(t_cmd *cmd, t_vars *vars);
+int		paths_exist(char **envp);
 
 #endif

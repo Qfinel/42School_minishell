@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:20:25 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/03 15:22:24 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/03 16:27:27 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ int	is_important_var(char **args)
 	while (args[i])
 	{
 		if (!ft_strncmp(args[i], "OLDPWD", 7)
-			|| !ft_strncmp(args[i], "PWD", 4)
-			|| !ft_strncmp(args[i], "PATH", 5))
+			|| !ft_strncmp(args[i], "PWD", 4))
 			return (1);
 		i++;
 	}

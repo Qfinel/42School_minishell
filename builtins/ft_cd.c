@@ -6,13 +6,25 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:36:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/02 17:12:23 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/04 12:56:27 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	change_pwd(t_vars *vars)
+static char	*get_old_pwd(t_vars *vars)
+{
+	int		i;
+	char	*old_pwd;
+
+	i = 0;
+	while (ft_strncmp(vars->envp[i], "PWD", 3))
+		i++;
+	old_pwd = ft_strjoin("OLD", vars->envp[i]);
+	return (old_pwd);
+}
+
+static int	change_pwd(t_vars *vars)
 {
 	int		i;
 	char	*old_pwd;
@@ -20,12 +32,11 @@ static void	change_pwd(t_vars *vars)
 	char	**new_envp;
 
 	i = 0;
-	while (ft_strncmp(vars->envp[i], "PWD", 3))
-		i++;
-	old_pwd = ft_strjoin("OLD", vars->envp[i]);
+	old_pwd = get_old_pwd(vars);
 	new_pwd = ft_strjoin("PWD=", getcwd(NULL, 0));
-	i = 0;
 	new_envp = ft_calloc(ft_arr_len(vars->envp) + 1, sizeof(char *));
+	if (!new_envp)
+		return (-1);
 	while (vars->envp[i])
 	{
 		if (!ft_strncmp(vars->envp[i], "PWD", 3))
@@ -38,6 +49,7 @@ static void	change_pwd(t_vars *vars)
 	}
 	free_strings(vars->envp);
 	vars->envp = new_envp;
+	return (0);
 }
 
 static int	is_all_slashes(char *input)
@@ -97,6 +109,8 @@ void	ft_cd(t_vars *vars, t_cmd *cmd)
 		chdir(get_env_value(vars, "OLDPWD"));
 	else
 		go_to_dir(cmd, abs_path);
-	change_pwd(vars);
+	if (change_pwd(vars) < 0)
+		return (ft_putstr_fd("Malloc failed\n", 2),
+			close_minishell(vars, NULL));
 	free(abs_path);
 }

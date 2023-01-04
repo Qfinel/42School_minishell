@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/03 16:50:15 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/04 12:57:50 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,9 @@ void	ft_export(t_vars *vars, char **args)
 	i = 0;
 	new_arr_len = ft_arr_len(vars->envp) + ft_arr_len(args);
 	new_envp = ft_calloc(new_arr_len, sizeof(char *));
+	if (!new_envp)
+		return (ft_putstr_fd("Malloc failed\n", 2),
+			close_minishell(vars, NULL));
 	g_exit = 0;
 	if (!args[1])
 	{

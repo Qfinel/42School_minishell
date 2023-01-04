@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/03 15:45:36 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/04 12:42:54 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,21 @@ static void	change_fd(t_redir *redir)
 	if (!ft_strncmp(redir->type, "OUTPUT", 7))
 	{
 		fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd < 0)
-			printf("minishell: err: invalid filename: %s\n", redir->filename);
 		dup2(fd, 1);
 	}
 	if (!ft_strncmp(redir->type, "APPEND", 7))
 	{
 		fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (fd < 0)
-			printf("minishell: err: invalid filename: %s\n", redir->filename);
 		dup2(fd, 1);
 	}
 	if (!ft_strncmp(redir->type, "INPUT", 6))
 	{
 		fd = open(redir->filename, O_RDONLY);
-		if (fd < 0)
-			printf("minishell: err: invalid filename: %s\n", redir->filename);
 		dup2(fd, 0);
 	}
+	if (ft_strncmp(redir->type, "HEREDOC", 8) && fd < 0)
+		return ((void)printf("minishell: err: invalid filename: %s\n",
+				redir->filename), exit(1));
 	if (!ft_strncmp(redir->type, "HEREDOC", 8))
 		exec_heredoc(redir);
 }
@@ -66,7 +63,7 @@ static void	do_redirections(t_vars *vars, t_cmd *cmd)
 			cmd->redirs = cmd->redirs->next;
 		}
 		if (is_builtin(vars, cmd))
-			exit(0);
+			exit(g_exit);
 		else
 			execve(cmd->command, cmd->args, vars->envp);
 	}
@@ -109,5 +106,7 @@ void	exec_cmd(t_vars *vars, char *input)
 		printf("minishell: command not found: '%s'\n", cmd->args[0]);
 		g_exit = 127;
 	}
+	if (g_exit >= 255)
+		g_exit /= 256;
 	free_cmd(cmd);
 }

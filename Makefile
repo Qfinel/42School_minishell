@@ -6,7 +6,7 @@
 #    By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2023/01/03 15:40:50 by jtsizik          ###   ########.fr        #
+#    Updated: 2023/01/04 11:58:31 by jtsizik          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ RL_FLAGS = -L$$HOME/.brew/opt/readline/lib -lreadline -I$$HOME/.brew/opt/readlin
 
 # BREW = /opt/homebrew/Cellar/readline/8.2.1
 
-RL_FLAGS = -L $(BREW)/lib -lreadline -I $(BREW)/include -lreadline
+# RL_FLAGS = -L $(BREW)/lib -lreadline -I $(BREW)/include -lreadline
 
 CFLAGS = -Wall -Wextra -Werror
 

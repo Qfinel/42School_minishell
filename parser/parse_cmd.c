@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:00:54 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/03 16:01:56 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/04 12:23:49 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*remove_input_redirs(char *str)
 
 	i = 0;
 	newstr = ft_calloc(ft_strlen(str) + 1, sizeof(char));
+	if (!newstr)
+		return (NULL);
 	while (str[i])
 	{
 		if ((str[i] != '>' && str[i] != '<') || !is_real_redir(str, i))
@@ -63,12 +65,18 @@ char	**get_clean_args(char *input, t_redir *redir)
 	t_redir	**head;
 
 	head = malloc(sizeof(t_redir *));
+	if (!head)
+		return (NULL);
 	*head = redir;
 	str = remove_input_redirs(input);
+	if (!str)
+		return (NULL);
 	tmp = split_with_quotes(str);
 	if (!tmp[1])
 		return (NULL);
 	args = ft_calloc(ft_arr_len(tmp), sizeof(char *));
+	if (!args)
+		return (NULL);
 	clean_args_loop(head, redir, tmp, args);
 	free(head);
 	free_strings(tmp);
@@ -82,6 +90,9 @@ t_cmd	*parse_cmd(t_vars *vars, char *input)
 	char	*trimmed;
 
 	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
+		return (ft_putstr_fd("Malloc failed\n", 2),
+			close_minishell(vars, input), NULL);
 	trimmed = ft_strtrim(input, " ");
 	if (redirections_exist(input))
 		cmd->redirs = parse_redirections(input);

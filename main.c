@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/03 14:47:56 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/04 12:17:32 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ int	main(int argc, char **argv, char **envp)
 	vars.paths = ft_split(getenv("PATH"), ':');
 	i = 0;
 	vars.envp = ft_calloc(ft_arr_len(envp) + 1, sizeof(char **));
+	if (!vars.envp)
+		return (ft_putstr_fd("Malloc failed\n", 2), -1);
 	while (envp[i])
 	{
 		if (!ft_strncmp(envp[i], "SHLVL", 5))

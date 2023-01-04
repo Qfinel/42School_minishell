@@ -6,13 +6,13 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:21:17 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/03 15:38:49 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/04 12:31:57 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*get_redir_type(char *str)
+static char	*get_redir_type(char *str)
 {
 	if (str[0] == '>' && str[1] == '>')
 		return ("APPEND");
@@ -26,7 +26,7 @@ char	*get_redir_type(char *str)
 		return (NULL);
 }
 
-char	*get_redir_filename(char *str)
+static char	*get_redir_filename(char *str)
 {
 	int		i;
 	char	**tmp;
@@ -45,6 +45,19 @@ char	*get_redir_filename(char *str)
 	return (filename);
 }
 
+static t_redir	*get_redir(t_redir *redir, char *input, int i)
+{
+	redir->type = get_redir_type(&input[i]);
+	redir->filename = get_redir_filename(&input[i]);
+	if (!redir->filename || i == 0)
+		return (NULL);
+	redir->next = ft_calloc(1, sizeof(t_redir));
+	if (!redir->next)
+		return (NULL);
+	redir = redir->next;
+	return (redir);
+}
+
 t_redir	*parse_redirections(char *input)
 {
 	t_redir	*redir;
@@ -54,17 +67,16 @@ t_redir	*parse_redirections(char *input)
 	i = 0;
 	head = malloc(sizeof(t_redir *));
 	redir = ft_calloc(1, sizeof(t_redir));
+	if (!head || !redir)
+		return (NULL);
 	*head = redir;
 	while (input[i])
 	{
 		if (input[i] == '>' || input[i] == '<')
 		{
-			redir->type = get_redir_type(&input[i]);
-			redir->filename = get_redir_filename(&input[i]);
-			if (!redir->filename || i == 0)
+			redir = get_redir(redir, input, i);
+			if (!redir)
 				return (NULL);
-			redir->next = ft_calloc(1, sizeof(t_redir));
-			redir = redir->next;
 			if (input[i + 1] == '>' || input[i + 1] == '<')
 				i++;
 		}

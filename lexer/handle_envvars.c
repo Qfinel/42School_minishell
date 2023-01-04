@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_envvars.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 20:45:23 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/02 16:26:34 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/04 15:53:21 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ char	*replace_envvar_with_value(t_vars vars, char *input)
 	int		i;
 	char	**envvars;
 	char	*env_value;
+	char	*temp;
 
 	if (input == NULL || !ft_strchr(input, '$'))
 		return (input);
@@ -74,11 +75,13 @@ char	*replace_envvar_with_value(t_vars vars, char *input)
 	i = 0;
 	while (envvars[i])
 	{
+		temp = input;
 		env_value = get_env_value(&vars, envvars[i] + 1);
 		if (env_value)
 			input = ft_str_replace(input, envvars[i], env_value);
 		else
 			input = ft_str_replace(input, envvars[i], "");
+		free(temp);
 		i++;
 	}
 	free_strings(envvars);

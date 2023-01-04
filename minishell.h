@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/03 16:21:57 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/04 14:39:09 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,6 @@ char	*ft_str_replace(char *str, char *old, char *new);
 int		count_words_starting_with_dollar(char *str);
 char	*get_end_of_envvar(char *str);
 int		skip_to_next(char c, char *str);
+int		unclosed_quotes(char *input);
 
 #endif

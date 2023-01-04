@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:38:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/02 16:49:20 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/04 14:38:49 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,26 @@ void	exit_process(t_vars *vars)
 	if (vars->envp)
 		free_strings(vars->envp);
 	exit(g_exit);
+}
+
+int	unclosed_quotes(char *input)
+{
+	int	i;
+	int	sing;
+	int	doub;
+
+	i = 0;
+	sing = 0;
+	doub = 0;
+	while (input[i])
+	{
+		if (input[i] == '\"')
+			doub++;
+		if (input[i] == '\'')
+			sing++;
+		i++;
+	}
+	if (doub % 2 > 0 || sing % 2 > 0)
+		return (1);
+	return (0);
 }

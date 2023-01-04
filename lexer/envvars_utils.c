@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 20:45:23 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/04 16:04:00 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/04 17:04:49 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,20 @@ char	*get_env_value(t_vars *vars, char *key)
 {
 	int		i;
 	char	*result;
+	char	*old_result;
 
 	i = 0;
 	result = NULL;
+	old_result = NULL;
 	while (vars->envp[i])
 	{
 		if (!ft_strncmp(vars->envp[i], key, ft_strlen(key)))
 		{
+			if (old_result)
+				free(old_result);
 			result = ft_substr(vars->envp[i], ft_strlen(key) + 1,
 					ft_strlen(vars->envp[i]));
+			old_result = result;
 			break ;
 		}
 		i++;
@@ -32,6 +37,14 @@ char	*get_env_value(t_vars *vars, char *key)
 	if (key[0] == '?' && !key[1])
 		result = ft_itoa(g_exit);
 	return (result);
+}
+
+void	free_two(char *str1, char *str2)
+{
+	if (str1)
+		free(str1);
+	if (str2)
+		free(str2);
 }
 
 char	*ft_str_replace(char *str, char *old, char *new)
@@ -50,17 +63,11 @@ char	*ft_str_replace(char *str, char *old, char *new)
 			old_result = result;
 			sub_str = ft_substr(result, 0, i);
 			result = ft_strjoin(sub_str, new);
-			if (sub_str)
-				free(sub_str);
-			if (old_result)
-				free(old_result);
+			free_two(sub_str, old_result);
 			old_result = result;
 			sub_str = ft_substr(str, i + ft_strlen(old), ft_strlen(str));
 			result = ft_strjoin(result, sub_str);
-			if (sub_str)
-				free(sub_str);
-			if (old_result)
-				free(old_result);
+			free_two(sub_str, old_result);
 		}
 		i++;
 	}

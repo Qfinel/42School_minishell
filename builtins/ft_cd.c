@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:36:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/04 12:56:27 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/04 16:17:01 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ static void	go_to_dir(t_cmd *cmd, char *abs_path)
 	}
 	else
 		new_abs_path = ft_strjoin(abs_path, cmd->args[1]);
+	free(abs_path);
 	if (chdir(new_abs_path) < 0)
 	{
 		if (chdir(cmd->args[1]) < 0)
@@ -95,6 +96,7 @@ static void	go_to_dir(t_cmd *cmd, char *abs_path)
 void	ft_cd(t_vars *vars, t_cmd *cmd)
 {
 	char	*abs_path;
+	char	*tmp;
 
 	g_exit = 0;
 	abs_path = getcwd(NULL, 0);
@@ -106,7 +108,11 @@ void	ft_cd(t_vars *vars, t_cmd *cmd)
 	else if (is_all_slashes(cmd->args[1]))
 		chdir("/");
 	else if (!ft_strncmp(cmd->args[1], "-", 2))
-		chdir(get_env_value(vars, "OLDPWD"));
+	{
+		tmp = get_env_value(vars, "OLDPWD");
+		chdir(tmp);
+		free(tmp);
+	}
 	else
 		go_to_dir(cmd, abs_path);
 	if (change_pwd(vars) < 0)

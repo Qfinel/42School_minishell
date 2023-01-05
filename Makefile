@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+         #
+#    By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2023/01/04 11:58:31 by jtsizik          ###   ########.fr        #
+#    Updated: 2023/01/05 16:52:22 by sdukic           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -97,4 +97,14 @@ debug: obj $(OBJS)
 
 debug_only: CFLAGS += -g
 debug_only: re
+
+install:
+	which -s brew
+	if [[ $? != 0 ]] ; then
+		# Install Homebrew
+		curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
+	fi
+	brew install readline
+
+.PHONY: all clean fclean re debug debug_only install
 

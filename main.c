@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/05 15:02:25 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/05 15:12:48 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int	is_piped(char *str)
 
 void	minishell_loop(t_vars *vars)
 {
-	char	*input;
 	char	*tmp;
 
 	while (1)
@@ -76,20 +75,21 @@ void	minishell_loop(t_vars *vars)
 		tmp = readline("\033[0;32mminishell$> \033[0;37m");
 		if (!tmp)
 			close_minishell(vars, NULL);
-		input = ft_strtrim(tmp, " ");
+		vars->input = ft_strtrim(tmp, " ");
 		free(tmp);
-		if (!ft_strncmp(input, "exit", 4)
-			&& (input[4] == ' ' || !input[4]))
-			close_minishell(vars, input);
-		if (input[0] != 0)
-			add_history(input);
-		input = replace_envvar_with_value(*vars, input);
-		if (input[0] != 0 && !unclosed_quotes(input) && is_piped(input))
-			exec_pipes(vars, input);
-		else if (input[0] != 0 && !unclosed_quotes(input))
-			exec_cmd(vars, input);
+		if (!ft_strncmp(vars->input, "exit", 4)
+			&& (vars->input[4] == ' ' || !vars->input[4]))
+			close_minishell(vars, vars->input);
+		if (vars->input[0] != 0)
+			add_history(vars->input);
+		vars->input = replace_envvar_with_value(*vars, vars->input);
+		if (vars->input[0] != 0 && !unclosed_quotes(vars->input)
+			&& is_piped(vars->input))
+			exec_pipes(vars, vars->input);
+		else if (vars->input[0] != 0 && !unclosed_quotes(vars->input))
+			exec_cmd(vars, vars->input);
 		wait(NULL);
-		free(input);
+		free(vars->input);
 	}
 }
 

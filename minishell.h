@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/04 14:39:09 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/05 15:13:14 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_vars
 {
 	char	**paths;
 	char	**envp;
+	char	*input;
 }	t_vars;
 
 typedef struct s_redir

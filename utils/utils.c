@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:38:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/04 14:38:49 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/05 15:11:49 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	exit_process(t_vars *vars)
 		free_strings(vars->paths);
 	if (vars->envp)
 		free_strings(vars->envp);
+	if (vars->input)
+		free(vars->input);
 	exit(g_exit);
 }
 

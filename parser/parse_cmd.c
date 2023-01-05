@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:00:54 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/04 12:23:49 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/05 15:16:06 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	**get_clean_args(char *input, t_redir *redir)
 	t_redir	**head;
 
 	head = malloc(sizeof(t_redir *));
-	if (!head)
+	if (!head || !input[0])
 		return (NULL);
 	*head = redir;
 	str = remove_input_redirs(input);

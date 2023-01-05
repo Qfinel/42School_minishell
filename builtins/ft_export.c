@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/04 12:57:50 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/05 14:45:04 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ static void	get_paths(t_vars *vars)
 	{
 		if (!ft_strncmp(vars->envp[i], "PATH=", 5))
 		{
-			free_strings(vars->paths);
+			if (vars->paths)
+				free_strings(vars->paths);
 			vars->paths = ft_split(&vars->envp[i][5], ':');
 			return ;
 		}

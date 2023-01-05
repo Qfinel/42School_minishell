@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/04 14:36:16 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/05 15:02:25 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,17 @@ int	is_piped(char *str)
 void	minishell_loop(t_vars *vars)
 {
 	char	*input;
+	char	*tmp;
 
 	while (1)
 	{
 		signal(SIGINT, ctrl_c_handler);
-		input = readline("\033[0;32mminishell$> \033[0;37m");
-		if (!input)
-		{
-			printf("\n");
+		tmp = readline("\033[0;32mminishell$> \033[0;37m");
+		if (!tmp)
 			close_minishell(vars, NULL);
-		}
-		if (ft_strncmp(input, "exit", 4) == 0
+		input = ft_strtrim(tmp, " ");
+		free(tmp);
+		if (!ft_strncmp(input, "exit", 4)
 			&& (input[4] == ' ' || !input[4]))
 			close_minishell(vars, input);
 		if (input[0] != 0)

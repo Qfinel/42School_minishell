@@ -6,7 +6,7 @@
 #    By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2023/01/05 16:52:22 by sdukic           ###   ########.fr        #
+#    Updated: 2023/01/06 15:53:22 by sdukic           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -99,12 +99,14 @@ debug_only: CFLAGS += -g
 debug_only: re
 
 install:
-	which -s brew
-	if [[ $? != 0 ]] ; then
-		# Install Homebrew
-		curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
+	@which brew
+	@if [ $$? -eq 0 ]; then \
+		echo "Homebrew is already installed"; \
+	else \
+		echo "Installing Homebrew..."; \
+		ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"; \
 	fi
-	brew install readline
+
 
 .PHONY: all clean fclean re debug debug_only install
 

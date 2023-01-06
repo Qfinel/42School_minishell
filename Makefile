@@ -6,7 +6,7 @@
 #    By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2023/01/06 16:06:50 by sdukic           ###   ########.fr        #
+#    Updated: 2023/01/06 17:52:26 by sdukic           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,6 +100,7 @@ debug_only: re
 
 install:
 	@which brew || curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
+	@brew install readline
 
 
 

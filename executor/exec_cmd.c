@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/07 15:42:17 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/07 16:30:45 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,11 @@ void	exec_heredoc(t_redir *redir)
 			input = readline("heredoc> ");
 			if (!ft_strncmp(input, redir->filename,
 					ft_strlen(redir->filename) + 1))
+			{
+				free(input);
 				break ;
+			}
+			free(input);
 		}
 	}
 }

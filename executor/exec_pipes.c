@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/07 16:03:59 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/07 16:39:34 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ void	exec_pipes(t_vars *vars, char *input)
 		if (cmd->redirs)
 			exec_heredoc(cmd->redirs);
 		free_cmd(cmd);
+		if (!cmds[1])
+		{
+			exec_cmd(vars, cmds[0]);
+			break ;
+		}
 		pipe_loop(&tmp_fd, vars, cmds, i);
 		wait(NULL);
 		i++;

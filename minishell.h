@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/06 18:34:38 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/07 14:45:24 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/stat.h>
 # include "libft/libft.h"
 
 int	g_exit;
@@ -91,5 +92,6 @@ int		skip_to_next(char c, char *str);
 int		unclosed_quotes(char *input);
 void	check_exit(char *input);
 void	backslash_handler(int sig);
+char	*replace_shlvl(char *str);
 
 #endif

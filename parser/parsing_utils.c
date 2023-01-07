@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:39:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/07 12:29:06 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/07 14:38:28 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,11 @@ char	*get_cmd_path(char **paths, char *cmd)
 
 void	get_command(t_cmd *cmd, t_vars *vars)
 {
-	if (cmd->args[0][0] == '/')
-	{
-		if (access(cmd->args[0], F_OK) == 0)
-			cmd->command = ft_strdup(cmd->args[0]);
-		else
-			cmd->command = NULL;
-	}
+	struct stat	stats;
+
+	stat(cmd->args[0], &stats);
+	if (!access(cmd->args[0], F_OK) && (stats.st_mode & X_OK))
+		cmd->command = ft_strdup(cmd->args[0]);
 	else if (!ft_strncmp(cmd->args[0], "export", 7)
 		|| !ft_strncmp(cmd->args[0], "unset", 6))
 		cmd->command = ft_strdup(cmd->args[0]);

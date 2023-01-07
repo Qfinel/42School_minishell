@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_envvars.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 20:45:23 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/04 17:29:57 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/06 15:31:57 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ static char	**get_words_starting_with_dollar(char *str)
 
 	i = 0;
 	j = 0;
-	result = malloc(sizeof(char *)
-			* (count_words_starting_with_dollar(str) + 1));
-	while (str[i])
+	result = ft_calloc(sizeof(char *),
+			(count_words_starting_with_dollar(str) + 1));
+	while (str[i] && result)
 	{
 		if (str[i] == '$' && !is_envvar_in_single_quotes(str, i)
 			&& str[i + 1] && str[i + 1] != ' ')
@@ -56,7 +56,6 @@ static char	**get_words_starting_with_dollar(char *str)
 		}
 		i++;
 	}
-	result[j] = NULL;
 	return (result);
 }
 
@@ -64,7 +63,8 @@ int	check_envvars(char **envvars)
 {
 	if (!envvars || !envvars[0])
 	{
-		free_strings(envvars);
+		if (envvars)
+			free(envvars);
 		return (0);
 	}
 	return (1);

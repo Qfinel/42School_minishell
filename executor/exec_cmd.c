@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/05 15:15:25 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/07 11:12:30 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ static void	run_command(t_cmd *cmd, t_vars *vars)
 {
 	int	id;
 
+	signal(SIGINT, ctrl_c_pipe_handler);
+	signal(SIGQUIT, backslash_handler);
 	if (!cmd->redirs)
 	{
 		if (!is_builtin(vars, cmd))
@@ -93,7 +95,6 @@ void	exec_cmd(t_vars *vars, char *input)
 	t_cmd	*cmd;
 
 	cmd = parse_cmd(vars, input);
-	signal(SIGINT, ctrl_c_pipe_handler);
 	if (!cmd)
 	{
 		g_exit = 1;
@@ -108,5 +109,7 @@ void	exec_cmd(t_vars *vars, char *input)
 	}
 	if (g_exit >= 255)
 		g_exit /= 256;
+	else if (g_exit == 2)
+		g_exit = 130;
 	free_cmd(cmd);
 }

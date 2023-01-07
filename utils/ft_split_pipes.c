@@ -6,11 +6,38 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 15:35:01 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/02 16:23:29 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/06 18:18:24 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	is_real_pipe(char *input, int i)
+{
+	int	j;
+	int	quotes1;
+	int	quotes2;
+
+	j = 0;
+	quotes1 = 0;
+	quotes2 = 0;
+	while (j < i)
+	{
+		if (input[j] == '\'' || input[j] == '\"')
+			quotes1++;
+		j++;
+	}
+	while (input[i])
+	{
+		if (input[i] == '\'' || input[i] == '\"')
+			quotes2++;
+		i++;
+	}
+	if (quotes1 % 2 > 0 && quotes2 > 0)
+		return (0);
+	else
+		return (1);
+}
 
 static size_t	ft_wordlen(char *s, char c)
 {

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:36:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/04 16:17:01 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/07 11:00:48 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ static int	change_pwd(t_vars *vars)
 	char	**new_envp;
 
 	i = 0;
-	old_pwd = get_old_pwd(vars);
-	new_pwd = ft_strjoin("PWD=", getcwd(NULL, 0));
 	new_envp = ft_calloc(ft_arr_len(vars->envp) + 1, sizeof(char *));
 	if (!new_envp)
 		return (-1);
+	old_pwd = get_old_pwd(vars);
+	new_pwd = ft_strjoin("PWD=", getcwd(NULL, 0));
 	while (vars->envp[i])
 	{
 		if (!ft_strncmp(vars->envp[i], "PWD", 3))
@@ -115,8 +115,8 @@ void	ft_cd(t_vars *vars, t_cmd *cmd)
 	}
 	else
 		go_to_dir(cmd, abs_path);
+	free(abs_path);
 	if (change_pwd(vars) < 0)
 		return (ft_putstr_fd("Malloc failed\n", 2),
-			close_minishell(vars, NULL));
-	free(abs_path);
+			close_minishell(vars, vars->input));
 }

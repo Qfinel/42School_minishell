@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/04 16:03:05 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/07 11:47:56 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	exec_pipes(t_vars *vars, char *input)
 	while (cmds[i])
 	{
 		pipe_loop(&tmp_fd, vars, cmds, i);
+		wait(NULL);
 		i++;
 	}
 	free_strings(cmds);

@@ -6,49 +6,48 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/05 15:12:48 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/06 18:29:51 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	close_minishell(t_vars *vars, char *input)
+static int	is_num(char *str)
 {
-	printf("exit\n");
-	if (vars->paths)
-		free_strings(vars->paths);
-	if (input)
-		free(input);
-	if (vars->envp)
-		free_strings(vars->envp);
-	exit(g_exit);
-}
+	int	i;
 
-int	is_real_pipe(char *input, int i)
-{
-	int	j;
-	int	quotes1;
-	int	quotes2;
-
-	j = 0;
-	quotes1 = 0;
-	quotes2 = 0;
-	while (j < i)
+	i = 1;
+	if (str[0] != '-' && str[0] != '+' && !ft_isdigit(str[0]))
+		return (0);
+	while (str[i])
 	{
-		if (input[j] == '\'' || input[j] == '\"')
-			quotes1++;
-		j++;
-	}
-	while (input[i])
-	{
-		if (input[i] == '\'' || input[i] == '\"')
-			quotes2++;
+		if (!ft_isdigit(str[i]))
+			return (0);
 		i++;
 	}
-	if (quotes1 % 2 > 0 && quotes2 > 0)
-		return (0);
-	else
-		return (1);
+	return (1);
+}
+
+void	check_exit(char *input)
+{
+	char	**tmp;
+
+	tmp = ft_split(input, ' ');
+	if (tmp[2] && tmp[1] && !ft_strncmp("exit", tmp[0], 5))
+	{
+		printf("exit: too many args\n");
+		g_exit = 1;
+	}
+	else if (tmp[1] && is_num(tmp[1])
+		&& !ft_strncmp("exit", tmp[0], 5))
+		g_exit = ft_atoi(tmp[1]);
+	else if (tmp[1] && !is_num(tmp[1])
+		&& !ft_strncmp("exit", tmp[0], 5))
+	{
+		printf("exit: %s: numeric arg required\n", tmp[1]);
+		g_exit = 255;
+	}
+	free_strings(tmp);
 }
 
 int	is_piped(char *str)

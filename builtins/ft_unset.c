@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:41 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/04 15:23:29 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/07 11:01:16 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	find_and_delete(char **args, char **new_envp,
 	indexes = ft_calloc(arr_len + 1, sizeof(int));
 	if (!indexes)
 		return (ft_putstr_fd("Malloc failed\n", 2),
-			close_minishell(vars, NULL));
+			close_minishell(vars, vars->input));
 	get_env_indexes(args, indexes, vars->envp, 0);
 	j = 1;
 	while (args[j])
@@ -111,7 +111,7 @@ void	ft_unset(t_vars *vars, char **args)
 		new_envp = ft_calloc(new_len, sizeof(char *));
 		if (!new_envp)
 			return (ft_putstr_fd("Malloc failed\n", 2),
-				close_minishell(vars, NULL));
+				close_minishell(vars, vars->input));
 		find_and_delete(args, new_envp, vars, indexes_arr_len);
 		free_strings(vars->envp);
 		vars->envp = new_envp;

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+         #
+#    By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2023/01/06 17:52:26 by sdukic           ###   ########.fr        #
+#    Updated: 2023/01/06 16:09:50 by jtsizik          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,9 +100,6 @@ debug_only: re
 
 install:
 	@which brew || curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
-	@brew install readline
-
-
+	brew install readline
 
 .PHONY: all clean fclean re debug debug_only install
-

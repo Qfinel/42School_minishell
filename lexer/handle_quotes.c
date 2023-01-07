@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:56:13 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/05 15:17:00 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/07 11:44:03 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	**split_with_quotes(char *str)
 
 	iter.i = 0;
 	iter.j = 0;
-	result = malloc(sizeof(char *) * (count_words_with_quotes(str) + 1));
+	result = ft_calloc(sizeof(char *), count_words_with_quotes(str) + 1);
 	if (!result || !str[0])
 		return (NULL);
 	while (str[iter.i])
@@ -115,6 +115,5 @@ char	**split_with_quotes(char *str)
 		while (str[iter.i] == ' ')
 			iter.i++;
 	}
-	result[iter.j] = NULL;
 	return (result);
 }

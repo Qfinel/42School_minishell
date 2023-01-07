@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/05 14:45:04 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/07 12:01:52 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	replace_existed_vars(char **new_envp, char **args)
 		while (args[j])
 		{
 			tmp1 = ft_split(args[j], '=');
-			if (!ft_strncmp(tmp[0], tmp1[0], ft_strlen(tmp[0]) + 1))
+			if (!ft_strncmp(tmp[0], tmp1[0], ft_strlen(tmp[0]) + 1) && tmp1[1])
 			{
 				free(new_envp[i]);
 				new_envp[i] = ft_strdup(args[j]);
@@ -117,13 +117,14 @@ void	ft_export(t_vars *vars, char **args)
 	new_envp = ft_calloc(new_arr_len, sizeof(char *));
 	if (!new_envp)
 		return (ft_putstr_fd("Malloc failed\n", 2),
-			close_minishell(vars, NULL));
+			close_minishell(vars, vars->input));
 	g_exit = 0;
 	if (!args[1])
 	{
 		while (vars->envp[i])
 		{
-			printf("%s\n", vars->envp[i]);
+			if (ft_strncmp("_=", vars->envp[i], 2))
+				printf("declare -x %s\n", vars->envp[i]);
 			i++;
 		}
 		free(new_envp);

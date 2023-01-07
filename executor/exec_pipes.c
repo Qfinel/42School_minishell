@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/07 13:15:16 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/07 15:41:10 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void	pipe_loop(int *tmp_fd, t_vars *vars, char **cmds, int i)
 void	exec_pipes(t_vars *vars, char *input)
 {
 	char	**cmds;
+	t_cmd	*cmd;
 	int		i;
 	int		tmp_fd;
 
@@ -53,6 +54,10 @@ void	exec_pipes(t_vars *vars, char *input)
 	signal(SIGINT, ctrl_c_pipe_handler);
 	while (cmds[i])
 	{
+		cmd = parse_cmd(vars, cmds[i]);
+		if (cmd->redirs)
+			exec_heredoc(cmd->redirs);
+		free_cmd(cmd);
 		pipe_loop(&tmp_fd, vars, cmds, i);
 		wait(NULL);
 		i++;

@@ -6,21 +6,25 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/07 12:34:30 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/07 15:42:17 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	exec_heredoc(t_redir *redir)
+void	exec_heredoc(t_redir *redir)
 {
 	char	*input;
 
-	while (1)
+	if (!ft_strncmp(redir->type, "HEREDOC", 8))
 	{
-		input = readline("heredoc> ");
-		if (!ft_strncmp(input, redir->filename, ft_strlen(redir->filename) + 1))
-			break ;
+		while (1)
+		{
+			input = readline("heredoc> ");
+			if (!ft_strncmp(input, redir->filename,
+					ft_strlen(redir->filename) + 1))
+				break ;
+		}
 	}
 }
 
@@ -46,8 +50,6 @@ static void	change_fd(t_redir *redir)
 	if (ft_strncmp(redir->type, "HEREDOC", 8) && fd < 0)
 		return ((void)printf("minishell: err: invalid filename: %s\n",
 				redir->filename), exit(1));
-	if (!ft_strncmp(redir->type, "HEREDOC", 8))
-		exec_heredoc(redir);
 }
 
 static void	do_redirections(t_vars *vars, t_cmd *cmd)

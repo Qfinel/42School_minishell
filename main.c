@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/07 14:45:25 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/07 15:44:46 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,6 @@ void	check_exit(char *input)
 	free_strings(tmp);
 }
 
-int	is_piped(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '|' && is_real_pipe(str, i))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 void	minishell_loop(t_vars *vars)
 {
 	char	*tmp;
@@ -82,11 +68,8 @@ void	minishell_loop(t_vars *vars)
 		if (vars->input[0] != 0)
 			add_history(vars->input);
 		vars->input = replace_envvar_with_value(*vars, vars->input);
-		if (vars->input[0] != 0 && !unclosed_quotes(vars->input)
-			&& is_piped(vars->input))
+		if (vars->input[0] != 0 && !unclosed_quotes(vars->input))
 			exec_pipes(vars, vars->input);
-		else if (vars->input[0] != 0 && !unclosed_quotes(vars->input))
-			exec_cmd(vars, vars->input);
 		wait(NULL);
 		free(vars->input);
 	}

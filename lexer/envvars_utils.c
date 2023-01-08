@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envvars_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 20:45:23 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/04 17:04:49 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/08 15:53:05 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*get_env_value(t_vars *vars, char *key)
 		}
 		i++;
 	}
-	if (key[0] == '?' && !key[1])
+	if (key[0] == '?' && (!key[1] || key[1] == ' '))
 		result = ft_itoa(g_exit);
 	return (result);
 }
@@ -68,6 +68,7 @@ char	*ft_str_replace(char *str, char *old, char *new)
 			sub_str = ft_substr(str, i + ft_strlen(old), ft_strlen(str));
 			result = ft_strjoin(result, sub_str);
 			free_two(sub_str, old_result);
+			break ;
 		}
 		i++;
 	}

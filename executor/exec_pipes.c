@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/08 13:28:18 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/08 13:39:43 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ static void	pipe_loop(int *tmp_fd, t_vars *vars, char **cmds, int i)
 		close(end[0]);
 		exec_cmd(vars, cmds[i]);
 		free_strings(cmds);
-		if (g_exit >= 255)
-			g_exit /= 256;
 		exit_process(vars);
 	}
-	while (!cmds[i + 1] && wait(&g_exit) > 0)
+	if (!cmds[i + 1])
+		wait(&g_exit);
+	while (!cmds[i + 1] && wait(NULL) > 0)
 		continue ;
 	if (g_exit >= 255)
 		g_exit /= 256;

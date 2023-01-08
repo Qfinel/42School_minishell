@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/08 17:37:00 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/08 20:17:14 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static void	run_command(t_cmd *cmd, t_vars *vars)
 				signal(SIGINT, SIG_DFL);
 				signal(SIGQUIT, SIG_DFL);
 				execve(cmd->command, cmd->args, vars->envp);
-			}	
+			}
 			wait(&g_exit);
 		}
 	}

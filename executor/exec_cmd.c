@@ -6,18 +6,18 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/08 16:19:21 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/08 17:37:00 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	exec_heredoc(t_redir *redir)
+void	exec_heredoc(t_vars *vars, t_cmd *cmd, char **cmds)
 {
 	char	*input;
 	int		id;
 
-	if (!ft_strncmp(redir->type, "HEREDOC", 8))
+	if (!ft_strncmp(cmd->redirs->type, "HEREDOC", 8))
 	{
 		id = fork();
 		if (id == 0)
@@ -26,14 +26,16 @@ void	exec_heredoc(t_redir *redir)
 			while (1)
 			{
 				input = readline("heredoc> ");
-				if (!ft_strncmp(input, redir->filename,
-						ft_strlen(redir->filename) + 1))
-				{
-					free(input);
+				if (!ft_strncmp(input, cmd->redirs->filename,
+						ft_strlen(cmd->redirs->filename) + 1))
 					break ;
-				}
 				free(input);
 			}
+			free(input);
+			g_exit = 0;
+			free_strings(cmds);
+			free_cmd(cmd);
+			exit_process(vars);
 		}
 		wait(&g_exit);
 	}

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/08 16:10:11 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/08 17:37:02 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	exec_pipes(t_vars *vars, char *input)
 	{
 		cmd = parse_cmd(vars, cmds[i]);
 		if (cmd->redirs)
-			exec_heredoc(cmd->redirs);
+			exec_heredoc(vars, cmd, cmds);
 		free_cmd(cmd);
 		if (!cmds[1])
 		{

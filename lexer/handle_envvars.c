@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 20:45:23 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/08 16:08:14 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/08 17:29:38 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ int	check_envvars(char **envvars)
 {
 	if (!envvars || !envvars[0])
 	{
-		// if (envvars)
-		// 	free(envvars);
+		if (envvars)
+			free(envvars);
 		return (0);
 	}
 	return (1);

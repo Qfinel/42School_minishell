@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:12:04 by jtsizik           #+#    #+#             */
-/*   Updated: 2022/12/22 16:21:04 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/08 17:29:27 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,15 @@ void	free_strings(char **strings)
 
 void	free_redirs(t_redir *redir)
 {
-	while (redir->next)
+	t_redir	*tmp;
+
+	while (redir)
 	{
-		free(redir->filename);
-		free(redir);
+		tmp = redir;
 		redir = redir->next;
+		free(tmp);
+		free(tmp->filename);
 	}
-	free(redir);
 }
 
 void	free_cmd(t_cmd *cmd)

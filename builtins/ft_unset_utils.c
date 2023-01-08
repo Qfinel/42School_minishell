@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:20:25 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/03 16:27:27 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/08 17:50:17 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,5 @@ int	count_env_vars(t_vars *vars, char **args)
 		i = 0;
 		j++;
 	}
-	return (i);
+	return (counter);
 }

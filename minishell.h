@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/07 15:38:50 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/08 12:36:27 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ char	*get_end_of_envvar(char *str);
 int		skip_to_next(char c, char *str);
 int		unclosed_quotes(char *input);
 void	check_exit(char *input);
-void	backslash_handler(int sig);
 char	*replace_shlvl(char *str);
+void	process_int(int sig);
 void	exec_heredoc(t_redir *redir);
 
 #endif

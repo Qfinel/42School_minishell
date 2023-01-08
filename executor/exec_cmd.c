@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/07 16:30:45 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/08 12:39:01 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,27 @@
 void	exec_heredoc(t_redir *redir)
 {
 	char	*input;
+	int		id;
 
 	if (!ft_strncmp(redir->type, "HEREDOC", 8))
 	{
-		while (1)
+		id = fork();
+		if (id == 0)
 		{
-			input = readline("heredoc> ");
-			if (!ft_strncmp(input, redir->filename,
-					ft_strlen(redir->filename) + 1))
+			signal(SIGINT, SIG_DFL);
+			while (1)
 			{
+				input = readline("heredoc> ");
+				if (!ft_strncmp(input, redir->filename,
+						ft_strlen(redir->filename) + 1))
+				{
+					free(input);
+					break ;
+				}
 				free(input);
-				break ;
 			}
-			free(input);
 		}
+		wait(&g_exit);
 	}
 }
 
@@ -63,6 +70,8 @@ static void	do_redirections(t_vars *vars, t_cmd *cmd)
 	id = fork();
 	if (id == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		while (cmd->redirs->next)
 		{
 			change_fd(cmd->redirs);
@@ -80,15 +89,17 @@ static void	run_command(t_cmd *cmd, t_vars *vars)
 {
 	int	id;
 
-	signal(SIGINT, ctrl_c_pipe_handler);
-	signal(SIGQUIT, backslash_handler);
 	if (!cmd->redirs)
 	{
 		if (!is_builtin(vars, cmd))
 		{
 			id = fork();
 			if (id == 0)
+			{
+				signal(SIGINT, SIG_DFL);
+				signal(SIGQUIT, SIG_DFL);
 				execve(cmd->command, cmd->args, vars->envp);
+			}	
 			wait(&g_exit);
 		}
 	}

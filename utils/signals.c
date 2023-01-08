@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:21:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/07 16:31:24 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/08 12:37:37 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,7 @@ void	ctrl_c_handler(int sig)
 void	ctrl_c_pipe_handler(int sig)
 {
 	(void)sig;
-	if (g_exit == 2)
-		g_exit = 130;
 	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-}
-
-void	backslash_handler(int sig)
-{
-	(void)sig;
-	printf("QUIT\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
 }

@@ -6,7 +6,7 @@
 #    By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2023/01/06 16:09:50 by jtsizik          ###   ########.fr        #
+#    Updated: 2023/01/08 16:39:17 by jtsizik          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,7 +95,7 @@ debug: obj $(OBJS)
 	cd ..
 	cc $(CFLAGS) $(RL_FLAGS) $(OBJS) libft/libft.a -g -Wno-gnu-include-next -I../LeakSanitizer/include -L../LeakSanitizer -llsan -lc++ -o $(NAME)
 
-debug_only: CFLAGS += -g
+debug_only: CFLAGS += -g -fsanitize=address
 debug_only: re
 
 install:

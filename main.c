@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/08 16:09:18 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/08 16:44:52 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	check_exit(char *input)
 	char	**tmp;
 
 	tmp = ft_split(input, ' ');
-	if (tmp[2] && tmp[1] && !ft_strncmp("exit", tmp[0], 5))
+	if (tmp[1] && tmp[2] && !ft_strncmp("exit", tmp[0], 5))
 	{
 		printf("exit: too many args\n");
 		g_exit = 1;

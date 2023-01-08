@@ -6,37 +6,57 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:56:13 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/08 16:23:09 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/08 16:44:24 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	count_words_with_quotes(char *str)
-{
-	int	i;
-	int	count;
+// int	count_words_with_quotes(char *str)
+// {
+// 	int	i;
+// 	int	count;
 
-	i = 0;
-	count = 0;
-	while (str[i])
+// 	i = 0;
+// 	count = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] == '"')
+// 			i += skip_to_next('"', str);
+// 		else if (str[i] == '\'')
+// 			i += skip_to_next('\'', str);
+// 		else if (str[i] == '$')
+// 			i += skip_to_next(' ', str);
+// 		else if (str[i] != ' ')
+// 		{
+// 			while (str[i] != ' ' && str[i])
+// 				i++;
+// 		}
+// 		if (str[i] == ' ')
+// 			i++;
+// 		count++;
+// 	}
+// 	return (count);
+// }
+
+static size_t	ft_wordcount(char *s, char c)
+{
+	size_t	i;
+	size_t	j;
+
+	j = 0;
+	i = 1;
+	if (s[0] == '\0')
+		return (0);
+	while (s[i])
 	{
-		if (str[i] == '"')
-			i += skip_to_next('"', str);
-		else if (str[i] == '\'')
-			i += skip_to_next('\'', str);
-		else if (str[i] == '$')
-			i += skip_to_next(' ', str);
-		else if (str[i] != ' ')
-		{
-			while (str[i] != ' ' && str[i])
-				i++;
-		}
-		if (str[i] == ' ')
-			i++;
-		count++;
+		if (s[i - 1] == c && s[i] != c)
+			j++;
+		i++;
 	}
-	return (count);
+	if (s[0] != c)
+		j++;
+	return (j);
 }
 
 char	*remove_unclosed_quotes(char *str)
@@ -100,7 +120,7 @@ char	**split_with_quotes(char *str)
 	iter.j = 0;
 	while (str[iter.i] == ' ')
 		iter.i++;
-	result = ft_calloc(sizeof(char *), count_words_with_quotes(str) + 1);
+	result = ft_calloc(sizeof(char *), ft_wordcount(str, ' ') + 1);
 	if (!result || !str[0])
 		return (NULL);
 	while (str[iter.i])

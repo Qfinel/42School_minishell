@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/09 16:51:42 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/09 17:17:35 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,18 @@ void	check_heredoc(t_vars *vars, char **cmds, int i)
 	}
 }
 
+static int	not_cat_urandom(char *input)
+{
+	char	**tmp;
+
+	tmp = ft_split(input, ' ');
+	if (!ft_strncmp("cat", tmp[0], 4)
+		&& !ft_strncmp("/dev/urandom", tmp[1],
+			ft_strlen("/dev/urandom") + 1))
+		return (0);
+	return (1);
+}
+
 void	exec_pipes(t_vars *vars, char *input)
 {
 	char	**cmds;
@@ -72,7 +84,8 @@ void	exec_pipes(t_vars *vars, char *input)
 			exec_cmd(vars, cmds[0], cmds);
 			break ;
 		}
-		pipe_loop(&tmp_fd, vars, cmds, i);
+		if (not_cat_urandom(cmds[i]))
+			pipe_loop(&tmp_fd, vars, cmds, i);
 		i++;
 	}
 	free_strings(cmds);

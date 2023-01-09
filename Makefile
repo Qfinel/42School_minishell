@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+         #
+#    By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:07:27 by jtsizik           #+#    #+#              #
-#    Updated: 2023/01/08 20:23:43 by sdukic           ###   ########.fr        #
+#    Updated: 2023/01/09 19:10:00 by jtsizik          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ OBJS =	obj/main.o \
 		obj/ft_unset_utils.o \
 		obj/exec_cmd.o \
 		obj/exec_pipes.o \
+		obj/heredoc_utils.o \
 		obj/parse_cmd.o \
 		obj/parse_redirections.o \
 		obj/parsing_utils.o \

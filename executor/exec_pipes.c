@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/09 18:55:22 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/09 19:14:50 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,12 @@ void	check_heredoc(t_vars *vars, char **cmds, int i)
 	cmd = parse_cmd(vars, cmds[i]);
 	if (cmd)
 	{
-		if (cmd->redirs)
-			exec_heredoc(vars, cmd, cmds);
+		while (cmd->redirs->next)
+		{
+			if (!ft_strncmp(cmd->redirs->type, "HEREDOC", 8))
+				exec_heredoc(vars, cmd, cmds);
+			cmd->redirs = cmd->redirs->next;
+		}
 		free_cmd(cmd);
 	}
 }

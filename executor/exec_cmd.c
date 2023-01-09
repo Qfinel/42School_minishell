@@ -6,59 +6,38 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/09 19:07:10 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/09 19:11:39 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	add_to_tmp(char *input)
-{
-	int	fd;
-
-	fd = open("executor/heredoc.tmp", O_WRONLY | O_CREAT | O_APPEND, 0644);
-	write(fd, input, ft_strlen(input));
-	write(fd, "\n", 1);
-	close(fd);
-}
-
-void	truncate_tmp(void)
-{
-	int	fd;
-
-	fd = open("executor/heredoc.tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	close(fd);
-}
 
 void	exec_heredoc(t_vars *vars, t_cmd *cmd, char **cmds)
 {
 	char	*input;
 	int		id;
 
-	if (!ft_strncmp(cmd->redirs->type, "HEREDOC", 8))
+	id = fork();
+	if (id == 0)
 	{
-		id = fork();
-		if (id == 0)
+		signal(SIGINT, SIG_DFL);
+		while (1)
 		{
-			signal(SIGINT, SIG_DFL);
-			while (1)
-			{
-				input = readline("> ");
-				if (!ft_strncmp(input, cmd->redirs->filename,
-						ft_strlen(cmd->redirs->filename) + 1))
-					break ;
-				if (!cmd->args[1])
-					add_to_tmp(input);
-				free(input);
-			}
+			input = readline("> ");
+			if (!ft_strncmp(input, cmd->redirs->filename,
+					ft_strlen(cmd->redirs->filename) + 1))
+				break ;
+			if (!cmd->args[1])
+				add_to_tmp(input);
 			free(input);
-			g_exit = 0;
-			free_strings(cmds);
-			free_cmd(cmd);
-			exit_process(vars);
 		}
-		wait(&g_exit);
+		free(input);
+		g_exit = 0;
+		free_strings(cmds);
+		free_cmd(cmd);
+		exit_process(vars);
 	}
+	wait(&g_exit);
 }
 
 static int	change_fd(t_redir *redir)
@@ -66,15 +45,12 @@ static int	change_fd(t_redir *redir)
 	int	fd;
 
 	if (!ft_strncmp(redir->type, "OUTPUT", 7))
-	{
 		fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		dup2(fd, 1);
-	}
 	if (!ft_strncmp(redir->type, "APPEND", 7))
-	{
 		fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (!ft_strncmp(redir->type, "APPEND", 7)
+		|| !ft_strncmp(redir->type, "OUTPUT", 7))
 		dup2(fd, 1);
-	}
 	if (!ft_strncmp(redir->type, "INPUT", 6))
 	{
 		fd = open(redir->filename, O_RDONLY);

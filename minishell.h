@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/09 18:43:56 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/09 19:09:48 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,6 @@ char	*replace_shlvl(char *str);
 void	process_int(int sig);
 void	exec_heredoc(t_vars *vars, t_cmd *cmd, char **cmds);
 void	truncate_tmp(void);
+void	add_to_tmp(char *input);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/09 17:20:45 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/09 18:55:22 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,10 @@ void	exec_pipes(t_vars *vars, char *input)
 		if (!cmds[1])
 		{
 			exec_cmd(vars, cmds[0], cmds);
+			truncate_tmp();
 			break ;
 		}
+		truncate_tmp();
 		if (not_cat_urandom(cmds[i]))
 			pipe_loop(&tmp_fd, vars, cmds, i);
 		i++;

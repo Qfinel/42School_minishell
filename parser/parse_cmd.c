@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:00:54 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/07 12:30:48 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/09 15:29:38 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*remove_input_redirs(char *str)
 	return (newstr);
 }
 
-static void	clean_args_loop(t_redir	**head, t_redir *redir,
+static void	clean_args_loop(t_redir	*head, t_redir *redir,
 	char **tmp, char **args)
 {
 	int	i;
@@ -48,7 +48,7 @@ static void	clean_args_loop(t_redir	**head, t_redir *redir,
 				i++;
 			redir = redir->next;
 		}
-		redir = *head;
+		redir = head;
 		if (tmp[i])
 			args[j] = ft_strdup(tmp[i]);
 		j++;
@@ -62,12 +62,11 @@ char	**get_clean_args(char *input, t_redir *redir)
 	char	**args;
 	char	**tmp;
 	char	*str;
-	t_redir	**head;
+	t_redir	*tmp_r;
 
-	head = malloc(sizeof(t_redir *));
-	if (!head || !input[0])
+	if (!input[0])
 		return (NULL);
-	*head = redir;
+	tmp_r = redir;
 	str = remove_input_redirs(input);
 	if (!str)
 		return (NULL);
@@ -77,8 +76,7 @@ char	**get_clean_args(char *input, t_redir *redir)
 	args = ft_calloc(ft_arr_len(tmp), sizeof(char *));
 	if (!args)
 		return (NULL);
-	clean_args_loop(head, redir, tmp, args);
-	free(head);
+	clean_args_loop(tmp_r, redir, tmp, args);
 	free_strings(tmp);
 	free(str);
 	return (args);

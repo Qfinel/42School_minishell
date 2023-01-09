@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:21:17 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/09 15:27:14 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/09 15:27:44 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,14 @@ static t_redir	*get_redir(t_redir *redir, char *input, int i)
 t_redir	*parse_redirections(char *input)
 {
 	t_redir	*redir;
-	t_redir	**head;
+	t_redir	*tmp;
 	int		i;
 
 	i = 0;
-	head = malloc(sizeof(t_redir *));
 	redir = ft_calloc(1, sizeof(t_redir));
-	if (!head || !redir)
+	if (!redir)
 		return (NULL);
-	*head = redir;
+	tmp = redir;
 	while (input[i])
 	{
 		if (input[i] == '>' || input[i] == '<')
@@ -82,34 +81,7 @@ t_redir	*parse_redirections(char *input)
 		}
 		i++;
 	}
-	redir = *head;
-	return (free(head), redir);
+	redir = tmp;
+	return (redir);
 }
-
-// t_redir	*parse_redirections(char *input)
-// {
-// 	t_redir	*redir;
-// 	t_redir	*tmp;
-// 	int		i;
-
-// 	i = 0;
-// 	redir = ft_calloc(1, sizeof(t_redir));
-// 	if (!redir)
-// 		return (NULL);
-// 	tmp = redir;
-// 	while (input[i])
-// 	{
-// 		if (input[i] == '>' || input[i] == '<')
-// 		{
-// 			redir = get_redir(redir, input, i);
-// 			if (!redir)
-// 				return (NULL);
-// 			if (input[i + 1] == '>' || input[i + 1] == '<')
-// 				i++;
-// 		}
-// 		i++;
-// 	}
-// 	redir = tmp;
-// 	return (redir);
-// }
 

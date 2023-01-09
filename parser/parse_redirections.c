@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:21:17 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/07 12:26:29 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/09 15:27:14 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,3 +85,31 @@ t_redir	*parse_redirections(char *input)
 	redir = *head;
 	return (free(head), redir);
 }
+
+// t_redir	*parse_redirections(char *input)
+// {
+// 	t_redir	*redir;
+// 	t_redir	*tmp;
+// 	int		i;
+
+// 	i = 0;
+// 	redir = ft_calloc(1, sizeof(t_redir));
+// 	if (!redir)
+// 		return (NULL);
+// 	tmp = redir;
+// 	while (input[i])
+// 	{
+// 		if (input[i] == '>' || input[i] == '<')
+// 		{
+// 			redir = get_redir(redir, input, i);
+// 			if (!redir)
+// 				return (NULL);
+// 			if (input[i + 1] == '>' || input[i + 1] == '<')
+// 				i++;
+// 		}
+// 		i++;
+// 	}
+// 	redir = tmp;
+// 	return (redir);
+// }
+

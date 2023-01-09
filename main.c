@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/08 19:57:52 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/09 15:20:00 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,7 @@ void	minishell_loop(t_vars *vars)
 			add_history(vars->input);
 		vars->input = replace_envvar_with_value(*vars, vars->input);
 		if (vars->input[0] != 0 && !unclosed_quotes(vars->input))
-		{
 			exec_pipes(vars, vars->input);
-		}
 		free(vars->input);
 	}
 }

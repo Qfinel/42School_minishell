@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envvars_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 20:45:23 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/08 20:21:39 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/09 15:23:04 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	does_envvar_exitst(t_vars *vars, char *envvar)
 		free(temp_str);
 		i++;
 	}
+	if (!ft_strncmp(envvar, "?", 2))
+		return (1);
 	return (0);
 }
 

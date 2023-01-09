@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 20:45:23 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/08 20:15:13 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/09 18:37:36 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ static char	**get_words_starting_with_dollar(char *str)
 	while (str[i] && result)
 	{
 		if (str[i] == '$' && !is_envvar_in_single_quotes(str, i)
-			&& str[i + 1] && str[i + 1] != ' ')
+			&& str[i + 1] && str[i + 1] != ' ' && str[i + 1]
+			!= '"' && str[i + 1] != 0)
 		{
 			temp_str = get_end_of_envvar(&str[i]);
 			if (temp_str)

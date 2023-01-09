@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/09 17:17:35 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/09 17:20:45 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static int	not_cat_urandom(char *input)
 
 	tmp = ft_split(input, ' ');
 	if (!ft_strncmp("cat", tmp[0], 4)
+		&& tmp[1]
 		&& !ft_strncmp("/dev/urandom", tmp[1],
 			ft_strlen("/dev/urandom") + 1))
 		return (0);

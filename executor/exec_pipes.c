@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/08 17:37:02 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/09 16:14:32 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	pipe_loop(int *tmp_fd, t_vars *vars, char **cmds, int i)
 		if (cmds[i + 1])
 			dup2(end[1], 1);
 		close(end[0]);
-		exec_cmd(vars, cmds[i]);
+		exec_cmd(vars, cmds[i], cmds);
 		free_strings(cmds);
 		exit_process(vars);
 	}
@@ -41,10 +41,22 @@ static void	pipe_loop(int *tmp_fd, t_vars *vars, char **cmds, int i)
 		close(end[0]);
 }
 
+void	check_heredoc(t_vars *vars, char **cmds, int i)
+{
+	t_cmd	*cmd;
+
+	cmd = parse_cmd(vars, cmds[i]);
+	if (cmd)
+	{
+		if (cmd->redirs)
+			exec_heredoc(vars, cmd, cmds);
+		free_cmd(cmd);
+	}
+}
+
 void	exec_pipes(t_vars *vars, char *input)
 {
 	char	**cmds;
-	t_cmd	*cmd;
 	int		i;
 	int		tmp_fd;
 
@@ -54,13 +66,10 @@ void	exec_pipes(t_vars *vars, char *input)
 	signal(SIGINT, ctrl_c_pipe_handler);
 	while (cmds[i])
 	{
-		cmd = parse_cmd(vars, cmds[i]);
-		if (cmd->redirs)
-			exec_heredoc(vars, cmd, cmds);
-		free_cmd(cmd);
+		check_heredoc(vars, cmds, i);
 		if (!cmds[1])
 		{
-			exec_cmd(vars, cmds[0]);
+			exec_cmd(vars, cmds[0], cmds);
 			break ;
 		}
 		pipe_loop(&tmp_fd, vars, cmds, i);

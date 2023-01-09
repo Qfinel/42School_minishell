@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/08 20:17:14 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/09 16:14:21 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	exec_heredoc(t_vars *vars, t_cmd *cmd, char **cmds)
 	}
 }
 
-static void	change_fd(t_redir *redir)
+static int	change_fd(t_redir *redir)
 {
 	int	fd;
 
@@ -62,10 +62,11 @@ static void	change_fd(t_redir *redir)
 	}
 	if (ft_strncmp(redir->type, "HEREDOC", 8) && fd < 0)
 		return ((void)printf("minishell: err: invalid filename: %s\n",
-				redir->filename), exit(1));
+				redir->filename), 1);
+	return (0);
 }
 
-static void	do_redirections(t_vars *vars, t_cmd *cmd)
+static void	do_redirections(t_vars *vars, t_cmd *cmd, char **cmds)
 {
 	int	id;
 
@@ -76,7 +77,13 @@ static void	do_redirections(t_vars *vars, t_cmd *cmd)
 		signal(SIGQUIT, SIG_DFL);
 		while (cmd->redirs->next)
 		{
-			change_fd(cmd->redirs);
+			if (change_fd(cmd->redirs) > 0)
+			{
+				g_exit = 1;
+				free_cmd(cmd);
+				free_strings(cmds);
+				exit_process(vars);
+			}
 			cmd->redirs = cmd->redirs->next;
 		}
 		if (is_builtin(vars, cmd))
@@ -87,7 +94,7 @@ static void	do_redirections(t_vars *vars, t_cmd *cmd)
 	wait(&g_exit);
 }
 
-static void	run_command(t_cmd *cmd, t_vars *vars)
+static void	run_command(t_cmd *cmd, t_vars *vars, char **cmds)
 {
 	int	id;
 
@@ -106,10 +113,10 @@ static void	run_command(t_cmd *cmd, t_vars *vars)
 		}
 	}
 	else
-		do_redirections(vars, cmd);
+		do_redirections(vars, cmd, cmds);
 }
 
-void	exec_cmd(t_vars *vars, char *input)
+void	exec_cmd(t_vars *vars, char *input, char **cmds)
 {
 	t_cmd	*cmd;
 
@@ -120,7 +127,7 @@ void	exec_cmd(t_vars *vars, char *input)
 		return ((void)printf("minishell: parsing error\n"));
 	}
 	if (cmd->command)
-		run_command(cmd, vars);
+		run_command(cmd, vars, cmds);
 	else
 	{
 		printf("minishell: command not found: '%s'\n", cmd->args[0]);

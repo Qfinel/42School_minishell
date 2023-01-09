@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/08 20:21:59 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/09 16:14:42 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*get_cmd(char **paths, char *cmd);
 int		is_builtin(t_vars *vars, t_cmd *cmd);
 int		contains_spaces(char *str);
 void	exec_pipes(t_vars *vars, char *input);
-void	exec_cmd(t_vars *vars, char *input);
+void	exec_cmd(t_vars *vars, char *input, char **cmds);
 void	free_cmd(t_cmd *cmd);
 t_cmd	*parse_cmd(t_vars *vars, char *input);
 t_redir	*parse_redirections(char *input);

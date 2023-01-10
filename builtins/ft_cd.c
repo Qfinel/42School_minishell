@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:36:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/07 11:00:48 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/10 17:50:05 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static void	go_to_dir(t_cmd *cmd, char *abs_path)
 	else
 		new_abs_path = ft_strjoin(abs_path, cmd->args[1]);
 	free(abs_path);
-	if (chdir(new_abs_path) < 0)
+	if (cmd->args[1][0] == '/' || chdir(new_abs_path) < 0)
 	{
 		if (chdir(cmd->args[1]) < 0)
 		{
@@ -115,7 +115,6 @@ void	ft_cd(t_vars *vars, t_cmd *cmd)
 	}
 	else
 		go_to_dir(cmd, abs_path);
-	free(abs_path);
 	if (change_pwd(vars) < 0)
 		return (ft_putstr_fd("Malloc failed\n", 2),
 			close_minishell(vars, vars->input));

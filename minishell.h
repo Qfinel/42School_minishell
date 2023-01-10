@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/09 19:09:48 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/10 12:49:26 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,6 @@ void	process_int(int sig);
 void	exec_heredoc(t_vars *vars, t_cmd *cmd, char **cmds);
 void	truncate_tmp(void);
 void	add_to_tmp(char *input);
+void	delete_tmp(t_vars *vars);
 
 #endif

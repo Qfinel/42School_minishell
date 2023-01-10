@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/09 15:20:00 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/10 13:01:52 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	minishell_loop(t_vars *vars)
 		vars->input = replace_envvar_with_value(*vars, vars->input);
 		if (vars->input[0] != 0 && !unclosed_quotes(vars->input))
 			exec_pipes(vars, vars->input);
+		delete_tmp(vars);
 		free(vars->input);
 	}
 }

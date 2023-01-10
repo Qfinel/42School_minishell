@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/09 19:14:50 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/10 12:54:49 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	check_heredoc(t_vars *vars, char **cmds, int i)
 	t_cmd	*cmd;
 
 	cmd = parse_cmd(vars, cmds[i]);
-	if (cmd)
+	if (cmd && cmd->redirs)
 	{
 		while (cmd->redirs->next)
 		{
@@ -54,8 +54,9 @@ void	check_heredoc(t_vars *vars, char **cmds, int i)
 				exec_heredoc(vars, cmd, cmds);
 			cmd->redirs = cmd->redirs->next;
 		}
-		free_cmd(cmd);
 	}
+	if (cmd)
+		free_cmd(cmd);
 }
 
 static int	not_cat_urandom(char *input)

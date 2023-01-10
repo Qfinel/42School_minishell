@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:09:21 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/09 19:09:32 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/10 13:05:25 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@ void	truncate_tmp(void)
 {
 	int	fd;
 
-	fd = open("executor/heredoc.tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	close(fd);
+	fd = open("executor/heredoc.tmp", O_WRONLY | O_TRUNC, 0644);
+	if (fd != -1)
+		close(fd);
+}
+
+void	delete_tmp(t_vars *vars)
+{
+	if (!access("executor/heredoc.tmp", F_OK))
+		exec_cmd(vars, "rm executor/heredoc.tmp", NULL);
 }

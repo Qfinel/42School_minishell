@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:39:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/10 14:17:26 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/10 17:39:45 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ void	get_command(t_cmd *cmd, t_vars *vars)
 {
 	struct stat	stats;
 
+	if(!cmd->args[0])
+	{
+		cmd->command = NULL;
+		return ;
+	}
 	stat(cmd->args[0], &stats);
 	if (!access(cmd->args[0], F_OK) && (stats.st_mode & X_OK))
 		cmd->command = ft_strdup(cmd->args[0]);

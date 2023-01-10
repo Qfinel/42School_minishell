@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:39:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/07 14:38:28 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:17:26 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,11 @@ void	get_command(t_cmd *cmd, t_vars *vars)
 	if (!access(cmd->args[0], F_OK) && (stats.st_mode & X_OK))
 		cmd->command = ft_strdup(cmd->args[0]);
 	else if (!ft_strncmp(cmd->args[0], "export", 7)
-		|| !ft_strncmp(cmd->args[0], "unset", 6))
+		|| !ft_strncmp(cmd->args[0], "unset", 6)
+		|| !ft_strncmp(cmd->args[0], "env", 6)
+		|| !ft_strncmp(cmd->args[0], "cd", 6)
+		|| !ft_strncmp(cmd->args[0], "pwd", 6)
+		|| !ft_strncmp(cmd->args[0], "echo", 6))
 		cmd->command = ft_strdup(cmd->args[0]);
 	else
 		cmd->command = get_cmd_path(vars->paths, cmd->args[0]);

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/10 12:54:49 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:06:27 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,11 @@ static int	not_cat_urandom(char *input)
 		&& tmp[1]
 		&& !ft_strncmp("/dev/urandom", tmp[1],
 			ft_strlen("/dev/urandom") + 1))
+	{
+		free_strings(tmp);
 		return (0);
+	}
+	free_strings(tmp);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/10 13:01:52 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:26:34 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,19 @@ void	minishell_loop(t_vars *vars)
 	}
 }
 
+void	get_env_i(t_vars *vars)
+{
+	char	*tmp;
+
+	free(vars->envp);
+	vars->envp = ft_calloc(4, sizeof(char *));
+	tmp = getcwd(NULL, 0);
+	vars->envp[0] = ft_strjoin("PWD=", tmp);
+	free(tmp);
+	vars->envp[1] = ft_strdup("SHLVL=1");
+	vars->envp[2] = ft_strdup("_=/usr/bin/env");
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_vars	vars;
@@ -82,11 +95,9 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 1 || !argv)
 		return (ft_putstr_fd("Run './minishell' without args ;)\n", 2), -1);
-	if (!envp[0])
-		return (ft_putstr_fd("Run just './minishell' please\n", 2), -1);
 	vars.paths = ft_split(getenv("PATH"), ':');
 	i = 0;
-	vars.envp = ft_calloc(ft_arr_len(envp) + 1, sizeof(char **));
+	vars.envp = ft_calloc(ft_arr_len(envp) + 1, sizeof(char *));
 	if (!vars.envp)
 		return (ft_putstr_fd("Malloc failed\n", 2), -1);
 	while (envp[i])
@@ -97,6 +108,8 @@ int	main(int argc, char **argv, char **envp)
 			vars.envp[i] = ft_strdup(envp[i]);
 		i++;
 	}
+	if (!envp[0])
+		get_env_i(&vars);
 	g_exit = 0;
 	signal(SIGQUIT, SIG_IGN);
 	minishell_loop(&vars);

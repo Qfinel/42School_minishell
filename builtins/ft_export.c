@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/07 12:01:52 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:32:23 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,22 +88,13 @@ static void	add_var(t_vars *vars, char **new_envp, char **args, int i)
 	vars->envp = new_envp;
 }
 
-static void	get_paths(t_vars *vars)
+static void	print_export_var(char *str)
 {
-	int	i;
+	char	**tmp;
 
-	i = 0;
-	while (vars->envp[i])
-	{
-		if (!ft_strncmp(vars->envp[i], "PATH=", 5))
-		{
-			if (vars->paths)
-				free_strings(vars->paths);
-			vars->paths = ft_split(&vars->envp[i][5], ':');
-			return ;
-		}
-		i++;
-	}
+	tmp = ft_split(str, '=');
+	printf("declare -x %s=\"%s\"\n", tmp[0], tmp[1]);
+	free_strings(tmp);
 }
 
 void	ft_export(t_vars *vars, char **args)
@@ -124,7 +115,7 @@ void	ft_export(t_vars *vars, char **args)
 		while (vars->envp[i])
 		{
 			if (ft_strncmp("_=", vars->envp[i], 2))
-				printf("declare -x %s\n", vars->envp[i]);
+				print_export_var(vars->envp[i]);
 			i++;
 		}
 		free(new_envp);

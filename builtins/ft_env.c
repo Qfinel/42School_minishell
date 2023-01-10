@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:57 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/07 14:45:36 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:31:51 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,24 @@ char	*replace_shlvl(char *str)
 	free_strings(tmp);
 	free(tmp1);
 	return (shlvl);
+}
+
+void	get_paths(t_vars *vars)
+{
+	int	i;
+
+	i = 0;
+	while (vars->envp[i])
+	{
+		if (!ft_strncmp(vars->envp[i], "PATH=", 5))
+		{
+			if (vars->paths)
+				free_strings(vars->paths);
+			vars->paths = ft_split(&vars->envp[i][5], ':');
+			return ;
+		}
+		i++;
+	}
 }
 
 void	ft_env(t_vars *vars, char **args)

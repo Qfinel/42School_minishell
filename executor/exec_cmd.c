@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/09 19:11:39 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/11 11:08:00 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	exec_heredoc(t_vars *vars, t_cmd *cmd, char **cmds)
 	char	*input;
 	int		id;
 
+	truncate_tmp();
 	id = fork();
 	if (id == 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:39:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/10 17:39:45 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/11 11:32:48 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	get_command(t_cmd *cmd, t_vars *vars)
 {
 	struct stat	stats;
 
-	if(!cmd->args[0])
+	if (!cmd->args[0])
 	{
-		cmd->command = NULL;
+		cmd->command = ft_strdup("");
 		return ;
 	}
 	stat(cmd->args[0], &stats);
@@ -55,7 +55,7 @@ void	get_command(t_cmd *cmd, t_vars *vars)
 		cmd->command = get_cmd_path(vars->paths, cmd->args[0]);
 }
 
-int	is_real_redir(char *input, int i)
+int	is_real(char *input, int i)
 {
 	int	j;
 	int	quotes1;
@@ -64,19 +64,11 @@ int	is_real_redir(char *input, int i)
 	j = 0;
 	quotes1 = 0;
 	quotes2 = 0;
-	while (j < i)
-	{
-		if (input[j] == '\'' || input[j] == '\"')
-			quotes1++;
-		j++;
-	}
-	while (input[i])
-	{
-		if (input[i] == '\'' || input[i] == '\"')
-			quotes2++;
-		i++;
-	}
-	if (quotes1 % 2 > 0 && quotes2 > 0)
+	if (ft_strchr(ft_substr(input, 0, i), '\'') && ft_strrchr(&input[i], '\''))
+		quotes1 = 1;
+	if (ft_strchr(ft_substr(input, 0, i), '\"') && ft_strrchr(&input[i], '\"'))
+		quotes2 = 1;
+	if (quotes1 > 0 || quotes2 > 0)
 		return (0);
 	else
 		return (1);
@@ -91,7 +83,7 @@ int	redirections_exist(char *input)
 	counter = 0;
 	while (input[i])
 	{
-		if ((input[i] == '>' || input[i] == '<') && is_real_redir(input, i))
+		if ((input[i] == '>' || input[i] == '<') && is_real(input, i))
 			counter++;
 		i++;
 	}

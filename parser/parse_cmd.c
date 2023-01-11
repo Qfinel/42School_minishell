@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:00:54 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/09 15:29:38 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/11 11:22:27 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*remove_input_redirs(char *str)
 		return (NULL);
 	while (str[i])
 	{
-		if ((str[i] != '>' && str[i] != '<') || !is_real_redir(str, i))
+		if ((str[i] != '>' && str[i] != '<') || !is_real(str, i))
 			newstr[i] = str[i];
 		else
 			newstr[i] = ' ';

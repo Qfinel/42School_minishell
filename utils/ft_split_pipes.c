@@ -6,45 +6,18 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 15:35:01 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/06 18:18:24 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/11 11:22:12 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	is_real_pipe(char *input, int i)
-{
-	int	j;
-	int	quotes1;
-	int	quotes2;
-
-	j = 0;
-	quotes1 = 0;
-	quotes2 = 0;
-	while (j < i)
-	{
-		if (input[j] == '\'' || input[j] == '\"')
-			quotes1++;
-		j++;
-	}
-	while (input[i])
-	{
-		if (input[i] == '\'' || input[i] == '\"')
-			quotes2++;
-		i++;
-	}
-	if (quotes1 % 2 > 0 && quotes2 > 0)
-		return (0);
-	else
-		return (1);
-}
 
 static size_t	ft_wordlen(char *s, char c)
 {
 	size_t	i;
 
 	i = 0;
-	while ((s[i] && s[i] != c) || (s[i] && s[i] == c && !is_real_pipe(s, i)))
+	while ((s[i] && s[i] != c) || (s[i] && s[i] == c && !is_real(s, i)))
 		i++;
 	return (i);
 }
@@ -60,7 +33,7 @@ static size_t	ft_wordcount(char *s, char c)
 		return (0);
 	while (s[i])
 	{
-		if (s[i - 1] == c && s[i] != c && is_real_pipe(s, i - 1))
+		if (s[i - 1] == c && s[i] != c && is_real(s, i - 1))
 			j++;
 		i++;
 	}
@@ -105,7 +78,7 @@ char	**ft_split_pipes(char *s)
 		return (NULL);
 	while (i < size && s[n])
 	{
-		while (s[n] == '|' && is_real_pipe(s, n))
+		while (s[n] == '|' && is_real(s, n))
 			n++;
 		len = ft_wordlen(&s[n], '|');
 		dest[i] = ft_wordcpy(&s[n], len);

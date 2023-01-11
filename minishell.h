@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/10 14:31:59 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/11 11:21:45 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,7 @@ char	**split_with_quotes(char *str);
 char	*replace_envvar_with_value(t_vars vars, char *input);
 char	**split_true_pipes(char *input);
 char	*get_env_value(t_vars *vars, char *key);
-int		is_real_pipe(char *input, int i);
-int		is_real_redir(char *input, int i);
+int		is_real(char *input, int i);
 char	**ft_split_pipes(char *s);
 int		contains_index(int *indexes, int i);
 int		is_important_var(char **args);

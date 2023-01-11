@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:36:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/10 17:50:05 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/11 12:01:19 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static void	go_to_dir(t_cmd *cmd, char *abs_path)
 	{
 		if (chdir(cmd->args[1]) < 0)
 		{
-			printf("minishell: cd: no such file or directory: '%s'\n",
+			printf("minishell: cd: %s: No such file or directory\n",
 				cmd->args[1]);
 			g_exit = 1;
 		}

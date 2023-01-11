@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:20:25 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/08 17:50:17 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/11 12:47:45 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,6 @@ int	contains_index(int *indexes, int i)
 		else if (indexes[j] == -1 && i == 0)
 			return (1);
 		j++;
-	}
-	return (0);
-}
-
-int	is_important_var(char **args)
-{
-	int	i;
-
-	i = 1;
-	while (args[i])
-	{
-		if (!ft_strncmp(args[i], "OLDPWD", 7)
-			|| !ft_strncmp(args[i], "PWD", 4))
-			return (1);
-		i++;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:41 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/10 14:31:32 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/11 12:47:40 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,21 +102,16 @@ void	ft_unset(t_vars *vars, char **args)
 	int		indexes_arr_len;
 
 	g_exit = 1;
-	if (is_important_var(args))
-		printf("minishell: unset: cannot unset PWD, OLDPWD\n");
-	else
-	{
-		indexes_arr_len = count_env_vars(vars, args);
-		new_len = ft_arr_len(vars->envp) - indexes_arr_len + 1;
-		new_envp = ft_calloc(new_len, sizeof(char *));
-		if (!new_envp)
-			return (ft_putstr_fd("Malloc failed\n", 2),
-				close_minishell(vars, vars->input));
-		find_and_delete(args, new_envp, vars, indexes_arr_len);
-		free_strings(vars->envp);
-		vars->envp = new_envp;
-		g_exit = 0;
-	}
+	indexes_arr_len = count_env_vars(vars, args);
+	new_len = ft_arr_len(vars->envp) - indexes_arr_len + 1;
+	new_envp = ft_calloc(new_len, sizeof(char *));
+	if (!new_envp)
+		return (ft_putstr_fd("Malloc failed\n", 2),
+			close_minishell(vars, vars->input));
+	find_and_delete(args, new_envp, vars, indexes_arr_len);
+	free_strings(vars->envp);
+	vars->envp = new_envp;
+	g_exit = 0;
 	if (!paths_exist(vars->envp))
 	{
 		free_strings(vars->paths);

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/11 11:08:00 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/11 11:52:02 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void	exec_cmd(t_vars *vars, char *input, char **cmds)
 		run_command(cmd, vars, cmds);
 	else
 	{
-		printf("minishell: command not found: '%s'\n", cmd->args[0]);
+		printf("minishell: %s: command not found\n", cmd->args[0]);
 		g_exit = 127;
 	}
 	if (g_exit >= 255)

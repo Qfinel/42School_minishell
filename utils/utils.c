@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:38:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/11 11:42:58 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/11 11:48:22 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	check_if_real_quote(char *input, int type, int num)
 		}
 		i++;
 	}
-	if (is_real(input, i))
+	if (is_real(input, i) || !input[i + 1] || i == 0)
 		return (1);
 	else
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:39:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/11 11:32:48 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/12 15:29:33 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,34 @@ char	*get_cmd_path(char **paths, char *cmd)
 	return (NULL);
 }
 
+char	*clean_quotes(char *str)
+{
+	char	*new_str;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	new_str = ft_calloc(ft_strlen(str) + 1, sizeof(char));
+	if (!new_str)
+		return (NULL);
+	while (str[i])
+	{
+		if (str[i] != '\'' && str[i] != '\"')
+		{
+			new_str[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	return (new_str);
+}
+
 void	get_command(t_cmd *cmd, t_vars *vars)
 {
 	struct stat	stats;
 
+	cmd->args[0] = clean_quotes(cmd->args[0]);
 	if (!cmd->args[0])
 	{
 		cmd->command = ft_strdup("");

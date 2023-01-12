@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:12:04 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/09 15:32:57 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/12 16:40:44 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,22 @@ void	free_redirs(t_redir *redir)
 		free(tmp->filename);
 		free(tmp);
 	}
+}
+
+void	free_pipes(t_pipes *pipes)
+{
+	t_pipes	*tmp;
+
+	while (pipes)
+	{
+		tmp = pipes;
+		pipes = pipes->next;
+		free(tmp->cmd);
+		if (tmp->infd != 0)
+			close(tmp->infd);
+		free(tmp);
+	}
+	free(pipes);
 }
 
 void	free_cmd(t_cmd *cmd)

@@ -6,13 +6,13 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/11 11:52:02 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/12 14:58:37 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	exec_heredoc(t_vars *vars, t_cmd *cmd, char **cmds)
+void	exec_heredoc(t_vars *vars, t_cmd *cmd)
 {
 	char	*input;
 	int		id;
@@ -34,7 +34,6 @@ void	exec_heredoc(t_vars *vars, t_cmd *cmd, char **cmds)
 		}
 		free(input);
 		g_exit = 0;
-		free_strings(cmds);
 		free_cmd(cmd);
 		exit_process(vars);
 	}
@@ -68,7 +67,7 @@ static int	change_fd(t_redir *redir)
 	return (0);
 }
 
-static void	do_redirections(t_vars *vars, t_cmd *cmd, char **cmds)
+static void	do_redirections(t_vars *vars, t_cmd *cmd)
 {
 	int	id;
 
@@ -83,7 +82,6 @@ static void	do_redirections(t_vars *vars, t_cmd *cmd, char **cmds)
 			{
 				g_exit = 1;
 				free_cmd(cmd);
-				free_strings(cmds);
 				exit_process(vars);
 			}
 			cmd->redirs = cmd->redirs->next;
@@ -96,7 +94,7 @@ static void	do_redirections(t_vars *vars, t_cmd *cmd, char **cmds)
 	wait(&g_exit);
 }
 
-static void	run_command(t_cmd *cmd, t_vars *vars, char **cmds)
+static void	run_command(t_cmd *cmd, t_vars *vars)
 {
 	int	id;
 
@@ -115,10 +113,10 @@ static void	run_command(t_cmd *cmd, t_vars *vars, char **cmds)
 		}
 	}
 	else
-		do_redirections(vars, cmd, cmds);
+		do_redirections(vars, cmd);
 }
 
-void	exec_cmd(t_vars *vars, char *input, char **cmds)
+void	exec_cmd(t_vars *vars, char *input)
 {
 	t_cmd	*cmd;
 
@@ -129,7 +127,7 @@ void	exec_cmd(t_vars *vars, char *input, char **cmds)
 		return ((void)printf("minishell: parsing error\n"));
 	}
 	if (cmd->command)
-		run_command(cmd, vars, cmds);
+		run_command(cmd, vars);
 	else
 	{
 		printf("minishell: %s: command not found\n", cmd->args[0]);

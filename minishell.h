@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/11 11:21:45 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/11 14:46:53 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,14 @@ typedef struct s_redir
 	struct s_redir	*next;
 }	t_redir;
 
+typedef struct s_pipes
+{
+	int				outfd;
+	int				infd;
+	char			*cmd;
+	struct s_pipes	*next;
+} t_pipes;
+
 typedef struct s_cmd
 {
 	char	*command;
@@ -66,8 +74,7 @@ void	free_strings(char **strings);
 char	*get_cmd(char **paths, char *cmd);
 int		is_builtin(t_vars *vars, t_cmd *cmd);
 int		contains_spaces(char *str);
-void	exec_pipes(t_vars *vars, char *input);
-void	exec_cmd(t_vars *vars, char *input, char **cmds);
+void	exec_cmd(t_vars *vars, char *input);
 void	free_cmd(t_cmd *cmd);
 t_cmd	*parse_cmd(t_vars *vars, char *input);
 t_redir	*parse_redirections(char *input);
@@ -92,10 +99,13 @@ int		unclosed_quotes(char *input);
 void	check_exit(char *input);
 char	*replace_shlvl(char *str);
 void	process_int(int sig);
-void	exec_heredoc(t_vars *vars, t_cmd *cmd, char **cmds);
+void	exec_heredoc(t_vars *vars, t_cmd *cmd);
 void	truncate_tmp(void);
 void	add_to_tmp(char *input);
 void	delete_tmp(t_vars *vars);
 void	get_paths(t_vars *vars);
+void	free_pipes(t_pipes *pipes);
+void	pipe_loop(t_vars *vars, char *input);
+t_pipes	*parse_pipes(char **cmds);
 
 #endif

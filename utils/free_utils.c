@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:12:04 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/12 16:40:44 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/12 16:46:37 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	free_pipes(t_pipes *pipes)
 			close(tmp->infd);
 		free(tmp);
 	}
-	free(pipes);
 }
 
 void	free_cmd(t_cmd *cmd)

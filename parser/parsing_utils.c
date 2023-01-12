@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:39:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/12 15:29:33 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/12 16:53:42 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ char	*clean_quotes(char *str)
 		}
 		i++;
 	}
+	free(str);
 	return (new_str);
 }
 
@@ -81,17 +82,20 @@ void	get_command(t_cmd *cmd, t_vars *vars)
 
 int	is_real(char *input, int i)
 {
-	int	j;
-	int	quotes1;
-	int	quotes2;
+	int		j;
+	int		quotes1;
+	int		quotes2;
+	char	*tmp;
 
 	j = 0;
 	quotes1 = 0;
 	quotes2 = 0;
-	if (ft_strchr(ft_substr(input, 0, i), '\'') && ft_strrchr(&input[i], '\''))
+	tmp = ft_substr(input, 0, i);
+	if (ft_strchr(tmp, '\'') && ft_strrchr(&input[i], '\''))
 		quotes1 = 1;
-	if (ft_strchr(ft_substr(input, 0, i), '\"') && ft_strrchr(&input[i], '\"'))
+	if (ft_strchr(tmp, '\"') && ft_strrchr(&input[i], '\"'))
 		quotes2 = 1;
+	free(tmp);
 	if (quotes1 > 0 || quotes2 > 0)
 		return (0);
 	else

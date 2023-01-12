@@ -6,13 +6,13 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/12 16:19:24 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/12 16:50:31 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	exec_pipes(t_vars *vars, t_pipes *pipes)
+static void	exec_pipes(t_vars *vars, t_pipes *pipes, t_pipes *to_free)
 {
 	if (fork() == 0)
 	{
@@ -23,6 +23,7 @@ static void	exec_pipes(t_vars *vars, t_pipes *pipes)
 		if (pipes->next->next)
 			close(pipes->next->infd);
 		exec_cmd(vars, pipes->cmd);
+		free_pipes(to_free);
 		exit_process(vars);
 	}
 	if (!pipes->next->next)
@@ -79,7 +80,7 @@ void	pipe_loop(t_vars *vars, char *input)
 	while (pipes->next)
 	{
 		check_heredoc(vars, pipes->cmd);
-		exec_pipes(vars, pipes);
+		exec_pipes(vars, pipes, tmp);
 		if (pipes->infd != 0)
 			close(pipes->infd);
 		pipes = pipes->next;

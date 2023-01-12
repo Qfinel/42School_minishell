@@ -5,117 +5,96 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/15 15:36:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/11 12:01:19 by jtsizik          ###   ########.fr       */
+/*   Created: 2023/01/12 17:25:24 by jtsizik           #+#    #+#             */
+/*   Updated: 2023/01/12 18:12:33 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	*get_old_pwd(t_vars *vars)
+static void	cd_home(t_vars *vars)
 {
-	int		i;
+	char	*tmp;
+	char	*tmp1;
+
+	change_oldpwd(vars);
+	tmp = get_env_value(vars, "USER");
+	tmp1 = ft_strjoin("/Users/", tmp);
+	chdir(tmp1);
+	free(tmp);
+	free(tmp1);
+	change_pwd(vars);
+	g_exit = 0;
+}
+
+static void	cd_back(t_vars *vars)
+{
 	char	*old_pwd;
 
-	i = 0;
-	while (ft_strncmp(vars->envp[i], "PWD", 3))
-		i++;
-	old_pwd = ft_strjoin("OLD", vars->envp[i]);
-	return (old_pwd);
+	old_pwd = get_env_value(vars, "OLDPWD");
+	if (!old_pwd)
+	{
+		g_exit = 1;
+		return ((void)printf("minishell: cd: OLDPWD not set\n"));
+	}
+	change_oldpwd(vars);
+	chdir(old_pwd);
+	free(old_pwd);
+	change_pwd(vars);
+	g_exit = 0;
 }
 
-static int	change_pwd(t_vars *vars)
+static void	cd_abs(t_vars *vars, char *path)
 {
-	int		i;
-	char	*old_pwd;
-	char	*new_pwd;
-	char	**new_envp;
+	struct stat	stats;
 
-	i = 0;
-	new_envp = ft_calloc(ft_arr_len(vars->envp) + 1, sizeof(char *));
-	if (!new_envp)
-		return (-1);
-	old_pwd = get_old_pwd(vars);
-	new_pwd = ft_strjoin("PWD=", getcwd(NULL, 0));
-	while (vars->envp[i])
+	stat(path, &stats);
+	if (!(stats.st_mode & S_IFDIR))
 	{
-		if (!ft_strncmp(vars->envp[i], "PWD", 3))
-			new_envp[i] = new_pwd;
-		else if (!ft_strncmp(vars->envp[i], "OLDPWD", 6))
-			new_envp[i] = old_pwd;
-		else
-			new_envp[i] = ft_strdup(vars->envp[i]);
-		i++;
+		g_exit = 1;
+		return ((void)printf("minishell: cd: %s: No such file or directory\n", path));
 	}
-	free_strings(vars->envp);
-	vars->envp = new_envp;
-	return (0);
+	change_oldpwd(vars);
+	g_exit = 0;
+	if (only_slashes(path))
+		return ((void)chdir("/"), change_pwd(vars));
+	chdir(path);
+	change_pwd(vars);	
 }
 
-static int	is_all_slashes(char *input)
+static void	cd_rel(t_vars *vars, char *path)
 {
-	int	i;
+	struct stat	stats;
+	char		*tmp;
+	char		*tmp1;
+	char		*full_path;
 
-	i = 0;
-	while (input[i])
+	tmp = getcwd(NULL, 0);
+	tmp1 = ft_strjoin(tmp, "/");
+	free(tmp);
+	full_path = ft_strjoin(tmp1, path);
+	free(tmp1);
+	stat(full_path, &stats);
+	if (!(stats.st_mode & S_IFDIR))
 	{
-		if (input[i] != '/')
-			return (0);
-		i++;
+		g_exit = 1;
+		free(full_path);
+		return ((void)printf("minishell: cd: %s: No such file or directory\n", path));
 	}
-	return (1);
-}
-
-static void	go_to_dir(t_cmd *cmd, char *abs_path)
-{
-	char	*new_abs_path;
-
-	if (cmd->args[1][0] != '/')
-		abs_path = ft_strjoin(abs_path, "/");
-	if (!ft_strncmp(cmd->args[1], "~", 1))
-	{
-		free(abs_path);
-		abs_path = ft_strjoin("/Users/", getenv("USER"));
-		new_abs_path = ft_strjoin(abs_path, &cmd->args[1][1]);
-	}
-	else
-		new_abs_path = ft_strjoin(abs_path, cmd->args[1]);
-	free(abs_path);
-	if (cmd->args[1][0] == '/' || chdir(new_abs_path) < 0)
-	{
-		if (chdir(cmd->args[1]) < 0)
-		{
-			printf("minishell: cd: %s: No such file or directory\n",
-				cmd->args[1]);
-			g_exit = 1;
-		}
-	}
-	free(new_abs_path);
+	change_oldpwd(vars);
+	g_exit = 0;
+	chdir(full_path);
+	change_pwd(vars);	
 }
 
 void	ft_cd(t_vars *vars, t_cmd *cmd)
 {
-	char	*abs_path;
-	char	*tmp;
-
-	g_exit = 0;
-	abs_path = getcwd(NULL, 0);
-	if (!cmd->args[1])
-	{
-		abs_path = ft_strjoin("/Users/", getenv("USER"));
-		chdir(abs_path);
-	}
-	else if (is_all_slashes(cmd->args[1]))
-		chdir("/");
-	else if (!ft_strncmp(cmd->args[1], "-", 2))
-	{
-		tmp = get_env_value(vars, "OLDPWD");
-		chdir(tmp);
-		free(tmp);
-	}
+	if (!cmd->args[1] || !ft_strncmp(cmd->args[1], "~", 2))
+		return (cd_home(vars));
+	if (!ft_strncmp(cmd->args[1], "-", 2))
+		return (cd_back(vars));
+	if (cmd->args[1][0] == '/')
+		return (cd_abs(vars, cmd->args[1]));
 	else
-		go_to_dir(cmd, abs_path);
-	if (change_pwd(vars) < 0)
-		return (ft_putstr_fd("Malloc failed\n", 2),
-			close_minishell(vars, vars->input));
+		return (cd_rel(vars, cmd->args[1]));
 }

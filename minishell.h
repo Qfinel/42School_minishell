@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/11 14:46:53 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/12 17:55:37 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,8 @@ void	get_paths(t_vars *vars);
 void	free_pipes(t_pipes *pipes);
 void	pipe_loop(t_vars *vars, char *input);
 t_pipes	*parse_pipes(char **cmds);
+void	change_oldpwd(t_vars *vars);
+void	change_pwd(t_vars *vars);
+int		only_slashes(char *str);
 
 #endif

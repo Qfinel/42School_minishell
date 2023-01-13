@@ -15,20 +15,18 @@
 int	is_envvar_in_single_quotes(char *str, int index)
 {
 	int		i;
-	int		quotes_open;
+	char	quote;
 
 	i = 0;
-	quotes_open = 0;
+	quote = 0;
 	while (str[i] && i < index)
 	{
-		if (str[i] == '\'')
-			quotes_open = !quotes_open;
+		quote = get_opening_quote(quote, str[i]);
 		i++;
 	}
-	if (quotes_open)
+	if (quote == '\'')
 		return (1);
-	else
-		return (0);
+	return (0);
 }
 
 static char	**get_words_starting_with_dollar(char *str)

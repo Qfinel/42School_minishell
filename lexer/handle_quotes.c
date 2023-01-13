@@ -12,130 +12,61 @@
 
 #include "../minishell.h"
 
-// int	count_words_with_quotes(char *str)
-// {
-// 	int	i;
-// 	int	count;
-
-// 	i = 0;
-// 	count = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '"')
-// 			i += skip_to_next('"', str);
-// 		else if (str[i] == '\'')
-// 			i += skip_to_next('\'', str);
-// 		else if (str[i] == '$')
-// 			i += skip_to_next(' ', str);
-// 		else if (str[i] != ' ')
-// 		{
-// 			while (str[i] != ' ' && str[i])
-// 				i++;
-// 		}
-// 		if (str[i] == ' ')
-// 			i++;
-// 		count++;
-// 	}
-// 	return (count);
-// }
-
-static size_t	ft_wordcount(char *s, char c)
+void	on_word_end(char **ret, char *word, t_3dvector *vector)
 {
-	size_t	i;
-	size_t	j;
-
-	j = 0;
-	i = 1;
-	if (s[0] == '\0')
-		return (0);
-	while (s[i])
-	{
-		if (s[i - 1] == c && s[i] != c)
-			j++;
-		i++;
-	}
-	if (s[0] != c)
-		j++;
-	return (j);
+	word[vector->j] = '\0';
+	ret[vector->k] = word;
+	vector->k++;
+	vector->j = 0;
 }
 
-char	*remove_unclosed_quotes(char *str)
+void	init_vars(t_3dvector *vector, char ***ret)
 {
-	int	i;
-	int	j;
-	int	quote;
-
-	i = 0;
-	j = 0;
-	quote = 0;
-	while (str[i])
-	{
-		if (str[i] == '"')
-			quote++;
-		i++;
-	}
-	if (quote % 2 != 0)
-	{
-		while (str[j])
-		{
-			if (str[j] == '"')
-				ft_memmove(&str[j], &str[j + 1], ft_strlen(str) - j);
-			j++;
-		}
-	}
-	return (str);
+	vector->i = 0;
+	vector->j = 0;
+	vector->k = 0;
+	*ret = malloc(sizeof(char *) * 100);
 }
 
-void	split_segment(char *str, char **result, t_vector *iter, char c)
+char	**on_unclosed_quote(char **ret, char *word, t_3dvector *vector)
 {
-	char	*tmp;
-
-	(iter->i)++;
-	tmp = ft_substr(str, iter->i, ft_strlen(str));
-	result[iter->j] = ft_substr(tmp, 0, ft_strchr(tmp, c) - tmp);
-	if (tmp)
-		free(tmp);
-	(iter->j)++;
-	iter->i += ft_strlen(result[iter->j - 1]) + 1;
+	on_word_end(ret, word, vector);
+	ret[vector->k] = NULL;
+	free_strings(ret);
+	return (NULL);
 }
 
-void	split_last_segment(char *str, char **result, t_vector *iter)
+char	*on_word_copy(t_3dvector *vector, char *str, char *word)
 {
-	char	*tmp;
-
-	tmp = ft_substr(str, iter->i, ft_strlen(str));
-	result[iter->j] = ft_substr(tmp, 0, ft_strchr(tmp, ' ') - tmp);
-	if (tmp)
-		free(tmp);
-	(iter->j)++;
-	iter->i += ft_strlen(result[iter->j - 1]);
+	if (vector->j == 0)
+		word = malloc(sizeof(char) * 100);
+	word[vector->j] = str[vector->i];
+	vector->j++;
+	return (word);
 }
 
 char	**split_with_quotes(char *str)
 {
-	char		**result;
-	t_vector	iter;
+	char		quote;
+	char		**ret;
+	char		*word;
+	t_3dvector	vector;
 
-	iter.i = 0;
-	iter.j = 0;
-	while (str[iter.i] == ' ')
-		iter.i++;
-	result = ft_calloc(sizeof(char *), ft_wordcount(str, ' ') + 1);
-	if (!result || !str[0])
-		return (NULL);
-	while (str[iter.i])
+	init_vars(&vector, &ret);
+	while (str[vector.i])
 	{
-		if (str[iter.i] == '"')
-			split_segment(str, result, &iter, '"');
-		else if (str[iter.i] == '\'')
-			split_segment(str, result, &iter, '\'');
-		else if (str[iter.i] == '$' && str[iter.i + 1] != ' '
-			&& str[iter.i + 1])
-			split_segment(str, result, &iter, ' ');
-		else
-			split_last_segment(str, result, &iter);
-		while (str[iter.i] == ' ')
-			iter.i++;
+		quote = get_opening_quote(quote, str[vector.i]);
+		if (quote == 0 && str[vector.i] != ' ' && !is_quote(str[vector.i]))
+			word = on_word_copy(&vector, str, word);
+		if (quote != 0 && str[vector.i] != quote)
+			word = on_word_copy(&vector, str, word);
+		if (quote == 0 && vector.j != 0 && (str[vector.i] != ' '
+				&& (str[vector.i + 1] == ' ' || str[vector.i + 1] == '\0')))
+			on_word_end(ret, word, &vector);
+		if (quote != 0 && str[vector.i + 1] == '\0')
+			return (on_unclosed_quote(ret, word, &vector));
+	vector.i++;
 	}
-	return (result);
+	ret[vector.k] = NULL;
+	return (ret);
 }

@@ -19,7 +19,7 @@ char	*get_end_of_envvar(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == ' ' || str[i] == '|' || str[i] == '"')
+		if (str[i] == ' ' || str[i] == '|' || str[i] == '"' || str[i] == '\'')
 			break ;
 		i++;
 	}

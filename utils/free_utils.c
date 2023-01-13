@@ -19,10 +19,12 @@ void	free_strings(char **strings)
 	i = 0;
 	while (strings[i])
 	{
-		free(strings[i]);
+		if (strings[i])
+			free(strings[i]);
 		i++;
 	}
-	free(strings);
+	if (strings)
+		free(strings);
 }
 
 void	free_redirs(t_redir *redir)

@@ -85,7 +85,8 @@ void	get_env_i(t_vars *vars)
 	vars->envp[0] = ft_strjoin("PWD=", tmp);
 	free(tmp);
 	vars->envp[1] = ft_strdup("SHLVL=1");
-	vars->envp[2] = ft_strdup("_=/Users/jtsizik/Desktop/Projects/42School_minishell/./minishell");
+	vars->envp[2] = ft_strdup("_=/Users/jtsizik/Desktop/Projects/\
+42School_minishell/./minishell");
 }
 
 int	main(int argc, char **argv, char **envp)

@@ -12,13 +12,22 @@
 
 #include "../minishell.h"
 
-int	skip_to_next(char c, char *str)
+int	is_quote(char c)
 {
-	int	i;
+	if (c == '\'' || c == '"')
+		return (1);
+	return (0);
+}
 
-	i = 0;
-	i++;
-	while (str[i] != c && str[i])
-		i++;
-	return (i);
+char	get_opening_quote(char quote, char c)
+{
+	if (quote == 0 && is_quote(c))
+	{
+		quote = c;
+	}
+	else if (quote == c)
+	{
+		quote = 0;
+	}
+	return (quote);
 }

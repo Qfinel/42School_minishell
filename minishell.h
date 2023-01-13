@@ -60,6 +60,13 @@ typedef struct s_vector
 	int	j;
 }	t_vector;
 
+typedef struct s_3dvector
+{
+	int	i;
+	int	j;
+	int	k;
+}	t_3dvector;
+
 void	ft_cd(t_vars *vars, t_cmd *cmd);
 void	ft_pwd(void);
 void	ft_echo(t_cmd *cmd);
@@ -94,7 +101,6 @@ int		paths_exist(char **envp);
 char	*ft_str_replace(char *str, char *old, char *new);
 int		count_words_starting_with_dollar(char *str);
 char	*get_end_of_envvar(char *str);
-int		skip_to_next(char c, char *str);
 int		unclosed_quotes(char *input);
 void	check_exit(char *input);
 char	*replace_shlvl(char *str);
@@ -110,5 +116,7 @@ t_pipes	*parse_pipes(char **cmds);
 void	change_oldpwd(t_vars *vars);
 void	change_pwd(t_vars *vars);
 int		only_slashes(char *str);
+int		is_quote(char c);
+char	get_opening_quote(char quote, char c);
 
 #endif

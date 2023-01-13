@@ -84,12 +84,10 @@ void	get_command(t_cmd *cmd, t_vars *vars)
 
 int	is_real(char *input, int i)
 {
-	int		j;
 	int		quotes1;
 	int		quotes2;
 	char	*tmp;
 
-	j = 0;
 	quotes1 = 0;
 	quotes2 = 0;
 	tmp = ft_substr(input, 0, i);

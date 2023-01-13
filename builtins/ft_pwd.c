@@ -6,22 +6,18 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 16:05:29 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/02 16:25:49 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/13 15:00:46 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_pwd(char **args)
+void	ft_pwd(void)
 {
-	if (args[1])
-	{
-		printf("minishell: pwd: too many arguments\n");
-		g_exit = 1;
-	}
-	else
-	{
-		printf("%s\n", getcwd(NULL, 0));
-		g_exit = 0;
-	}	
+	char	*tmp;
+
+	tmp = getcwd(NULL, 0);
+	printf("%s\n", tmp);
+	free(tmp);
+	g_exit = 0;
 }

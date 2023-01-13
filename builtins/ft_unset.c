@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:41 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/11 12:47:40 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/13 15:58:37 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,16 @@ static void	create_new_envp(char **new_envp, t_vars *vars, int *indexes)
 	free(indexes);
 }
 
+int	ft_intarrlen(int *arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
+}
+
 static void	find_and_delete(char **args, char **new_envp,
 	t_vars *vars, int arr_len)
 {
@@ -71,13 +81,19 @@ static void	find_and_delete(char **args, char **new_envp,
 			close_minishell(vars, vars->input));
 	get_env_indexes(args, indexes, vars->envp, 0);
 	j = 1;
+	g_exit = 0;
 	while (args[j])
 	{
 		if (ft_strchr(args[j], '='))
+		{
 			printf("minishell: unset: %s: invalid parameter name\n",
 				args[j]);
+			g_exit = 1;
+		}
 		j++;
 	}
+	if (ft_arr_len(args) > (ft_intarrlen(indexes) + 1))
+		g_exit = 1;
 	create_new_envp(new_envp, vars, indexes);
 }
 
@@ -111,10 +127,10 @@ void	ft_unset(t_vars *vars, char **args)
 	find_and_delete(args, new_envp, vars, indexes_arr_len);
 	free_strings(vars->envp);
 	vars->envp = new_envp;
-	g_exit = 0;
 	if (!paths_exist(vars->envp))
 	{
-		free_strings(vars->paths);
+		if (vars->paths)
+			free_strings(vars->paths);
 		vars->paths = NULL;
 	}
 }

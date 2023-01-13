@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/12 17:55:37 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/13 16:11:23 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_pipes
 	int				infd;
 	char			*cmd;
 	struct s_pipes	*next;
-} t_pipes;
+}	t_pipes;
 
 typedef struct s_cmd
 {
@@ -61,7 +61,7 @@ typedef struct s_vector
 }	t_vector;
 
 void	ft_cd(t_vars *vars, t_cmd *cmd);
-void	ft_pwd(char **args);
+void	ft_pwd(void);
 void	ft_echo(t_cmd *cmd);
 void	ft_env(t_vars *vars, char **args);
 void	ft_export(t_vars *vars, char **args);

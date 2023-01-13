@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/10 14:32:23 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/13 15:14:12 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,30 @@ static void	print_export_var(char *str)
 	char	**tmp;
 
 	tmp = ft_split(str, '=');
-	printf("declare -x %s=\"%s\"\n", tmp[0], tmp[1]);
+	if (tmp[1][0] == '\'' && tmp[1][1] == '\'' && !tmp[1][2])
+		printf("declare -x %s\n", tmp[0]);
+	else
+		printf("declare -x %s=\"%s\"\n", tmp[0], tmp[1]);
 	free_strings(tmp);
+}
+
+static int	get_inv_arg(char **args)
+{
+	int	i;
+	int	counter;
+
+	i = 0;
+	counter = 0;
+	while (args[i])
+	{
+		if (args[i][0] == '=')
+		{
+			printf("minishell: export: %s: not a valid identifier\n", args[i]);
+			counter++;
+		}
+		i++;
+	}
+	return (counter);
 }
 
 void	ft_export(t_vars *vars, char **args)
@@ -104,6 +126,9 @@ void	ft_export(t_vars *vars, char **args)
 	int		i;
 
 	i = 0;
+	g_exit = 1;
+	if (get_inv_arg(args))
+		return ;
 	new_arr_len = ft_arr_len(vars->envp) + ft_arr_len(args);
 	new_envp = ft_calloc(new_arr_len, sizeof(char *));
 	if (!new_envp)

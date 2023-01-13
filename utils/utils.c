@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:38:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/12 16:52:23 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/13 14:59:25 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_builtin(t_vars *vars, t_cmd *cmd)
 	if (!ft_strncmp(cmd->args[0], "echo", 5))
 		return (ft_echo(cmd), 1);
 	if (!ft_strncmp(cmd->args[0], "pwd", 4))
-		return (ft_pwd(cmd->args), 1);
+		return (ft_pwd(), 1);
 	if (!ft_strncmp(cmd->args[0], "export", 7))
 		return (ft_export(vars, cmd->args), 1);
 	if (!ft_strncmp(cmd->args[0], "unset", 6))

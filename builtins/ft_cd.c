@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 17:25:24 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/12 18:12:33 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/13 14:52:57 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void	cd_back(t_vars *vars)
 		g_exit = 1;
 		return ((void)printf("minishell: cd: OLDPWD not set\n"));
 	}
+	printf("%s\n", old_pwd);
 	change_oldpwd(vars);
 	chdir(old_pwd);
 	free(old_pwd);
@@ -49,7 +50,7 @@ static void	cd_abs(t_vars *vars, char *path)
 	struct stat	stats;
 
 	stat(path, &stats);
-	if (!(stats.st_mode & S_IFDIR))
+	if (!S_ISDIR(stats.st_mode))
 	{
 		g_exit = 1;
 		return ((void)printf("minishell: cd: %s: No such file or directory\n", path));
@@ -75,7 +76,7 @@ static void	cd_rel(t_vars *vars, char *path)
 	full_path = ft_strjoin(tmp1, path);
 	free(tmp1);
 	stat(full_path, &stats);
-	if (!(stats.st_mode & S_IFDIR))
+	if (!S_ISDIR(stats.st_mode))
 	{
 		g_exit = 1;
 		free(full_path);
@@ -84,7 +85,8 @@ static void	cd_rel(t_vars *vars, char *path)
 	change_oldpwd(vars);
 	g_exit = 0;
 	chdir(full_path);
-	change_pwd(vars);	
+	change_pwd(vars);
+	free(full_path);	
 }
 
 void	ft_cd(t_vars *vars, t_cmd *cmd)

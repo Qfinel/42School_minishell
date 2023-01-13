@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 17:25:24 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/13 14:52:57 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/13 17:48:26 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,17 @@
 static void	cd_home(t_vars *vars)
 {
 	char	*tmp;
-	char	*tmp1;
 
+	tmp = get_env_value(vars, "HOME");
+	if (!tmp)
+	{
+		g_exit = 1;
+		printf("minishell: cd: HOME not set\n");
+		return ;
+	}
 	change_oldpwd(vars);
-	tmp = get_env_value(vars, "USER");
-	tmp1 = ft_strjoin("/Users/", tmp);
-	chdir(tmp1);
+	chdir(tmp);
 	free(tmp);
-	free(tmp1);
 	change_pwd(vars);
 	g_exit = 0;
 }

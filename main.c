@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/12 16:18:16 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/13 17:49:08 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	get_env_i(t_vars *vars)
 	vars->envp[0] = ft_strjoin("PWD=", tmp);
 	free(tmp);
 	vars->envp[1] = ft_strdup("SHLVL=1");
-	vars->envp[2] = ft_strdup("_=/usr/bin/env");
+	vars->envp[2] = ft_strdup("_=/Users/jtsizik/Desktop/Projects/42School_minishell/./minishell");
 }
 
 int	main(int argc, char **argv, char **envp)

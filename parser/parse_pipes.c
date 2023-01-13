@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:01:11 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/12 15:23:14 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/13 17:01:48 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ t_pipes	*parse_pipes(char **cmds)
 	end = ft_calloc((ft_arr_len(cmds) - 1) * 2 + 1, sizeof(int));
 	if (!pipes || !end)
 		return (NULL);
+	if (!cmds[1])
+	{
+		pipes->cmd = ft_strdup(cmds[0]);
+		pipes->next = NULL;
+		free(end);
+		free_strings(cmds);
+		return (pipes);
+	}
 	head = pipes;
 	while (cmds[i])
 	{

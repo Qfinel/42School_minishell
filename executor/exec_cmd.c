@@ -6,13 +6,13 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/12 14:58:37 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/13 17:09:50 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	exec_heredoc(t_vars *vars, t_cmd *cmd)
+void	exec_heredoc(t_vars *vars, t_cmd *cmd, t_pipes *pipes)
 {
 	char	*input;
 	int		id;
@@ -35,6 +35,7 @@ void	exec_heredoc(t_vars *vars, t_cmd *cmd)
 		free(input);
 		g_exit = 0;
 		free_cmd(cmd);
+		free_pipes(pipes);
 		exit_process(vars);
 	}
 	wait(&g_exit);

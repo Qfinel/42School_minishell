@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/13 14:55:36 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/13 17:08:48 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	exec_pipes(t_vars *vars, t_pipes *pipes, t_pipes *to_free)
 		g_exit /= 256;
 }
 
-void	check_heredoc(t_vars *vars, char *str)
+void	check_heredoc(t_vars *vars, char *str, t_pipes *pipes)
 {
 	t_cmd	*cmd;
 	t_redir	*tmp;
@@ -48,7 +48,7 @@ void	check_heredoc(t_vars *vars, char *str)
 		while (cmd->redirs->next)
 		{
 			if (!ft_strncmp(cmd->redirs->type, "HEREDOC", 8))
-				exec_heredoc(vars, cmd);
+				exec_heredoc(vars, cmd, pipes);
 			cmd->redirs = cmd->redirs->next;
 		}
 		cmd->redirs = tmp;
@@ -67,21 +67,21 @@ void	pipe_loop(t_vars *vars, char *input)
 	if (!cmds[0])
 		return (ft_putstr_fd("minishell: syntax error\n", 2));
 	signal(SIGINT, ctrl_c_pipe_handler);
-	if (cmds[0] && !cmds[1])
-	{
-		check_heredoc(vars, cmds[0]);
-		exec_cmd(vars, cmds[0]);
-		free_strings(cmds);
-		return ;
-	}
 	pipes = parse_pipes(cmds);
 	if (!pipes)
 		return (ft_putstr_fd("Malloc failed\n", 2),
 			close_minishell(vars, NULL));
+	if (!pipes->next)
+	{
+		check_heredoc(vars, pipes->cmd, pipes);
+		exec_cmd(vars, pipes->cmd);
+		free_pipes(pipes);
+		return ;
+	}
 	tmp = pipes;
 	while (pipes->next)
 	{
-		check_heredoc(vars, pipes->cmd);
+		check_heredoc(vars, pipes->cmd, tmp);
 		exec_pipes(vars, pipes, tmp);
 		if (pipes->infd != 0)
 			close(pipes->infd);

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/13 17:09:50 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 15:58:53 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,20 +119,30 @@ static void	run_command(t_cmd *cmd, t_vars *vars)
 
 void	exec_cmd(t_vars *vars, char *input)
 {
-	t_cmd	*cmd;
+	t_cmd		*cmd;
+	struct stat	stats;
 
 	cmd = parse_cmd(vars, input);
 	if (!cmd)
 	{
-		g_exit = 1;
+		g_exit = 2;
 		return ((void)printf("minishell: parsing error\n"));
 	}
 	if (cmd->command)
 		run_command(cmd, vars);
 	else
 	{
-		printf("minishell: %s: command not found\n", cmd->args[0]);
-		g_exit = 127;
+		stat(cmd->args[0], &stats);
+		if (S_ISDIR(stats.st_mode) && cmd->args[0][0] != '.')
+		{
+			printf("minishell: %s: is a directory\n", cmd->args[0]);
+			g_exit = 126;
+		}
+		else
+		{
+			printf("minishell: %s: command not found\n", cmd->args[0]);
+			g_exit = 127;
+		}
 	}
 	if (g_exit >= 255)
 		g_exit /= 256;

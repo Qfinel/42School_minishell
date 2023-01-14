@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/14 14:03:47 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 15:28:17 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,13 @@ void	check_exit(char *input)
 	char	**tmp;
 
 	tmp = ft_split(input, ' ');
-	if (tmp[1] && tmp[2] && !ft_strncmp("exit", tmp[0], 5))
+	if (tmp[1] && !is_num(tmp[1])
+		&& !ft_strncmp("exit", tmp[0], 5))
+	{
+		printf("exit: %s: numeric arg required\n", tmp[1]);
+		g_exit = 255;
+	}
+	else if (tmp[1] && tmp[2] && !ft_strncmp("exit", tmp[0], 5))
 	{
 		printf("exit: too many args\n");
 		g_exit = 1;
@@ -41,12 +47,6 @@ void	check_exit(char *input)
 	else if (tmp[1] && is_num(tmp[1])
 		&& !ft_strncmp("exit", tmp[0], 5))
 		g_exit = ft_atoi(tmp[1]);
-	else if (tmp[1] && !is_num(tmp[1])
-		&& !ft_strncmp("exit", tmp[0], 5))
-	{
-		printf("exit: %s: numeric arg required\n", tmp[1]);
-		g_exit = 255;
-	}
 	free_strings(tmp);
 }
 

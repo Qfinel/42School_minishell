@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:39:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/14 14:17:21 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 15:47:31 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,10 @@ void	get_command(t_cmd *cmd, t_vars *vars)
 		return ;
 	}
 	stat(cmd->args[0], &stats);
-	if (!access(cmd->args[0], F_OK) && (stats.st_mode & X_OK))
+	if (((cmd->args[0][0] == '.' && cmd->args[0][1] == '/' && cmd->args[0][2])
+		|| (cmd->args[0][0] == '/' && cmd->args[0][1]))
+		&& !access(cmd->args[0], F_OK)
+		&& (stats.st_mode & X_OK) && !S_ISDIR(stats.st_mode))
 		cmd->command = ft_strdup(cmd->args[0]);
 	else if (!ft_strncmp(cmd->args[0], "export", 7)
 		|| !ft_strncmp(cmd->args[0], "unset", 6)
@@ -79,8 +82,10 @@ void	get_command(t_cmd *cmd, t_vars *vars)
 		|| !ft_strncmp(cmd->args[0], "pwd", 6)
 		|| !ft_strncmp(cmd->args[0], "echo", 6))
 		cmd->command = ft_strdup(cmd->args[0]);
-	else
+	else if (cmd->args[0][0] != '/' && cmd->args[0][0] != '.')
 		cmd->command = get_cmd_path(vars->paths, cmd->args[0]);
+	else
+		cmd->command = NULL;
 }
 
 int	is_real(char *input, int i)

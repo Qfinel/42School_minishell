@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/13 17:08:48 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 16:01:20 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,11 @@ void	pipe_loop(t_vars *vars, char *input)
 	t_pipes *tmp;
 
 	cmds = ft_split_pipes(input);
-	if (!cmds[0])
+	if (!cmds[0] || input[0] == '|')
+	{
+		g_exit = 2;
 		return (ft_putstr_fd("minishell: syntax error\n", 2));
+	}	
 	signal(SIGINT, ctrl_c_pipe_handler);
 	pipes = parse_pipes(cmds);
 	if (!pipes)

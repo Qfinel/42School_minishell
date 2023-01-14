@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/14 17:39:00 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 22:09:45 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,5 +121,6 @@ char	get_opening_quote(char quote, char c);
 int		ft_intarrlen(int *arr);
 int		already_exist(char **envp, char *arg);
 void	print_export_vars(t_vars *vars, char **new_envp);
+void	hide_ctrl_c(void);
 
 #endif

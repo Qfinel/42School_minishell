@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:21:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/14 17:04:38 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 22:09:31 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,29 @@ void	close_minishell(t_vars *vars, char *input)
 	if (vars->envp)
 		free_strings(vars->envp);
 	exit(g_exit);
+}
+
+void	hide_ctrl_c(void)
+{
+	pid_t	pid;
+	int		status;
+	char	*args[3];
+
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork failed");
+		exit(1);
+	}
+	if (pid == 0)
+	{
+		args[0] = "stty";
+		args[1] = "-echoctl";
+		args[2] = NULL;
+		execv("/bin/stty", args);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+	}
 }

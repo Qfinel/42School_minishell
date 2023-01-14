@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:56:13 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/14 15:01:17 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 16:05:07 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 
 void	on_word_end(char **ret, char *word, t_3dvector *vector)
 {
+	if (vector->j == 0)
+	{
+		word = malloc(sizeof(char) * 1000);
+	}
 	word[vector->j] = '\0';
 	ret[vector->k] = word;
 	vector->k++;
@@ -60,7 +64,7 @@ char	**split_with_quotes(char *str)
 			word = on_word_copy(&vector, str, word);
 		if (quote != 0 && str[vector.i] != quote)
 			word = on_word_copy(&vector, str, word);
-		if (quote == 0 && vector.j != 0 && (str[vector.i] != ' '
+		if (quote == 0 && (str[vector.i] != ' '
 				&& (str[vector.i + 1] == ' ' || str[vector.i + 1] == '\0')))
 			on_word_end(ret, word, &vector);
 		if (quote != 0 && str[vector.i + 1] == '\0')

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:39:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/14 16:47:15 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 17:48:54 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	get_command(t_cmd *cmd, t_vars *vars)
 	}
 	stat(cmd->args[0], &stats);
 	if (((cmd->args[0][0] == '.' && cmd->args[0][1] == '/' && cmd->args[0][2])
-		|| (cmd->args[0][0] == '/' && cmd->args[0][1]))
+		|| (ft_strchr(cmd->args[0], '/')))
 		&& !access(cmd->args[0], F_OK)
 		&& (stats.st_mode & X_OK) && !S_ISDIR(stats.st_mode))
 		cmd->command = ft_strdup(cmd->args[0]);

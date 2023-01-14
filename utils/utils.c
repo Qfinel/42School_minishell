@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 15:38:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/14 17:12:02 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 22:21:51 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,26 +75,7 @@ int	check_if_real_quote(char *input, int type, int num)
 
 int	unclosed_quotes(char *input)
 {
-	int	i;
-	int	sing;
-	int	doub;
-
-	i = 0;
-	sing = 0;
-	doub = 0;
-	while (input[i])
-	{
-		if (input[i] == '\"')
-			doub++;
-		if (input[i] == '\'')
-			sing++;
-		i++;
-	}
-	if (doub % 2 > 0)
-		if (check_if_real_quote(input, 2, doub))
-			return (printf("error: unclosed quotes\n"));
-	if (sing % 2 > 0)
-		if (check_if_real_quote(input, 1, sing))
-			return (printf("error: unclosed quotes\n"));
+	if (split_with_quotes(input) == NULL)
+		return (printf("error: unclosed quotes\n"));
 	return (0);
 }

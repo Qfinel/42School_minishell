@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:39:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/12 16:56:53 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 14:17:21 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ void	get_command(t_cmd *cmd, t_vars *vars)
 	cmd->args[0] = clean_quotes(cmd->args[0]);
 	if (!cmd->args[0])
 	{
-		cmd->command = ft_strdup("");
+		cmd->args[0] = ft_strdup("");
+		cmd->command = NULL;
 		return ;
 	}
 	stat(cmd->args[0], &stats);

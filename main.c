@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/13 17:49:08 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 14:03:47 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	minishell_loop(t_vars *vars)
 		if (!ft_strncmp(vars->input, "exit", 4)
 			&& (vars->input[4] == ' ' || !vars->input[4]))
 			close_minishell(vars, vars->input);
-		if (vars->input[0] != 0)
+		if (vars->input[0])
 			add_history(vars->input);
 		vars->input = replace_envvar_with_value(*vars, vars->input);
 		if (vars->input[0] != 0 && !unclosed_quotes(vars->input))

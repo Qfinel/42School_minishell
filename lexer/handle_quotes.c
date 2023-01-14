@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:56:13 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/08 16:44:24 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 15:01:17 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	init_vars(t_3dvector *vector, char ***ret)
 	vector->i = 0;
 	vector->j = 0;
 	vector->k = 0;
-	*ret = malloc(sizeof(char *) * 100);
+	*ret = malloc(sizeof(char *) * 1000);
 }
 
 char	**on_unclosed_quote(char **ret, char *word, t_3dvector *vector)
@@ -39,7 +39,7 @@ char	**on_unclosed_quote(char **ret, char *word, t_3dvector *vector)
 char	*on_word_copy(t_3dvector *vector, char *str, char *word)
 {
 	if (vector->j == 0)
-		word = malloc(sizeof(char) * 100);
+		word = malloc(sizeof(char) * 1000);
 	word[vector->j] = str[vector->i];
 	vector->j++;
 	return (word);

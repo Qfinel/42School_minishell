@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:41 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/13 15:58:37 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 15:23:45 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static void	find_and_delete(char **args, char **new_envp,
 	g_exit = 0;
 	while (args[j])
 	{
-		if (ft_strchr(args[j], '='))
+		if (ft_strchr(args[j], '=') || !args[j][0])
 		{
 			printf("minishell: unset: %s: invalid parameter name\n",
 				args[j]);

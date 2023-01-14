@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/14 16:37:48 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 17:30:20 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	exec_pipes(t_vars *vars, t_pipes *pipes, t_pipes *to_free)
 		g_exit /= 256;
 }
 
-void	check_heredoc(t_vars *vars, char *str, t_pipes *pipes)
+static void	check_heredoc(t_vars *vars, char *str, t_pipes *pipes)
 {
 	t_cmd	*cmd;
 	t_redir	*tmp;
@@ -55,30 +55,40 @@ void	check_heredoc(t_vars *vars, char *str, t_pipes *pipes)
 		free_cmd(cmd);
 }
 
+static t_pipes	*pipe_checker(char **cmds, t_vars *vars)
+{
+	t_pipes	*pipes;
+
+	pipes = parse_pipes(cmds);
+	if (!pipes)
+		return (ft_putstr_fd("Malloc failed\n", 2),
+			close_minishell(vars, NULL), NULL);
+	if (!pipes->next)
+	{
+		check_heredoc(vars, pipes->cmd, pipes);
+		exec_cmd(vars, pipes->cmd);
+		free_pipes(pipes);
+		return (NULL);
+	}
+	return (pipes);
+}
+
 void	pipe_loop(t_vars *vars, char *input)
 {
-	char	**cmds;
+	t_pipes	*tmp;
 	t_pipes	*pipes;
-	t_pipes *tmp;
+	char	**cmds;
 
 	cmds = ft_split_pipes(input);
 	if (!cmds[0] || input[0] == '|')
 	{
 		g_exit = 2;
 		return (ft_putstr_fd("minishell: syntax error\n", 2));
-	}	
-	signal(SIGINT, ctrl_c_pipe_handler);
-	pipes = parse_pipes(cmds);
-	if (!pipes)
-		return (ft_putstr_fd("Malloc failed\n", 2),
-			close_minishell(vars, NULL));
-	if (!pipes->next)
-	{
-		check_heredoc(vars, pipes->cmd, pipes);
-		exec_cmd(vars, pipes->cmd);
-		free_pipes(pipes);
-		return ;
 	}
+	pipes = pipe_checker(cmds, vars);
+	if (!pipes)
+		return ;
+	signal(SIGINT, ctrl_c_pipe_handler);
 	tmp = pipes;
 	while (pipes->next)
 	{

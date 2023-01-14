@@ -6,11 +6,28 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:00:54 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/14 14:47:37 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 17:09:35 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	is_builtin(t_vars *vars, t_cmd *cmd)
+{
+	if (!ft_strncmp(cmd->args[0], "cd", 3))
+		return (ft_cd(vars, cmd), 1);
+	if (!ft_strncmp(cmd->args[0], "echo", 5))
+		return (ft_echo(cmd), 1);
+	if (!ft_strncmp(cmd->args[0], "pwd", 4))
+		return (ft_pwd(), 1);
+	if (!ft_strncmp(cmd->args[0], "export", 7))
+		return (ft_export(vars, cmd->args), 1);
+	if (!ft_strncmp(cmd->args[0], "unset", 6))
+		return (ft_unset(vars, cmd->args), 1);
+	if (!ft_strncmp(cmd->args[0], "env", 4))
+		return (ft_env(vars, cmd->args), 1);
+	return (0);
+}
 
 char	*remove_input_redirs(char *str)
 {

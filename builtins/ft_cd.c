@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 17:25:24 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/13 17:48:26 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 17:21:47 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,15 @@ static void	cd_abs(t_vars *vars, char *path)
 	if (!S_ISDIR(stats.st_mode))
 	{
 		g_exit = 1;
-		return ((void)printf("minishell: cd: %s: No such file or directory\n", path));
+		return ((void)printf("minishell: cd: %s: \
+		No such file or directory\n", path));
 	}
 	change_oldpwd(vars);
 	g_exit = 0;
 	if (only_slashes(path))
 		return ((void)chdir("/"), change_pwd(vars));
 	chdir(path);
-	change_pwd(vars);	
+	change_pwd(vars);
 }
 
 static void	cd_rel(t_vars *vars, char *path)
@@ -83,13 +84,14 @@ static void	cd_rel(t_vars *vars, char *path)
 	{
 		g_exit = 1;
 		free(full_path);
-		return ((void)printf("minishell: cd: %s: No such file or directory\n", path));
+		return ((void)printf("minishell: cd: %s: \
+		No such file or directory\n", path));
 	}
 	change_oldpwd(vars);
 	g_exit = 0;
 	chdir(full_path);
 	change_pwd(vars);
-	free(full_path);	
+	free(full_path);
 }
 
 void	ft_cd(t_vars *vars, t_cmd *cmd)

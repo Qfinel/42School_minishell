@@ -6,31 +6,11 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 12:35:23 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/13 15:14:12 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 17:38:31 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-static int	already_exist(char **envp, char *arg)
-{
-	int		i;
-	char	**tmp;
-
-	i = 0;
-	while (envp[i])
-	{
-		tmp = ft_split(envp[i], '=');
-		if (!ft_strncmp(arg, tmp[0], ft_strlen(arg) + 1))
-		{
-			free_strings(tmp);
-			return (1);
-		}
-		i++;
-		free_strings(tmp);
-	}
-	return (0);
-}
 
 static void	replace_existed_vars(char **new_envp, char **args)
 {
@@ -88,18 +68,6 @@ static void	add_var(t_vars *vars, char **new_envp, char **args, int i)
 	vars->envp = new_envp;
 }
 
-static void	print_export_var(char *str)
-{
-	char	**tmp;
-
-	tmp = ft_split(str, '=');
-	if (tmp[1][0] == '\'' && tmp[1][1] == '\'' && !tmp[1][2])
-		printf("declare -x %s\n", tmp[0]);
-	else
-		printf("declare -x %s=\"%s\"\n", tmp[0], tmp[1]);
-	free_strings(tmp);
-}
-
 static int	get_inv_arg(char **args)
 {
 	int	i;
@@ -136,15 +104,7 @@ void	ft_export(t_vars *vars, char **args)
 			close_minishell(vars, vars->input));
 	g_exit = 0;
 	if (!args[1])
-	{
-		while (vars->envp[i])
-		{
-			if (ft_strncmp("_=", vars->envp[i], 2))
-				print_export_var(vars->envp[i]);
-			i++;
-		}
-		free(new_envp);
-	}
+		print_export_vars(vars, new_envp);
 	else
 		add_var(vars, new_envp, args, i);
 	if (paths_exist(vars->envp))

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/13 17:10:15 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 17:39:00 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,5 +118,8 @@ void	change_pwd(t_vars *vars);
 int		only_slashes(char *str);
 int		is_quote(char c);
 char	get_opening_quote(char quote, char c);
+int		ft_intarrlen(int *arr);
+int		already_exist(char **envp, char *arg);
+void	print_export_vars(t_vars *vars, char **new_envp);
 
 #endif

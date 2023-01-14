@@ -6,39 +6,23 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:01:11 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/13 17:01:48 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/14 17:15:50 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_pipes	*parse_pipes(char **cmds)
+static int	parsing_loop(char **cmds, t_pipes *pipes, int *end)
 {
-	t_pipes	*pipes;
-	t_pipes *head;
-	int		*end;
-	int		i;
+	int	i;
 
 	i = 0;
-	pipes = ft_calloc(1, sizeof(t_pipes));
-	end = ft_calloc((ft_arr_len(cmds) - 1) * 2 + 1, sizeof(int));
-	if (!pipes || !end)
-		return (NULL);
-	if (!cmds[1])
-	{
-		pipes->cmd = ft_strdup(cmds[0]);
-		pipes->next = NULL;
-		free(end);
-		free_strings(cmds);
-		return (pipes);
-	}
-	head = pipes;
 	while (cmds[i])
 	{
 		if (cmds[i + 1])
 		{
 			if (pipe(end + i * 2) < 0)
-				return (printf("pipe error\n"), NULL);
+				return (printf("pipe error\n"), -1);
 		}
 		pipes->next = ft_calloc(1, sizeof(t_pipes));
 		if (i == 0)
@@ -53,8 +37,31 @@ t_pipes	*parse_pipes(char **cmds)
 		pipes = pipes->next;
 		i++;
 	}
-	pipes = head;
+	return (0);
+}
+
+t_pipes	*parse_pipes(char **cmds)
+{
+	t_pipes	*pipes;
+	t_pipes	*head;
+	int		*end;
+
+	pipes = ft_calloc(1, sizeof(t_pipes));
+	end = ft_calloc((ft_arr_len(cmds) - 1) * 2 + 1, sizeof(int));
+	if (!pipes || !end)
+		return (NULL);
+	if (!cmds[1])
+	{
+		pipes->cmd = ft_strdup(cmds[0]);
+		pipes->next = NULL;
+		free(end);
+		free_strings(cmds);
+		return (pipes);
+	}
+	head = pipes;
+	if (parsing_loop(cmds, pipes, end) < 0)
+		return (NULL);
 	free(end);
 	free_strings(cmds);
-	return (pipes);
+	return (head);
 }

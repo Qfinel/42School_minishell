@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:00:54 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/14 17:09:35 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 13:47:06 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	**get_clean_args(char *input, t_redir *redir)
 	if (!str)
 		return (NULL);
 	tmp = split_with_quotes(str);
-	if (!tmp[1])
+	if (!tmp || !tmp[0] || !tmp[1])
 		return (NULL);
 	args = ft_calloc(ft_arr_len(tmp), sizeof(char *));
 	if (!args)

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:39:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/14 17:48:54 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 13:48:42 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	get_command(t_cmd *cmd, t_vars *vars)
 	struct stat	stats;
 
 	cmd->args[0] = clean_quotes(cmd->args[0]);
-	if (!cmd->args[0][0])
+	if (!cmd->args[0] || !cmd->args[0][0])
 	{
 		cmd->command = NULL;
 		return ;

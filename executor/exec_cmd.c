@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/15 13:01:04 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 13:25:52 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void	exec_cmd(t_vars *vars, char *input, t_pipes *pipes)
 	if (!cmd)
 	{
 		g_exit = 2;
-		return ((void)printf("minishell: parsing error\n"));
+		return (ft_putstr_fd("minishell: parsing error\n", 2));
 	}
 	if (cmd->command)
 		run_command(cmd, vars, pipes);

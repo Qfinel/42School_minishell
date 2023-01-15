@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/15 13:00:50 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 13:10:13 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static void	exec_pipes(t_vars *vars, t_pipes *pipes, t_pipes *to_free)
 	}
 	if (pipes->outfd != 1)
 		close(pipes->outfd);
+	if (!pipes->next->next)
+		wait(&g_exit);
 	if (g_exit >= 255)
 		g_exit /= 256;
 }

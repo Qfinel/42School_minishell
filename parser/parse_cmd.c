@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:00:54 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/15 13:47:06 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 16:20:12 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	**get_clean_args(char *input, t_redir *redir)
 		return (NULL);
 	tmp = split_with_quotes(str);
 	if (!tmp || !tmp[0] || !tmp[1])
-		return (NULL);
+		return (free(str), free_strings(tmp), NULL);
 	args = ft_calloc(ft_arr_len(tmp), sizeof(char *));
 	if (!args)
 		return (NULL);
@@ -108,20 +108,20 @@ t_cmd	*parse_cmd(t_vars *vars, char *input)
 	if (!cmd)
 		return (ft_putstr_fd("Malloc failed\n", 2),
 			close_minishell(vars, input), NULL);
-	trimmed = ft_strtrim(input, " ");
 	if (redirections_exist(input))
 		cmd->redirs = parse_redirections(input);
 	else
 		cmd->redirs = NULL;
 	if (!cmd->redirs && redirections_exist(input))
-		return (NULL);
+		return (free_redirs(cmd->redirs), free(cmd), NULL);
+	trimmed = ft_strtrim(input, " ");
 	if (!cmd->redirs)
 		cmd->args = split_with_quotes(trimmed);
 	else
 		cmd->args = get_clean_args(trimmed, cmd->redirs);
 	free(trimmed);
 	if (!cmd->args)
-		return (NULL);
+		return (free_redirs(cmd->redirs), free(cmd), NULL);
 	get_command(cmd, vars);
 	return (cmd);
 }

@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 12:12:04 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/14 14:13:45 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 16:16:22 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	free_redirs(t_redir *redir)
 	{
 		tmp = redir;
 		redir = redir->next;
-		free(tmp->filename);
+		if (tmp->filename)
+			free(tmp->filename);
 		free(tmp);
 	}
 }
@@ -59,11 +60,14 @@ void	free_pipes(t_pipes *pipes)
 
 void	free_cmd(t_cmd *cmd)
 {
-	if (cmd->command)
-		free(cmd->command);
-	if (cmd->args)
-		free_strings(cmd->args);
-	if (cmd->redirs)
-		free_redirs(cmd->redirs);
-	free(cmd);
+	if (cmd)
+	{
+		if (cmd->command)
+			free(cmd->command);
+		if (cmd->args)
+			free_strings(cmd->args);
+		if (cmd->redirs)
+			free_redirs(cmd->redirs);
+		free(cmd);
+	}
 }

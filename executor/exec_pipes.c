@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/15 12:36:02 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 13:00:50 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	pipe_loop(t_vars *vars, char *input)
 	char	**cmds;
 
 	cmds = ft_split_pipes(input);
+	signal(SIGINT, ctrl_c_pipe_handler);
 	if (!cmds[0] || input[0] == '|')
 	{
 		g_exit = 2;
@@ -86,7 +87,6 @@ void	pipe_loop(t_vars *vars, char *input)
 	pipes = pipe_checker(cmds, vars);
 	if (!pipes)
 		return ;
-	signal(SIGINT, ctrl_c_pipe_handler);
 	tmp = pipes;
 	while (pipes->next)
 	{

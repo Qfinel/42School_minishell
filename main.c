@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/15 12:38:04 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 13:03:43 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	minishell_loop(t_vars *vars)
 	while (1)
 	{
 		signal(SIGINT, ctrl_c_handler);
+		hide_signals();
 		tmp = readline("\033[0;32mminishell$> \033[0;37m");
 		if (!tmp)
 			close_minishell(vars, NULL);
@@ -98,7 +99,6 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 1 || !argv)
 		return (ft_putstr_fd("Run './minishell' without args ;)\n", 2), -1);
-	hide_ctrl_c();
 	vars.paths = ft_split(getenv("PATH"), ':');
 	i = 0;
 	vars.envp = ft_calloc(ft_arr_len(envp) + 1, sizeof(char *));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:21:31 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/14 22:09:31 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/15 13:03:32 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,27 +44,20 @@ void	close_minishell(t_vars *vars, char *input)
 	exit(g_exit);
 }
 
-void	hide_ctrl_c(void)
+void	hide_signals(void)
 {
-	pid_t	pid;
-	int		status;
-	char	*args[3];
+	struct termios	tty;
 
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork failed");
-		exit(1);
-	}
-	if (pid == 0)
-	{
-		args[0] = "stty";
-		args[1] = "-echoctl";
-		args[2] = NULL;
-		execv("/bin/stty", args);
-	}
-	else
-	{
-		waitpid(pid, &status, 0);
-	}
+	tcgetattr(0, &tty);
+	tty.c_lflag &= ~ECHOCTL;
+	tcsetattr(0, TCSAFLUSH, &tty);
+}
+
+void	show_signals(void)
+{
+	struct termios	tty;
+
+	tcgetattr(0, &tty);
+	tty.c_lflag |= ECHOCTL;
+	tcsetattr(0, TCSAFLUSH, &tty);
 }

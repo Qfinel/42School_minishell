@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/15 12:36:47 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 13:01:04 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void	exec_cmd(t_vars *vars, char *input, t_pipes *pipes)
 	t_cmd		*cmd;
 
 	cmd = parse_cmd(vars, input);
+	show_signals();
 	if (!cmd)
 	{
 		g_exit = 2;

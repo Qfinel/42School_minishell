@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_envvars.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 20:45:23 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/09 18:37:36 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/15 13:18:31 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	**get_words_starting_with_dollar(char *str)
 	j = 0;
 	result = ft_calloc(sizeof(char *),
 			(count_words_starting_with_dollar(str) + 1));
-	while (str[i] && result)
+	while (result && str[i])
 	{
 		if (str[i] == '$' && !is_envvar_in_single_quotes(str, i)
 			&& str[i + 1] && str[i + 1] != ' ' && str[i + 1]

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 14:56:13 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/14 16:05:07 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/15 13:19:32 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	on_word_end(char **ret, char *word, t_3dvector *vector)
 	if (vector->j == 0)
 	{
 		word = malloc(sizeof(char) * 1000);
+		if (!word)
+			return ;
 	}
 	word[vector->j] = '\0';
 	ret[vector->k] = word;
@@ -30,6 +32,8 @@ void	init_vars(t_3dvector *vector, char ***ret)
 	vector->j = 0;
 	vector->k = 0;
 	*ret = malloc(sizeof(char *) * 1000);
+	if (*ret)
+		return ;
 }
 
 char	**on_unclosed_quote(char **ret, char *word, t_3dvector *vector)
@@ -43,7 +47,11 @@ char	**on_unclosed_quote(char **ret, char *word, t_3dvector *vector)
 char	*on_word_copy(t_3dvector *vector, char *str, char *word)
 {
 	if (vector->j == 0)
+	{
 		word = malloc(sizeof(char) * 1000);
+		if (!word)
+			return (NULL);
+	}
 	word[vector->j] = str[vector->i];
 	vector->j++;
 	return (word);

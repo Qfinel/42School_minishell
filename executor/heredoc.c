@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc_utils.c                                    :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:09:21 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/14 17:33:22 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 12:36:22 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	truncate_tmp(void)
 void	delete_tmp(t_vars *vars)
 {
 	if (!access("executor/heredoc.tmp", F_OK))
-		exec_cmd(vars, "rm executor/heredoc.tmp");
+		exec_cmd(vars, "rm executor/heredoc.tmp", NULL);
 }
 
 void	exec_heredoc(t_vars *vars, t_cmd *cmd, t_pipes *pipes)

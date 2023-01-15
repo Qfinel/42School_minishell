@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/14 17:39:00 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 12:35:44 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	free_strings(char **strings);
 char	*get_cmd(char **paths, char *cmd);
 int		is_builtin(t_vars *vars, t_cmd *cmd);
 int		contains_spaces(char *str);
-void	exec_cmd(t_vars *vars, char *input);
+void	exec_cmd(t_vars *vars, char *input, t_pipes *pipes);
 void	free_cmd(t_cmd *cmd);
 t_cmd	*parse_cmd(t_vars *vars, char *input);
 t_redir	*parse_redirections(char *input);

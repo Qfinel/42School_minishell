@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/14 17:30:20 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 12:36:02 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,10 @@ static void	exec_pipes(t_vars *vars, t_pipes *pipes, t_pipes *to_free)
 			dup2(pipes->outfd, 1);
 		if (pipes->next->next)
 			close(pipes->next->infd);
-		exec_cmd(vars, pipes->cmd);
+		exec_cmd(vars, pipes->cmd, to_free);
 		free_pipes(to_free);
 		exit_process(vars);
 	}
-	while (!pipes->next->next && wait(&g_exit) > 0)
-		continue ;
 	if (pipes->outfd != 1)
 		close(pipes->outfd);
 	if (g_exit >= 255)
@@ -66,7 +64,7 @@ static t_pipes	*pipe_checker(char **cmds, t_vars *vars)
 	if (!pipes->next)
 	{
 		check_heredoc(vars, pipes->cmd, pipes);
-		exec_cmd(vars, pipes->cmd);
+		exec_cmd(vars, pipes->cmd, pipes);
 		free_pipes(pipes);
 		return (NULL);
 	}
@@ -98,5 +96,6 @@ void	pipe_loop(t_vars *vars, char *input)
 			close(pipes->infd);
 		pipes = pipes->next;
 	}
+	pipes = pipes->next;
 	free_pipes(tmp);
 }

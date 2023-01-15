@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/14 17:33:17 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 12:36:47 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	change_fd(t_redir *redir)
 	return (0);
 }
 
-static void	do_redirections(t_vars *vars, t_cmd *cmd)
+static void	do_redirections(t_vars *vars, t_cmd *cmd, t_pipes *pipes)
 {
 	int	id;
 
@@ -54,6 +54,7 @@ static void	do_redirections(t_vars *vars, t_cmd *cmd)
 			{
 				g_exit = 1;
 				free_cmd(cmd);
+				free_pipes(pipes);
 				exit_process(vars);
 			}
 			cmd->redirs = cmd->redirs->next;
@@ -66,7 +67,7 @@ static void	do_redirections(t_vars *vars, t_cmd *cmd)
 	wait(&g_exit);
 }
 
-static void	run_command(t_cmd *cmd, t_vars *vars)
+static void	run_command(t_cmd *cmd, t_vars *vars, t_pipes *pipes)
 {
 	int	id;
 
@@ -85,7 +86,7 @@ static void	run_command(t_cmd *cmd, t_vars *vars)
 		}
 	}
 	else
-		do_redirections(vars, cmd);
+		do_redirections(vars, cmd, pipes);
 }
 
 void	check_command(char *arg)
@@ -105,7 +106,7 @@ void	check_command(char *arg)
 	}
 }
 
-void	exec_cmd(t_vars *vars, char *input)
+void	exec_cmd(t_vars *vars, char *input, t_pipes *pipes)
 {
 	t_cmd		*cmd;
 
@@ -116,7 +117,7 @@ void	exec_cmd(t_vars *vars, char *input)
 		return ((void)printf("minishell: parsing error\n"));
 	}
 	if (cmd->command)
-		run_command(cmd, vars);
+		run_command(cmd, vars, pipes);
 	else
 		check_command(cmd->args[0]);
 	if (g_exit >= 255)

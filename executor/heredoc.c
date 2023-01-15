@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:09:21 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/15 12:36:22 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 14:00:23 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,12 @@ void	delete_tmp(t_vars *vars)
 		exec_cmd(vars, "rm executor/heredoc.tmp", NULL);
 }
 
-void	exec_heredoc(t_vars *vars, t_cmd *cmd, t_pipes *pipes)
+void	exec_heredoc(t_vars *vars, t_cmd *cmd, t_pipes *pipes, t_redir *head)
 {
 	char	*input;
-	int		id;
 
 	truncate_tmp();
-	id = fork();
-	if (id == 0)
+	if (fork() == 0)
 	{
 		signal(SIGINT, SIG_DFL);
 		while (1)
@@ -59,6 +57,7 @@ void	exec_heredoc(t_vars *vars, t_cmd *cmd, t_pipes *pipes)
 		}
 		free(input);
 		g_exit = 0;
+		cmd->redirs = head;
 		free_cmd(cmd);
 		free_pipes(pipes);
 		exit_process(vars);

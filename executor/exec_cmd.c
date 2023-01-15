@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:57:00 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/15 13:25:52 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 13:54:44 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	change_fd(t_redir *redir)
 
 static void	do_redirections(t_vars *vars, t_cmd *cmd, t_pipes *pipes)
 {
-	int	id;
+	int		id;
 
 	id = fork();
 	if (id == 0)

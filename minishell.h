@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/15 13:01:53 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 13:58:51 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int		unclosed_quotes(char *input);
 void	check_exit(char *input);
 char	*replace_shlvl(char *str);
 void	process_int(int sig);
-void	exec_heredoc(t_vars *vars, t_cmd *cmd, t_pipes *pipes);
+void	exec_heredoc(t_vars *vars, t_cmd *cmd, t_pipes *pipes, t_redir *head);
 void	truncate_tmp(void);
 void	add_to_tmp(char *input);
 void	delete_tmp(t_vars *vars);

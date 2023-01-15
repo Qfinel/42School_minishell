@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:55:43 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/15 13:10:13 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 13:59:14 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	check_heredoc(t_vars *vars, char *str, t_pipes *pipes)
 		while (cmd->redirs->next)
 		{
 			if (!ft_strncmp(cmd->redirs->type, "HEREDOC", 8))
-				exec_heredoc(vars, cmd, pipes);
+				exec_heredoc(vars, cmd, pipes, tmp);
 			cmd->redirs = cmd->redirs->next;
 		}
 		cmd->redirs = tmp;

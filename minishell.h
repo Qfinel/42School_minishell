@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:24:14 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/15 12:35:44 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 12:39:11 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,5 +121,6 @@ char	get_opening_quote(char quote, char c);
 int		ft_intarrlen(int *arr);
 int		already_exist(char **envp, char *arg);
 void	print_export_vars(t_vars *vars, char **new_envp);
+void	hide_ctrl_c(void);
 
 #endif

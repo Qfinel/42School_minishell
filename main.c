@@ -6,7 +6,7 @@
 /*   By: jtsizik <jtsizik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 17:04:09 by jtsizik           #+#    #+#             */
-/*   Updated: 2023/01/15 12:30:58 by jtsizik          ###   ########.fr       */
+/*   Updated: 2023/01/15 12:38:04 by jtsizik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 1 || !argv)
 		return (ft_putstr_fd("Run './minishell' without args ;)\n", 2), -1);
+	hide_ctrl_c();
 	vars.paths = ft_split(getenv("PATH"), ':');
 	i = 0;
 	vars.envp = ft_calloc(ft_arr_len(envp) + 1, sizeof(char *));
